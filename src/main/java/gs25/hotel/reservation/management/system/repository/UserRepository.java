@@ -48,30 +48,22 @@ public class UserRepository {
      * @throws IOException 파일 저장 실패 시
      * @Author 김남주
      */
-    public void save(User user) throws IOException {
-        if (user.getIdx() == 0) {
-            throw new IllegalArgumentException("잘못된 접근입니다.");
+    public Optional<User> save(User user) throws IOException {
+        if (user.getIdx() != 0) {
+            for (int i = 0; i < userList.size(); i++) {
+                if (userList.get(i).getIdx() == user.getIdx()) {
+                    userList.set(i, user);
+                    break;
+                }
+            }
+        } else {
+            user.setIdx(++idx);
+            userList.add(user);
         }
-        user.setIdx(++idx);
-        userList.add(user);
         saveToJson();
+        return Optional.of(user);
     }
 
-    /**
-     * 유저 정보를 수정하는 메소드
-     *
-     * @param user 수정할 유저 정보
-     * @throws IOException 파일 저장 실패 시
-     * @Author 김남주
-     */
-    public void update(User user) throws IOException {
-        for (int i = 0; i < userList.size(); i++) {
-            if (userList.get(i).getIdx() == user.getIdx()) {
-                userList.set(i, user);
-            }
-        }
-        saveToJson();
-    }
 
     /**
      * 유저 정보를 삭제하는 메소드
@@ -107,7 +99,8 @@ public class UserRepository {
 
     /**
      * ID와 비밀번호를 통해 유저 정보를 불러오는 메소드
-     * @param id - 아이디
+     *
+     * @param id       - 아이디
      * @param password 비밀번호
      * @return Optional<User>
      * @Author 김남주
@@ -119,5 +112,20 @@ public class UserRepository {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * ID를 통해 유저 정보를 불러오는 메소드
+     *
+     * @param id - 체크 할 아이디
+     * @return 중복 시 true, 중복 아닐 시 false
+     */
+    public boolean isExistId(String id) {
+        for (User user : userList) {
+            if (user.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
