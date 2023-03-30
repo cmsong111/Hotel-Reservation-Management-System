@@ -22,4 +22,5 @@ public class User{
     String phone;
     String email;
     String role;
+    String grade;
 }
