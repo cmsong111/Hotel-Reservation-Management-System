@@ -3,17 +3,27 @@ package gs25.hotel.reservation.management.system.repository;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import gs25.hotel.reservation.management.system.entity.User;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 
+@Slf4j
 public class UserRepository {
     Gson gson = new Gson();
     ArrayList<User> userList = new ArrayList<>();
     int idx = 0;
+
+    void Log (String type, String message){
+        switch (type){
+            case "info" :
+                log.info(new Timestamp(System.currentTimeMillis()) + "\tUserRepository:\t" +message);
+        }
+    }
 
     public UserRepository() {
         loadFromJson();
@@ -30,6 +40,7 @@ public class UserRepository {
         userList = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
         }.getType());
         idx = userList.get(userList.size() - 1).getIdx();
+        Log("info","Updated user data from db/user.json");
     }
 
     /**
@@ -43,6 +54,7 @@ public class UserRepository {
         gson.toJson(userList, file);
         file.flush();
         file.close();
+        Log("info", "User 데이터가 \"db/user.json\"에 저장되었습니다");
     }
 
     /**
@@ -57,12 +69,14 @@ public class UserRepository {
             for (int i = 0; i < userList.size(); i++) {
                 if (userList.get(i).getIdx() == user.getIdx()) {
                     userList.set(i, user);
+                    Log("info", "유저 정보 업데이트 완료");
                     break;
                 }
             }
         } else {
             user.setIdx(++idx);
             userList.add(user);
+            Log("info", "유저 정보 생성 완료");
         }
         saveToJson();
         return Optional.of(user);
@@ -79,6 +93,7 @@ public class UserRepository {
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getIdx() == user.getIdx()) {
                 userList.remove(i);
+                Log("info", "유저 정보 삭제 완료");
                 break;
             }
         }
@@ -112,9 +127,11 @@ public class UserRepository {
     public Optional<User> findByIdAndPassword(String id, String password) {
         for (User user : userList) {
             if (user.getId().equals(id) && user.getPassword().equals(password)) {
+                Log("info", "로그인 성공");
                 return Optional.of(user);
             }
         }
+        Log("info", "로그인 실패");
         return Optional.empty();
     }
 
@@ -127,9 +144,11 @@ public class UserRepository {
     public boolean isExistId(String id) {
         for (User user : userList) {
             if (user.getId().equals(id)) {
+                Log("info", "아이디 중복 됨");
                 return true;
             }
         }
+        Log("info", "아이디 사용 가능");
         return false;
     }
 
@@ -139,6 +158,7 @@ public class UserRepository {
      * @Author 김남주
      */
     public ArrayList<User> findAll() {
+        Log("info", "전체 계정 조회");
         return userList;
     }
 }

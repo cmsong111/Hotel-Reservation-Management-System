@@ -4,7 +4,6 @@ import gs25.hotel.reservation.management.system.configuration.Singleton;
 import gs25.hotel.reservation.management.system.entity.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ class UserServiceTest {
 
 
     @Test
-    void register() throws IOException {
+    void registerAndDeleteUser() throws IOException {
         User user = User.builder()
                 .idx(0)
                 .id("user123")
@@ -67,7 +66,7 @@ class UserServiceTest {
         assertEquals(user.getEmail(), register.get().getEmail());
         assertEquals(user.getRole(), register.get().getRole());
 
-
+        userService.deleteUser(register.get());
     }
 
     @Test
@@ -84,6 +83,5 @@ class UserServiceTest {
         assertEquals(user.get().getPhone(), udpated.getPhone());
         assertEquals(user.get().getEmail(), udpated.getEmail());
         assertEquals(user.get().getRole(), udpated.getRole());
-
     }
 }
