@@ -15,6 +15,10 @@ public class UserRepository {
     ArrayList<User> userList = new ArrayList<>();
     int idx = 0;
 
+    public UserRepository() {
+        loadFromJson();
+    }
+
     /**
      * Json으로 저장된 유저 정보를 불러오는 메소드
      *
@@ -127,5 +131,14 @@ public class UserRepository {
             }
         }
         return false;
+    }
+
+    /**
+     * 유저 리스트를 불러오는 메소드
+     * @return 유저 리스트
+     * @Author 김남주
+     */
+    public ArrayList<User> findAll() {
+        return userList;
     }
 }

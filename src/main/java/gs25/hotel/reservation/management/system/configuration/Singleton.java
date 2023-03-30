@@ -21,8 +21,6 @@ public class Singleton {
 
     public void init() {
         userRepository = new UserRepository();
-
         userService = new UserService();
-        userService.init();
     }
 }

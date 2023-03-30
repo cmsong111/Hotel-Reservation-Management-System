@@ -5,6 +5,8 @@ import gs25.hotel.reservation.management.system.entity.User;
 import gs25.hotel.reservation.management.system.repository.UserRepository;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class UserService {
@@ -68,4 +70,10 @@ public class UserService {
         }
         return updatedUser;
     }
+
+    public ArrayList<User> findAll() {
+        return userRepository.findAll();
+    }
+
+
 }
