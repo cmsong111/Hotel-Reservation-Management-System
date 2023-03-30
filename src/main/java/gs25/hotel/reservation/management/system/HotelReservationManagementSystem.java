@@ -4,13 +4,23 @@
 
 package gs25.hotel.reservation.management.system;
 
+import gs25.hotel.reservation.management.system.configuration.Singleton;
+import gs25.hotel.reservation.management.system.screens.LoginPage;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+
 /**
- *
- * @author cmson
+ * 메인 클래스
+ * @author 김남주
  */
+@Slf4j
 public class HotelReservationManagementSystem {
 
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+    public static void main(String[] args) throws IOException {
+        log.info("인스턴스 초기화");
+        Singleton.getInstance().init();
+
+        new LoginPage();
     }
 }

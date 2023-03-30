@@ -1,0 +1,22 @@
+[
+  {
+    "idx": 1,
+    "id": "admin",
+    "password": "admin",
+    "name": "admin",
+    "phone": "010-0000-0000",
+    "email": "admin@admin.com",
+    "role": "admin",
+    "grade": "gold"
+  },
+  {
+    "idx": 2,
+    "id": "user",
+    "password": "user",
+    "name": "user",
+    "phone": "010-0000-0000",
+    "email": "user@user.com",
+    "role": "user",
+    "grade": "gold"
+  }
+]
