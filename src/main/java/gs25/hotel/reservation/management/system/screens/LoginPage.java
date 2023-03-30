@@ -9,6 +9,7 @@ import gs25.hotel.reservation.management.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,12 +19,12 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
     private UserService userService = Singleton.getInstance().getUserService();
     private Singleton instance = Singleton.getInstance();
 
+    private Panel panel;
+    private JLabel label;
+    private JTextField tx_ID;
+    private JPasswordField tx_PassWord;
+    private JButton btn_Login, btn_SignUp, btn_logout;
 
-    JLabel label;
-    JTextField tx_ID;
-    JPasswordField tx_PassWord;
-    JLabel logoImage;
-    JButton btn_Login, btn_SignUp, btn_logout;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -36,13 +37,9 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
 
         setTitle("호텔 예약 시스템");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 700);
+        setResizable(false);
 
-
-        logoImage = new JLabel();
-        logoImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/images/Hotel_Icon.png")).getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH)));
-        logoImage.setBounds(100, 150, 200, 200);
-
+        panel = new Panel();
 
         label = new JLabel("GS25 호텔 예약 시스템");
         label.setBounds(100, 100, 400, 100);
@@ -68,16 +65,16 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
         btn_logout.setActionCommand("logout");
         btn_logout.addActionListener(this);
 
-
         add(label);
         add(tx_ID);
         add(tx_PassWord);
         add(btn_Login);
         add(btn_SignUp);
         add(btn_logout);
-        add(logoImage);
+        add(panel);
 
-
+        setSize(600, 800);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
