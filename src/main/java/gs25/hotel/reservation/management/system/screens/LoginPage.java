@@ -2,47 +2,44 @@ package gs25.hotel.reservation.management.system.screens;
 
 import gs25.hotel.reservation.management.system.configuration.Singleton;
 import gs25.hotel.reservation.management.system.entity.User;
-import gs25.hotel.reservation.management.system.observer.UserData;
+import gs25.hotel.reservation.management.system.observer.LoginStatus;
+import gs25.hotel.reservation.management.system.observer.Observable;
+import gs25.hotel.reservation.management.system.observer.Observer;
 import gs25.hotel.reservation.management.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
+
 
 @Slf4j
 public class LoginPage extends JFrame implements Observer, ActionListener {
-
-    private User loginUser;
-    private UserData userData;
     private UserService userService = Singleton.getInstance().getUserService();
+    private Singleton instance = Singleton.getInstance();
+
 
     JLabel label;
     JTextField tx_ID;
     JPasswordField tx_PassWord;
     JLabel logoImage;
-    JButton btn_Login, btn_SignUp;
+    JButton btn_Login, btn_SignUp, btn_logout;
 
     @Override
     public void update(Observable o, Object arg) {
-        loginUser = (User) arg;
-    }
-
-    public LoginPage(UserData userData) {
-        this.userData = userData;
-        userData.registerObserver(this);
+        log.info(instance.getLoginUser() + "가 로그인했습니다.");
     }
 
     public LoginPage() {
+
+        Singleton.getInstance().getLoginStatus().registerObserver(this);
+
         setTitle("호텔 예약 시스템");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 650);
+        setSize(600, 700);
 
 
         logoImage = new JLabel();
-
         logoImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/images/Hotel_Icon.png")).getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH)));
         logoImage.setBounds(100, 150, 200, 200);
 
@@ -66,17 +63,22 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
         btn_SignUp.setActionCommand("signup");
         btn_SignUp.addActionListener(this);
 
+        btn_logout = new JButton("로그아웃");
+        btn_logout.setBounds(100, 590, 400, 50);
+        btn_logout.setActionCommand("logout");
+        btn_logout.addActionListener(this);
+
+
         add(label);
         add(tx_ID);
         add(tx_PassWord);
         add(btn_Login);
         add(btn_SignUp);
+        add(btn_logout);
         add(logoImage);
 
 
         setVisible(true);
-
-
     }
 
     @Override
@@ -88,14 +90,19 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
         if (command.equals("login")) {
             log.info("로그인 버튼 클릭");
             userService.login(id, password);
-            // 로그인 버튼 클릭 시
-            // 로그인 성공 시
-            // 로그인 실패 시
+            if (instance.getLoginUser() == null) {
+                JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 틀렸습니다.");
+            } else {
+                Singleton.getInstance().getLoginStatus().changeStatus(true);
+                JOptionPane.showMessageDialog(null, "로그인 성공");
+            }
         } else if (command.equals("signup")) {
             log.info("회원가입 버튼 클릭");
-            // 회원가입 버튼 클릭 시
-            // 회원가입 성공 시
-            // 회원가입 실패 시
+        } else if (command.equals("logout")) {
+            log.info("로그아웃 버튼 클릭");
+            Singleton.getInstance().setLoginUser(null);
+            Singleton.getInstance().getLoginStatus().changeStatus(false);
+            JOptionPane.showMessageDialog(null, "로그아웃 성공");
         }
     }
 }

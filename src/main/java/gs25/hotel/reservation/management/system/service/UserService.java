@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public class UserService {
     UserRepository userRepository = Singleton.getInstance().getUserRepository();
+    Singleton instance = Singleton.getInstance();
 
     public void init() {
         userRepository.loadFromJson();
@@ -27,9 +28,9 @@ public class UserService {
         Optional<User> user = userRepository.findByIdAndPassword(id, password);
 
         if (user.isPresent()) {
-            Singleton.getInstance().setUser(user.get());
+            instance.setLoginUser(user.get());
         } else {
-            Singleton.getInstance().setUser(null);
+            instance.setLoginUser(null);
         }
         return user;
     }
@@ -65,7 +66,7 @@ public class UserService {
         Optional<User> updatedUser = userRepository.save(user);
 
         if (updatedUser.isPresent()) {
-            Singleton.getInstance().setUser(updatedUser.get());
+            instance.setLoginUser(updatedUser.get());
         }
         return updatedUser;
     }
@@ -76,5 +77,9 @@ public class UserService {
 
     public void deleteUser(User user) throws IOException {
         userRepository.delete(user);
+    }
+
+    public void logout() {
+        instance.setLoginUser(null);
     }
 }
