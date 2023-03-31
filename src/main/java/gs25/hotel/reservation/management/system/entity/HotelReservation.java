@@ -1,5 +1,10 @@
 package gs25.hotel.reservation.management.system.entity;
 
+import lombok.Data;
+import lombok.ToString;
+
+@ToString
+@Data
 public class HotelReservation {
     public int idx;
     public int userIdx;
@@ -28,25 +33,7 @@ public class HotelReservation {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "HotelReservation{" +
-                "idx=" + idx +
-                ", userIdx=" + userIdx +
-                ", hotelIdx=" + hotelIdx +
-                ", hotelRoomIdx=" + hotelRoomIdx +
-                ", checkInDate='" + checkInDate + '\'' +
-                ", checkOutDate='" + checkOutDate + '\'' +
-                ", adult=" + adult +
-                ", child=" + child +
-                ", baby=" + baby +
-                ", extraBed=" + extraBed +
-                ", totalPrice=" + totalPrice +
-                ", status='" + status + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                '}';
-    }
+
 
 
 }
