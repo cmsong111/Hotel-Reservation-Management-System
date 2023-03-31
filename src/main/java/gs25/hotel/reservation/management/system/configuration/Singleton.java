@@ -2,6 +2,7 @@ package gs25.hotel.reservation.management.system.configuration;
 
 import gs25.hotel.reservation.management.system.entity.User;
 import gs25.hotel.reservation.management.system.observer.LoginStatus;
+import gs25.hotel.reservation.management.system.repository.HotelRepository;
 import gs25.hotel.reservation.management.system.repository.UserRepository;
 import gs25.hotel.reservation.management.system.service.UserService;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class Singleton {
         return singleton;
     }
     public UserRepository userRepository ;
+    public HotelRepository hotelRepository;
     public UserService userService ;
     public User loginUser;
     public LoginStatus loginStatus;
@@ -26,5 +28,6 @@ public class Singleton {
         userService = new UserService();
         loginUser = null;
         loginStatus = new LoginStatus();
+        hotelRepository = new HotelRepository();
     }
 }
