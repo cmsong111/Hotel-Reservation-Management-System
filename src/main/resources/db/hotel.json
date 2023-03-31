@@ -15,5 +15,23 @@
       "WiFi",
       "television"
     ]
+  },
+  {
+    "idx": 2,
+    "name": "시그니엘 서울",
+    "address": "서울특별시 송파구 올림픽로 300",
+    "phone" : "+82-2-3213-1000",
+    "email" : null,
+    "description" : "롯데월드타워 76층~101층에서 즐기는 파노라믹한 스카이라인\n미쉐린 스타 셰프 야닉 알레노의 다이닝과\n세계 최고층에 위치한 웨딩&컨벤션\nLive beyond expectations, SIGNIEL SEOUL",
+    "service" : [
+      "Bathtub",
+      "bidet",
+      "Shower",
+      "bathrobe",
+      "dryer",
+      "WiFi",
+      "television"
+    ]
   }
+
 ]
