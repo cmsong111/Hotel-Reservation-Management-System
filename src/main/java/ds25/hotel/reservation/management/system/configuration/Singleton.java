@@ -5,6 +5,7 @@ import ds25.hotel.reservation.management.system.repository.hotel.HotelReservatio
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import ds25.hotel.reservation.management.system.provider.UserProvider;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelService;
 import ds25.hotel.reservation.management.system.service.user.UserService;
@@ -34,6 +35,7 @@ public class Singleton {
     public UserService userService;
     public HotelService hotelService;
     public HotelRoomService hotelRoomService;
+    public HotelReservationService hotelReservationService;
 
     // Provider
     public UserProvider userProvider;
@@ -47,6 +49,7 @@ public class Singleton {
         userService = new UserService();
         hotelService = new HotelService();
         hotelRoomService = new HotelRoomService();
+        hotelReservationService = new HotelReservationService();
 
         userProvider = new UserProvider();
     }

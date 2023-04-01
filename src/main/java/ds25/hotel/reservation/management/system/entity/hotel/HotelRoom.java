@@ -13,17 +13,15 @@ import java.util.ArrayList;
 @Builder
 public class HotelRoom {
     private int idx;
+    private int hotelIdx;
     private String name;
     private String description;
     private int price;
-    private int count;
-    private int maxPeople;
-    private int maxExtraPeople;
-    private int maxBed;
-    private int maxExtraBed;
+    private int discount;
+    private int roomCount;
+    private int peopleCount;
+    private int bedCount;
     private int roomSize;
-    private boolean isSmoking;
-    private int hotelIdx;
     private ArrayList<String> image;
     private ArrayList<HotelService> service;
 }
