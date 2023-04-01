@@ -6,7 +6,8 @@
     "name": "admin",
     "phone": "010-0000-0000",
     "email": "admin@admin.com",
-    "role": "admin"
+    "role": "ADMIN",
+    "grade": "GOLD"
   },
   {
     "idx": 2,
@@ -15,6 +16,7 @@
     "name": "user",
     "phone": "010-0000-0000",
     "email": "user@user.com",
-    "role": "user"
+    "role": "USER",
+    "grade": "GOLD"
   }
 ]

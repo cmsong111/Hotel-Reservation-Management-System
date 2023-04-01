@@ -2,6 +2,7 @@ package gs25.hotel.reservation.management.system.service;
 
 import gs25.hotel.reservation.management.system.configuration.Singleton;
 import gs25.hotel.reservation.management.system.entity.user.User;
+import gs25.hotel.reservation.management.system.entity.user.UserGrade;
 import gs25.hotel.reservation.management.system.entity.user.UserRole;
 import gs25.hotel.reservation.management.system.service.user.UserService;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,6 +41,7 @@ class UserServiceTest {
                 .phone("010-0000-0000")
                 .email("admin@admin.com")
                 .role(UserRole.ADMIN)
+                .grade(UserGrade.GOLD)
                 .build();
         User login = userService.login(user.getId(), user.getPassword()).orElse(null);
         assertEquals(user, login);
