@@ -40,7 +40,7 @@ public class HotelReservationRepository {
         if (hotelReservations.size() != 0) {
             idx = hotelReservations.get(hotelReservations.size() - 1).getIdx();
         }
-        log.info("유저 데이터가 \"db/user.json\"에서 불러와졌습니다");
+        log.info("유저 데이터가 \"db/hotelReservation.json\"에서 불러와졌습니다");
     }
 
     /**
