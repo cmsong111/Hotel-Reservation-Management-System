@@ -135,9 +135,9 @@ public class HotelReservationRepository {
     }
 
     /**
-     * 호텔의 예약 내역을 조회하는 메소드
+     * 특정 호텔 객실의 예약들은 조회하는 메소드
      *
-     * @param hotelRoomIdx 조회할 호텔의 인덱스
+     * @param hotelRoomIdx 조회할 호텔 객실의 인덱스
      * @return 호텔의 예약 내역
      * @throws IOException 파일 저장 실패
      * @author 김남주
