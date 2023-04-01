@@ -1,0 +1,47 @@
+[
+  {
+    "idx": 1,
+    "name": "그랜드 디럭스 룸",
+    "description": "우아한 인테리어와 현대적 세련미가 조화롭게 어우러진 시그니엘 서울의 그랜드 디럭스 룸은 초고층 객실에서 바라보는 서울 도심의 파노라믹뷰와 최상의 휴식을 제공합니다.",
+    "price": 600000,
+    "maxPeople": 2,
+    "maxExtraPeople": 3,
+    "maxBed": 2,
+    "maxExtraBed": 3,
+    "roomSize": 45,
+    "isSmoking": false,
+    "hotelIdx": 2,
+    "image": [],
+    "service": []
+  },
+  {
+    "idx": 2,
+    "name": "프리미어 룸",
+    "description": "시그니엘 서울의 프리미어 룸은 세련미와 우아함을 더한 고급스러운 인테리어로 대형 창문을 통해 서울의 화려한 장관을 감상할 수 있습니다.\n또한 이탈리아 북부 알프스 천연 대리석으로 제작된 욕실에서 고품격 휴식을 즐기기에 충분합니다.\n",
+    "price": 800000,
+    "maxPeople": 2,
+    "maxExtraPeople": 3,
+    "maxBed": 2,
+    "maxExtraBed": 3,
+    "roomSize": 55,
+    "isSmoking": false,
+    "hotelIdx": 2,
+    "image": [],
+    "service": []
+  },
+  {
+    "idx": 3,
+    "name": "프리미어 스위트 룸",
+    "description": "시그니엘 서울의 프리미어 스위트 룸의 넓고 고급스러운 인테리어는 고객의 안락함을 최우선으로 고려하여 설계되었으며 최고의 투숙 경험을 선사합니다.",
+    "price": 960000,
+    "maxPeople": 2,
+    "maxExtraPeople": 3,
+    "maxBed": 2,
+    "maxExtraBed": 3,
+    "roomSize": 80,
+    "isSmoking": false,
+    "hotelIdx": 2,
+    "image": [],
+    "service": []
+  }
+]
