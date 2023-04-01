@@ -1,11 +1,9 @@
 package gs25.hotel.reservation.management.system.screens;
 
 import gs25.hotel.reservation.management.system.configuration.Singleton;
-import gs25.hotel.reservation.management.system.entity.User;
-import gs25.hotel.reservation.management.system.observer.LoginStatus;
 import gs25.hotel.reservation.management.system.observer.Observable;
 import gs25.hotel.reservation.management.system.observer.Observer;
-import gs25.hotel.reservation.management.system.service.UserService;
+import gs25.hotel.reservation.management.system.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;

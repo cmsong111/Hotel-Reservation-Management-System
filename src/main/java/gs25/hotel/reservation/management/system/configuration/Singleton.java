@@ -1,12 +1,12 @@
 package gs25.hotel.reservation.management.system.configuration;
 
-import gs25.hotel.reservation.management.system.entity.User;
+import gs25.hotel.reservation.management.system.entity.user.User;
 import gs25.hotel.reservation.management.system.observer.LoginStatus;
 import gs25.hotel.reservation.management.system.repository.HotelRepository;
 import gs25.hotel.reservation.management.system.repository.HotelReservationRepository;
 import gs25.hotel.reservation.management.system.repository.HotelRoomRepository;
-import gs25.hotel.reservation.management.system.repository.UserRepository;
-import gs25.hotel.reservation.management.system.service.UserService;
+import gs25.hotel.reservation.management.system.repository.user.UserRepository;
+import gs25.hotel.reservation.management.system.service.user.UserService;
 import lombok.Data;
 
 @Data

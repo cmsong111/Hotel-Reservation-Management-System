@@ -3,8 +3,7 @@ package gs25.hotel.reservation.management.system.repository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import gs25.hotel.reservation.management.system.entity.HotelReservation;
-import gs25.hotel.reservation.management.system.entity.HotelRoom;
-import gs25.hotel.reservation.management.system.entity.User;
+import gs25.hotel.reservation.management.system.entity.user.User;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileWriter;

@@ -1,8 +1,8 @@
-package gs25.hotel.reservation.management.system.service;
+package gs25.hotel.reservation.management.system.service.user;
 
 import gs25.hotel.reservation.management.system.configuration.Singleton;
-import gs25.hotel.reservation.management.system.entity.User;
-import gs25.hotel.reservation.management.system.repository.UserRepository;
+import gs25.hotel.reservation.management.system.entity.user.User;
+import gs25.hotel.reservation.management.system.repository.user.UserRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package gs25.hotel.reservation.management.system.entity;
+package gs25.hotel.reservation.management.system.entity.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +21,6 @@ public class User {
     String name;
     String phone;
     String email;
-    String role;
-    String grade;
+    UserRole role;
+    UserGrade grade;
 }
