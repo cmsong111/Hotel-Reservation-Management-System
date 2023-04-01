@@ -1,15 +1,14 @@
-package gs25.hotel.reservation.management.system.repository;
+package gs25.hotel.reservation.management.system.repository.hotel;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import gs25.hotel.reservation.management.system.entity.Hotel;
+import gs25.hotel.reservation.management.system.entity.hotel.Hotel;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;

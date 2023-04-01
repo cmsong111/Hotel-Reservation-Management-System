@@ -1,4 +1,4 @@
-package gs25.hotel.reservation.management.system.entity;
+package gs25.hotel.reservation.management.system.entity.hotel;
 
 import lombok.Data;
 import lombok.ToString;
