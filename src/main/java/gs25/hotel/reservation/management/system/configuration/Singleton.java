@@ -1,7 +1,6 @@
 package gs25.hotel.reservation.management.system.configuration;
 
-import gs25.hotel.reservation.management.system.entity.user.User;
-import gs25.hotel.reservation.management.system.observer.LoginStatus;
+import gs25.hotel.reservation.management.system.provider.UserProvider;
 import gs25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import gs25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import gs25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
@@ -12,20 +11,28 @@ import lombok.Data;
 @Data
 public class Singleton {
     private static Singleton singleton = new Singleton();
-    private Singleton() {}
+
+    private Singleton() {
+    }
+
     public static Singleton getInstance() {
         if (singleton == null) {
             singleton = new Singleton();
         }
         return singleton;
     }
-    public UserRepository userRepository ;
+
+    // Repository
+    public UserRepository userRepository;
     public HotelRepository hotelRepository;
     public HotelRoomRepository hotelRoomRepository;
     public HotelReservationRepository hotelReservationRepository;
-    public UserService userService ;
-    public User loginUser;
-    public LoginStatus loginStatus;
+
+    // Service
+    public UserService userService;
+
+    // Provider
+    public UserProvider userProvider;
 
     public void init() {
         userRepository = new UserRepository();
@@ -35,7 +42,6 @@ public class Singleton {
 
         userService = new UserService();
 
-        loginUser = null;
-        loginStatus = new LoginStatus();
+        userProvider = new UserProvider();
     }
 }

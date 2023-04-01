@@ -20,7 +20,7 @@ public class HotelReservationRepository {
 
     Gson gson = new Gson();
     ArrayList<HotelReservation> hotelReservations = new ArrayList<>();
-    int idx = 0;
+    int idx = 1;
 
 
     public HotelReservationRepository() {
@@ -36,9 +36,11 @@ public class HotelReservationRepository {
     public void loadFromJson() {
         Reader reader = new InputStreamReader(
                 getClass().getClassLoader().getResourceAsStream("db/hotelReservation.json"), StandardCharsets.UTF_8);
-        hotelReservations = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
+        hotelReservations = gson.fromJson(reader, new TypeToken<ArrayList<HotelReservation>>() {
         }.getType());
-        idx = hotelReservations.get(hotelReservations.size() - 1).getIdx();
+        if (hotelReservations.size() != 0) {
+            idx = hotelReservations.get(hotelReservations.size() - 1).getIdx();
+        }
         log.info("유저 데이터가 \"db/user.json\"에서 불러와졌습니다");
     }
 

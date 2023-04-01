@@ -28,9 +28,9 @@ public class UserService {
         Optional<User> user = userRepository.findByIdAndPassword(id, password);
 
         if (user.isPresent()) {
-            instance.setLoginUser(user.get());
+            instance.getUserProvider().updateUser(user.get());
         } else {
-            instance.setLoginUser(null);
+            instance.getUserProvider().updateUser(null);
         }
         return user;
     }
@@ -66,7 +66,7 @@ public class UserService {
         Optional<User> updatedUser = userRepository.save(user);
 
         if (updatedUser.isPresent()) {
-            instance.setLoginUser(updatedUser.get());
+            instance.userProvider.updateUser(updatedUser.get());
         }
         return updatedUser;
     }
@@ -98,6 +98,6 @@ public class UserService {
      * @author 김남주
      */
     public void logout() {
-        instance.setLoginUser(null);
+        instance.getUserProvider().updateUser(null);
     }
 }
