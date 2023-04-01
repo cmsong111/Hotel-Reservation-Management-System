@@ -1,4 +1,4 @@
-package gs25.hotel.reservation.management.system.observer;
+package gs25.hotel.reservation.management.system.pattern.observer;
 
 
 public interface Observable {
