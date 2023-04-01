@@ -106,6 +106,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
             }
         } else if (command.equals("signup")) {
             log.info("회원가입 버튼 클릭");
+            new UserRegisterPage();
         } else if (command.equals("logout")) {
             log.info("로그아웃 버튼 클릭");
             userProvider.updateUser(null);

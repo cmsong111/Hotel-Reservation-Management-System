@@ -100,4 +100,8 @@ public class UserService {
     public void logout() {
         instance.getUserProvider().updateUser(null);
     }
+
+    public boolean isExistId(String id) {
+        return userRepository.isExistId(id);
+    }
 }
