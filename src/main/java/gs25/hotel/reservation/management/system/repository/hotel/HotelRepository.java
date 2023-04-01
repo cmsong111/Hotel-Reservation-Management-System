@@ -30,8 +30,7 @@ public class HotelRepository {
      * @author 김남주
      */
     public void loadFromJson() {
-        Reader reader = new InputStreamReader(
-                getClass().getClassLoader().getResourceAsStream("db/hotel.json"), StandardCharsets.UTF_8);
+        Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("db/hotel.json"), StandardCharsets.UTF_8);
         hotels = gson.fromJson(reader, new TypeToken<ArrayList<Hotel>>() {
         }.getType());
         idx = hotels.get(hotels.size() - 1).getIdx();

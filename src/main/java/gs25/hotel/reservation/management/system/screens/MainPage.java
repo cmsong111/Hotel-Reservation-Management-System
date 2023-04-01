@@ -5,7 +5,6 @@ import gs25.hotel.reservation.management.system.entity.user.User;
 import gs25.hotel.reservation.management.system.observer.Observable;
 import gs25.hotel.reservation.management.system.observer.Observer;
 import gs25.hotel.reservation.management.system.provider.UserProvider;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -58,6 +57,7 @@ public class MainPage extends JFrame implements Observer, ActionListener {
 
 
         setSize(800, 600);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

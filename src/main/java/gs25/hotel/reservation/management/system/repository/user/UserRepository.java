@@ -28,8 +28,7 @@ public class UserRepository {
      * @author 김남주
      */
     public void loadFromJson() {
-        Reader reader = new InputStreamReader(
-                getClass().getClassLoader().getResourceAsStream("db/user.json"), StandardCharsets.UTF_8);
+        Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("db/user.json"), StandardCharsets.UTF_8);
         userList = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
         }.getType());
         idx = userList.get(userList.size() - 1).getIdx();
