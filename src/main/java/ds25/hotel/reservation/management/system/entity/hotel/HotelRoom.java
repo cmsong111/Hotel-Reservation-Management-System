@@ -16,6 +16,7 @@ public class HotelRoom {
     private String name;
     private String description;
     private int price;
+    private int count;
     private int maxPeople;
     private int maxExtraPeople;
     private int maxBed;

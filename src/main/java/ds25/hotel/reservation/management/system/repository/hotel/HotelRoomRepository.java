@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Optional;
 
 @Slf4j
 public class HotelRoomRepository {
@@ -107,12 +108,29 @@ public class HotelRoomRepository {
     }
 
     /**
+     * 호텔 방 정보를 idx로 가져오는 메소드
+     *
+     * @param idx 호텔 방 idx
+     * @return 호텔 방 정보
+     * @author 김남주
+     */
+    public Optional<HotelRoom> findByIdx(int idx) {
+        log.info(idx + "번 호텔 방 정보를 가져옵니다");
+        for (HotelRoom hotelRoom : hotelRooms) {
+            if (hotelRoom.getIdx() == idx) {
+                return Optional.of(hotelRoom);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
      * 호텔 방 정보를 idx로 삭제하는
      *
      * @param idx 호텔 방 idx
      * @author 김남주
      */
-    public void delete(int idx) throws IOException {
+    public void deleteByIdx(int idx) throws IOException {
         for (int i = 0; i < hotelRooms.size(); i++) {
             if (hotelRooms.get(i).getIdx() == idx) {
                 hotelRooms.remove(i);
