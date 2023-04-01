@@ -1,7 +1,8 @@
 package gs25.hotel.reservation.management.system.service;
 
 import gs25.hotel.reservation.management.system.configuration.Singleton;
-import gs25.hotel.reservation.management.system.entity.User;
+import gs25.hotel.reservation.management.system.entity.user.User;
+import gs25.hotel.reservation.management.system.service.user.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

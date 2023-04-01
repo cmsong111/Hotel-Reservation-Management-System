@@ -1,10 +1,9 @@
-package gs25.hotel.reservation.management.system.repository;
+package gs25.hotel.reservation.management.system.repository.hotel;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import gs25.hotel.reservation.management.system.entity.HotelReservation;
-import gs25.hotel.reservation.management.system.entity.HotelRoom;
-import gs25.hotel.reservation.management.system.entity.User;
+import gs25.hotel.reservation.management.system.entity.hotel.HotelReservation;
+import gs25.hotel.reservation.management.system.entity.user.User;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileWriter;
@@ -21,7 +20,7 @@ public class HotelReservationRepository {
 
     Gson gson = new Gson();
     ArrayList<HotelReservation> hotelReservations = new ArrayList<>();
-    int idx = 0;
+    int idx = 1;
 
 
     public HotelReservationRepository() {
@@ -37,9 +36,11 @@ public class HotelReservationRepository {
     public void loadFromJson() {
         Reader reader = new InputStreamReader(
                 getClass().getClassLoader().getResourceAsStream("db/hotelReservation.json"), StandardCharsets.UTF_8);
-        hotelReservations = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
+        hotelReservations = gson.fromJson(reader, new TypeToken<ArrayList<HotelReservation>>() {
         }.getType());
-        idx = hotelReservations.get(hotelReservations.size() - 1).getIdx();
+        if (hotelReservations.size() != 0) {
+            idx = hotelReservations.get(hotelReservations.size() - 1).getIdx();
+        }
         log.info("유저 데이터가 \"db/user.json\"에서 불러와졌습니다");
     }
 

@@ -1,4 +1,4 @@
-package gs25.hotel.reservation.management.system.entity;
+package gs25.hotel.reservation.management.system.entity.hotel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +11,13 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HotelRoom {
+public class Hotel {
     private int idx;
     private String name;
+    private String address;
+    private String phone;
+    private String email;
     private String description;
-    private int price;
-    private int maxPeople;
-    private int maxExtraPeople;
-    private int maxBed;
-    private int maxExtraBed;
-    private int roomSize;
-    private boolean isSmoking;
-    private int hotelIdx;
     private ArrayList<String> image;
     private ArrayList<HotelService> service;
 }

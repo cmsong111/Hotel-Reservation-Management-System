@@ -1,8 +1,8 @@
-package gs25.hotel.reservation.management.system.service;
+package gs25.hotel.reservation.management.system.service.user;
 
 import gs25.hotel.reservation.management.system.configuration.Singleton;
-import gs25.hotel.reservation.management.system.entity.User;
-import gs25.hotel.reservation.management.system.repository.UserRepository;
+import gs25.hotel.reservation.management.system.entity.user.User;
+import gs25.hotel.reservation.management.system.repository.user.UserRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ public class UserService {
         Optional<User> user = userRepository.findByIdAndPassword(id, password);
 
         if (user.isPresent()) {
-            instance.setLoginUser(user.get());
+            instance.getUserProvider().updateUser(user.get());
         } else {
-            instance.setLoginUser(null);
+            instance.getUserProvider().updateUser(null);
         }
         return user;
     }
@@ -66,7 +66,7 @@ public class UserService {
         Optional<User> updatedUser = userRepository.save(user);
 
         if (updatedUser.isPresent()) {
-            instance.setLoginUser(updatedUser.get());
+            instance.userProvider.updateUser(updatedUser.get());
         }
         return updatedUser;
     }
@@ -98,6 +98,6 @@ public class UserService {
      * @author 김남주
      */
     public void logout() {
-        instance.setLoginUser(null);
+        instance.getUserProvider().updateUser(null);
     }
 }

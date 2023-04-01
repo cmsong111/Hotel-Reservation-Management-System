@@ -1,13 +1,12 @@
-package gs25.hotel.reservation.management.system.repository;
+package gs25.hotel.reservation.management.system.repository.user;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import gs25.hotel.reservation.management.system.entity.User;
+import gs25.hotel.reservation.management.system.entity.user.User;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
@@ -29,8 +28,7 @@ public class UserRepository {
      * @author 김남주
      */
     public void loadFromJson() {
-        Reader reader = new InputStreamReader(
-                getClass().getClassLoader().getResourceAsStream("db/user.json"), StandardCharsets.UTF_8);
+        Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("db/user.json"), StandardCharsets.UTF_8);
         userList = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
         }.getType());
         idx = userList.get(userList.size() - 1).getIdx();
