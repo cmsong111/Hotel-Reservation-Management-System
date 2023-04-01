@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.Optional;
 
 @Slf4j
-public class MainPage extends JFrame implements Observer, ActionListener {
+public class HotelDetailPage extends JFrame implements Observer, ActionListener {
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
     JLabel label = new JLabel("DS25 호텔 예약 관리 시스템");
     JLabel userLabel;
@@ -34,7 +34,7 @@ public class MainPage extends JFrame implements Observer, ActionListener {
         }
     }
 
-    public MainPage() {
+    public HotelDetailPage(int hotelIdx) {
         userProvider.registerObserver(this);
 
         setTitle("DS25 호텔 예약 관리 시스템");

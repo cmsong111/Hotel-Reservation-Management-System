@@ -100,7 +100,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
                 JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 틀렸습니다.");
             } else {
                 JOptionPane.showMessageDialog(null, "로그인 성공");
-                new MainPage();
+                new HotelSelectionPage();
                 userProvider.removeObserver(this);
                 dispose();
             }
