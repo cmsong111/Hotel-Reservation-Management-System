@@ -74,9 +74,11 @@ public class HotelRepository {
     public Optional<Hotel> findByIdx(int idx) {
         for (Hotel hotel : hotels) {
             if (hotel.getIdx() == idx) {
+                log.info("호텔 정보가 조회되었습니다");
                 return Optional.of(hotel);
             }
         }
+        log.info("호텔 정보가 조회되지 않았습니다");
         return Optional.empty();
     }
 
@@ -94,6 +96,7 @@ public class HotelRepository {
                 result.add(hotel);
             }
         }
+        log.info("호텔 정보가 조회되었습니다");
         return result;
     }
 
@@ -109,10 +112,12 @@ public class HotelRepository {
         if (hotel.getIdx() == 0) {
             hotel.setIdx(++idx);
             hotels.add(hotel);
+            log.info("호텔 정보가 저장 되었습니다");
         } else {
             for (int i = 0; i < hotels.size(); i++) {
                 if (hotels.get(i).getIdx() == hotel.getIdx()) {
                     hotels.set(i, hotel);
+                    log.info("호텔 정보가 수정 되었습니다");
                     break;
                 }
             }
@@ -132,6 +137,7 @@ public class HotelRepository {
         for (int i = 0; i < hotels.size(); i++) {
             if (hotels.get(i).getIdx() == idx) {
                 hotels.remove(i);
+                log.info("호텔 정보가 삭제 되었습니다");
                 break;
             }
         }

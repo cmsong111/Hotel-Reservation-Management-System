@@ -70,10 +70,12 @@ public class HotelReservationRepository {
         if (hotelReservation.getIdx() == 0) {
             hotelReservation.setIdx(++idx);
             hotelReservations.add(hotelReservation);
+            log.info("유저 데이터가 저장되었습니다");
         } else {
             for (int i = 0; i < hotelReservations.size(); i++) {
                 if (hotelReservations.get(i).getIdx() == hotelReservation.getIdx()) {
                     hotelReservations.set(i, hotelReservation);
+                    log.info("유저 데이터가 저장되었습니다");
                     break;
                 }
             }
@@ -93,9 +95,11 @@ public class HotelReservationRepository {
     public Optional<HotelReservation> findById(int idx) {
         for (HotelReservation hotelReservation : hotelReservations) {
             if (hotelReservation.getIdx() == idx) {
+                log.info("유저 데이터가 조회되었습니다");
                 return Optional.of(hotelReservation);
             }
         }
+        log.info("유저 데이터가 조회되지 않았습니다");
         return Optional.empty();
     }
 
@@ -107,6 +111,7 @@ public class HotelReservationRepository {
      * @author 김남주
      */
     public ArrayList<HotelReservation> findAll() {
+        log.info("모든 유저 데이터가 조회되었습니다");
         return hotelReservations;
     }
 
@@ -125,6 +130,7 @@ public class HotelReservationRepository {
                 hotelReservations.add(hotelReservation);
             }
         }
+        log.info("유저의 예약 내역이 조회되었습니다");
         return hotelReservations;
     }
 
@@ -143,6 +149,7 @@ public class HotelReservationRepository {
                 hotelReservations.add(hotelReservation);
             }
         }
+        log.info(hotelRoomIdx + "번 방 예약 내역이 조회되었습니다");
         return hotelReservations;
     }
 
@@ -161,6 +168,7 @@ public class HotelReservationRepository {
                 hotelReservations.add(hotelReservation);
             }
         }
+        log.info(hotelIdx + "번 호텔의 예약 내역이 조회되었습니다");
         return hotelReservations;
     }
 
@@ -178,6 +186,7 @@ public class HotelReservationRepository {
                 break;
             }
         }
+        log.info(idx + "번 예약 정보가 삭제되었습니다");
         saveToJson();
     }
 

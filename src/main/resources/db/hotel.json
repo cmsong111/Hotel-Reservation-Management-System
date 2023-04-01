@@ -1,23 +1,6 @@
 [
   {
     "idx": 1,
-    "name": "신라스테이 서초",
-    "address": "서울특별시 서초구 효령로 427",
-    "phone" : "02-2219-9000",
-    "email" : null,
-    "description" : "트립어드바이저 사용자들에게 지난 1년간 지속적으로 높은 평점을 받은 인기 호텔에 대한 인증입니다.",
-    "service" : [
-      "Bathtub",
-      "bidet",
-      "Shower",
-      "bathrobe",
-      "dryer",
-      "WiFi",
-      "television"
-    ]
-  },
-  {
-    "idx": 2,
     "name": "시그니엘 서울",
     "address": "서울특별시 송파구 올림픽로 300",
     "phone" : "+82-2-3213-1000",
