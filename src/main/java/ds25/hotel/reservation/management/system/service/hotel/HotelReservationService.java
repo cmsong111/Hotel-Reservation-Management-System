@@ -7,8 +7,7 @@ import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomReposi
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 public class HotelReservationService {
@@ -124,4 +123,45 @@ public class HotelReservationService {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
         return hotelReservationRepository.findByHotelId(hotelId);
     }
+
+    /**
+     * 예약 날짜 내에 사용중인 객실 수를 반환
+     *
+     * @param hotelRoomIdx 호텔 객실 idx
+     * @param start        예약 시작 날짜
+     * @param end          예약 종료 날짜
+     * @return 사용중인 객실 수
+     * @throws IOException 파일 입출력 예외
+     * @author 김남주
+     */
+    public int getUsingRoomCount(int hotelRoomIdx, Date start, Date end) throws IOException {
+        ArrayList<HotelReservation> hotelReservations = hotelReservationRepository.findByHotelReservationsByRoomIdxAndTime(hotelRoomIdx, start, end);
+
+        for (HotelReservation hotelReservation : hotelReservations) {
+
+            log.info(hotelReservation.toString());
+        }
+
+        int availableRoomCount = 0;
+
+        if (hotelReservations.isEmpty()) {
+            return 0;
+        }
+
+        hotelReservations.sort(Comparator.comparing(HotelReservation::getCheckOutDate));
+        PriorityQueue<HotelReservation> priorityQueue = new PriorityQueue<>(Comparator.comparing(HotelReservation::getCheckOutDate));
+
+        priorityQueue.add(hotelReservations.get(0));
+        for (int i = 1; i < hotelReservations.size(); i++) {
+            HotelReservation hotelReservation = hotelReservations.get(i);
+            HotelReservation peek = priorityQueue.peek();
+            if (hotelReservation.getCheckInDate().after(peek.getCheckOutDate())) {
+                priorityQueue.poll();
+            }
+            priorityQueue.add(hotelReservation);
+        }
+
+        return priorityQueue.size();
+    }
+
 }

@@ -9,9 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -70,12 +72,15 @@ public class HotelReservationRepository {
     public HotelReservation save(HotelReservation hotelReservation) throws IOException {
         if (hotelReservation.getIdx() == 0) {
             hotelReservation.setIdx(++idx);
+            hotelReservation.setCreatedAt(new Date(System.currentTimeMillis()));
+            hotelReservation.setUpdatedAt(new Date(System.currentTimeMillis()));
             hotelReservations.add(hotelReservation);
             log.info("유저 데이터가 저장되었습니다");
         } else {
             for (int i = 0; i < hotelReservations.size(); i++) {
                 if (hotelReservations.get(i).getIdx() == hotelReservation.getIdx()) {
                     hotelReservations.set(i, hotelReservation);
+                    hotelReservations.get(i).setUpdatedAt(new Date(System.currentTimeMillis()));
                     log.info("유저 데이터가 저장되었습니다");
                     break;
                 }
@@ -191,5 +196,16 @@ public class HotelReservationRepository {
         saveToJson();
     }
 
+    public ArrayList<HotelReservation> findByHotelReservationsByRoomIdxAndTime(int roomIdx, Date startDate, Date endDate) {
 
+        ArrayList<HotelReservation> result = new ArrayList<>();
+
+        for (HotelReservation hotelReservation : hotelReservations) {
+            if (hotelReservation.getCheckInDate().after(startDate) && hotelReservation.getCheckOutDate().before(endDate) && hotelReservation.getHotelRoomIdx() == roomIdx) {
+                result.add(hotelReservation);
+            }
+        }
+        log.info("날짜에 해당하는 예약 내역이 조회되었습니다");
+        return result;
+    }
 }
