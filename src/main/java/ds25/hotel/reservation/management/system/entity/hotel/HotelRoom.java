@@ -20,7 +20,7 @@ public class HotelRoom {
     private int discount;
     private int roomCount;
     private int peopleCount;
-    private int bedCount;
+    private BedSize bedSize;
     private int roomSize;
     private ArrayList<String> image;
     private ArrayList<HotelService> service;

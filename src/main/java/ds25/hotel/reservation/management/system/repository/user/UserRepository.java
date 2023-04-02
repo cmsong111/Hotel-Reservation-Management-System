@@ -33,6 +33,7 @@ public class UserRepository {
         }.getType());
         idx = userList.get(userList.size() - 1).getIdx();
         log.info("유저 데이터가 \"db/user.json\"에서 불러와졌습니다");
+        log.info("유저 데이터 {}개 불러오기 완료", userList.size());
     }
 
     /**

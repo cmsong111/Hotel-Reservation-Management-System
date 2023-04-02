@@ -35,6 +35,7 @@ public class HotelRepository {
         }.getType());
         idx = hotels.get(hotels.size() - 1).getIdx();
         log.info("호텔 데이터가 \"db/hotel.json\"에서 불러와졌습니다");
+        log.info("호텔 데이터가 {}개 불러와졌습니다", hotels.size());
     }
 
     /**
