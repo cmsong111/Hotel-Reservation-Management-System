@@ -56,13 +56,13 @@ public class HotelRoomService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public void removeHotelRoom(int hotelRoomIdx) throws IOException {
+    public void removeHotelRoom(int hotelRoomIdx) throws Exception{
         Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findByIdx(hotelRoomIdx);
         if (oldHotelRoom.isPresent()) {
             hotelRoomRepository.deleteByIdx(hotelRoomIdx);
             log.info("호텔 객실 정보가 삭제되었습니다");
         } else {
-            log.error("존재하지 않는 호텔 객실 정보입니다");
+            throw new Exception("존재하지 않는 호텔 객실 정보입니다");
         }
     }
 
@@ -74,14 +74,14 @@ public class HotelRoomService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public HotelRoom getHotelRoom(int hotelRoomIdx) throws IOException {
+    public Optional<HotelRoom> getHotelRoom(int hotelRoomIdx) throws IOException {
         Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findByIdx(hotelRoomIdx);
         if (oldHotelRoom.isPresent()) {
             log.info("호텔 객실 정보가 조회되었습니다");
-            return oldHotelRoom.get();
+            return oldHotelRoom;
         } else {
             log.error("존재하지 않는 호텔 객실 정보입니다");
-            return null;
+            return Optional.empty();
         }
     }
 }
