@@ -6,6 +6,7 @@ import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservationState;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -115,19 +116,51 @@ class HotelReservationServiceTest {
         Assertions.assertThrows(Exception.class, () -> hotelReservationService.getHotelReservation(100));
     }
 
+    @Disabled("Not implemented yet")
     @Test
     void getHotelReservationByHotelRoomIdx() {
+        // TODO: Implement
     }
 
+    @Disabled("Not implemented yet")
+    @Test
+    void getHotelReservationByHotelRoomIdxFail() {
+        // TODO: Implement
+    }
+
+    @Disabled("Not implemented yet")
     @Test
     void getHotelReservationByUserId() {
+        // TODO: Implement
     }
 
+    @Disabled("Not implemented yet")
+    @Test
+    void getHotelReservationByUserIdFail() {
+        // TODO: Implement
+    }
+
+    @Disabled("Not implemented yet")
     @Test
     void getHotelReservationByHotelId() {
+        // TODO: Implement
     }
 
+    @Disabled("Not implemented yet")
+    @Test
+    void getHotelReservationByHotelIdFail() {
+        // TODO: Implement
+    }
+
+    @Disabled("Not implemented yet")
     @Test
     void getUsingRoomCount() {
+        // TODO: Implement
+    }
+
+    @Disabled("Not implemented yet")
+    @Test
+    void getUsingRoomCountFail() {
+        // TODO: Implement
     }
 }
