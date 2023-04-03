@@ -75,13 +75,13 @@ public class HotelReservationRepository {
             hotelReservation.setCreatedAt(new Date(System.currentTimeMillis()));
             hotelReservation.setUpdatedAt(new Date(System.currentTimeMillis()));
             hotelReservations.add(hotelReservation);
-            log.info("유저 데이터가 저장되었습니다");
+            log.info("호텔 예약 데이터가 저장되었습니다");
         } else {
             for (int i = 0; i < hotelReservations.size(); i++) {
                 if (hotelReservations.get(i).getIdx() == hotelReservation.getIdx()) {
                     hotelReservations.set(i, hotelReservation);
                     hotelReservations.get(i).setUpdatedAt(new Date(System.currentTimeMillis()));
-                    log.info("유저 데이터가 저장되었습니다");
+                    log.info("호텔 예약 데이터가 저장되었습니다");
                     break;
                 }
             }
@@ -101,11 +101,11 @@ public class HotelReservationRepository {
     public Optional<HotelReservation> findById(int idx) {
         for (HotelReservation hotelReservation : hotelReservations) {
             if (hotelReservation.getIdx() == idx) {
-                log.info("유저 데이터가 조회되었습니다");
+                log.info("호텔 예약 데이터가 조회되었습니다");
                 return Optional.of(hotelReservation);
             }
         }
-        log.info("유저 데이터가 조회되지 않았습니다");
+        log.info("호텔 예약 데이터가 조회되지 않았습니다");
         return Optional.empty();
     }
 
