@@ -63,6 +63,22 @@ class HotelRoomServiceTest {
     }
 
     @Test
+    void updateHotelRoomFail() throws IOException {
+        HotelRoom hotelRoom = HotelRoom.builder().idx(0).hotelIdx(1).name("test").description("test").price(100000).discount(0).roomCount(1).peopleCount(2).bedSize(BedSize.DOUBLE).roomSize(20).image(new ArrayList<String>() {{
+            add("test");
+        }}).service(null).build();
+        HotelRoom saved = hotelRoomService.addHotelRoom(hotelRoom);
+
+        saved.setIdx(saved.getIdx() + 1);
+        saved.setRoomSize(30);
+        saved.setName("test2");
+        hotelRoomService.updateHotelRoom(hotelRoom);
+
+        Optional<HotelRoom> found = hotelRoomService.getHotelRoom(saved.getIdx());
+
+        assertEquals(Optional.empty(), found);
+    }
+    @Test
     void removeHotelRoom() throws Exception {
         HotelRoom hotelRoom = HotelRoom.builder().idx(0).hotelIdx(1).name("test").description("test").price(100000).discount(0).roomCount(1).peopleCount(2).bedSize(BedSize.DOUBLE).roomSize(20).image(new ArrayList<String>() {{
             add("test");

@@ -52,6 +52,7 @@ public class HotelRoomRepository {
         file.flush();
         file.close();
         log.info("Hotel 데이터가 \"db/hotelRoom.json\"에 저장되었습니다");
+        loadFromJson();
     }
 
     /**
