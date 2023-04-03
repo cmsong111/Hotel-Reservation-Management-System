@@ -41,6 +41,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
 
     public LoginPage() {
 
+        // 편집 할꺼에요
         Singleton.getInstance().getUserProvider().registerObserver(this);
 
         setTitle("호텔 예약 시스템");
