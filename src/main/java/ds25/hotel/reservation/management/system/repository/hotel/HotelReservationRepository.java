@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -42,7 +41,7 @@ public class HotelReservationRepository {
         if (!hotelReservations.isEmpty()) {
             idx = hotelReservations.get(hotelReservations.size() - 1).getIdx();
         }
-        log.info("호텔 예약 데이터가 \"db/hotelReservation.json\"에서 불러와졌습니다");
+        log.info("호텔 예약 데이터가 \"{}\"에서 불러와졌습니다", getClass().getClassLoader().getResource("db/hotelReservation.json").getPath());
         log.info("호텔 예약 데이터가 {}개 불러와졌습니다", hotelReservations.size());
     }
 
@@ -58,7 +57,7 @@ public class HotelReservationRepository {
         gson.toJson(hotelReservations, file);
         file.flush();
         file.close();
-        log.info("Hotel 데이터가 \"db/hotelReservation.json\"에 저장되었습니다");
+        log.info("Hotel 데이터가 \"{}\"에 저장되었습니다", getClass().getClassLoader().getResource("db/hotelReservation.json").getPath());
         loadFromJson();
     }
 
