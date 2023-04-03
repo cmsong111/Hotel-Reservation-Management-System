@@ -35,7 +35,8 @@ public class HotelRoomRepository {
         hotelRooms = gson.fromJson(reader, new TypeToken<ArrayList<HotelRoom>>() {
         }.getType());
         idx = hotelRooms.get(hotelRooms.size() - 1).getIdx();
-        log.info("호텔 데이터가 \"db/hotelRoom.json\"에서 불러와졌습니다");
+        log.info("호텔 객실 데이터가 \"{}\"에서 불러와졌습니다", getClass().getClassLoader().getResource("db/hotelRoom.json").getPath());
+        log.info("호텔 객실 데이터 {}개를 불러왔습니다.", hotelRooms.size());
     }
 
     /**
@@ -50,7 +51,8 @@ public class HotelRoomRepository {
         gson.toJson(hotelRooms, file);
         file.flush();
         file.close();
-        log.info("Hotel 데이터가 \"db/hotelRoom.json\"에 저장되었습니다");
+        log.info("Hotel 데이터가 \"{}\"에 저장되었습니다", getClass().getClassLoader().getResource("db/hotelRoom.json").getPath());
+        loadFromJson();
     }
 
     /**

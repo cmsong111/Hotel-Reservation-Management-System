@@ -8,8 +8,6 @@ import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.screens.LoginPage;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-
 /**
  * 메인 클래스
  *
@@ -18,7 +16,7 @@ import java.io.IOException;
 @Slf4j
 public class HotelReservationManagementSystem {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         log.info("인스턴스 초기화");
         Singleton.getInstance().init();
 

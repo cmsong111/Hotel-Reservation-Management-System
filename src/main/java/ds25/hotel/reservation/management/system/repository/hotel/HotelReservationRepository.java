@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -37,10 +38,11 @@ public class HotelReservationRepository {
                 getClass().getClassLoader().getResourceAsStream("db/hotelReservation.json"), StandardCharsets.UTF_8);
         hotelReservations = gson.fromJson(reader, new TypeToken<ArrayList<HotelReservation>>() {
         }.getType());
-        if (hotelReservations.size() != 0) {
+        if (!hotelReservations.isEmpty()) {
             idx = hotelReservations.get(hotelReservations.size() - 1).getIdx();
         }
-        log.info("유저 데이터가 \"db/hotelReservation.json\"에서 불러와졌습니다");
+        log.info("호텔 예약 데이터가 \"{}\"에서 불러와졌습니다", getClass().getClassLoader().getResource("db/hotelReservation.json").getPath());
+        log.info("호텔 예약 데이터가 {}개 불러와졌습니다", hotelReservations.size());
     }
 
     /**
@@ -55,7 +57,8 @@ public class HotelReservationRepository {
         gson.toJson(hotelReservations, file);
         file.flush();
         file.close();
-        log.info("Hotel 데이터가 \"db/hotelReservation.json\"에 저장되었습니다");
+        log.info("Hotel 데이터가 \"{}\"에 저장되었습니다", getClass().getClassLoader().getResource("db/hotelReservation.json").getPath());
+        loadFromJson();
     }
 
     /**
@@ -69,13 +72,16 @@ public class HotelReservationRepository {
     public HotelReservation save(HotelReservation hotelReservation) throws IOException {
         if (hotelReservation.getIdx() == 0) {
             hotelReservation.setIdx(++idx);
+            hotelReservation.setCreatedAt(new Date(System.currentTimeMillis()));
+            hotelReservation.setUpdatedAt(new Date(System.currentTimeMillis()));
             hotelReservations.add(hotelReservation);
-            log.info("유저 데이터가 저장되었습니다");
+            log.info("호텔 예약 데이터가 저장되었습니다");
         } else {
             for (int i = 0; i < hotelReservations.size(); i++) {
                 if (hotelReservations.get(i).getIdx() == hotelReservation.getIdx()) {
                     hotelReservations.set(i, hotelReservation);
-                    log.info("유저 데이터가 저장되었습니다");
+                    hotelReservations.get(i).setUpdatedAt(new Date(System.currentTimeMillis()));
+                    log.info("호텔 예약 데이터가 저장되었습니다");
                     break;
                 }
             }
@@ -95,11 +101,11 @@ public class HotelReservationRepository {
     public Optional<HotelReservation> findById(int idx) {
         for (HotelReservation hotelReservation : hotelReservations) {
             if (hotelReservation.getIdx() == idx) {
-                log.info("유저 데이터가 조회되었습니다");
+                log.info("호텔 예약 데이터가 조회되었습니다");
                 return Optional.of(hotelReservation);
             }
         }
-        log.info("유저 데이터가 조회되지 않았습니다");
+        log.info("호텔 예약 데이터가 조회되지 않았습니다");
         return Optional.empty();
     }
 
@@ -190,5 +196,16 @@ public class HotelReservationRepository {
         saveToJson();
     }
 
+    public ArrayList<HotelReservation> findByHotelReservationsByRoomIdxAndTime(int roomIdx, Date startDate, Date endDate) {
 
+        ArrayList<HotelReservation> result = new ArrayList<>();
+
+        for (HotelReservation hotelReservation : hotelReservations) {
+            if (hotelReservation.getCheckInDate().after(startDate) && hotelReservation.getCheckOutDate().before(endDate) && hotelReservation.getHotelRoomIdx() == roomIdx) {
+                result.add(hotelReservation);
+            }
+        }
+        log.info("날짜에 해당하는 예약 내역이 조회되었습니다");
+        return result;
+    }
 }
