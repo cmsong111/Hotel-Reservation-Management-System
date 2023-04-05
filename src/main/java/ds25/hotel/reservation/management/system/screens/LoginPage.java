@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Slf4j
 public class LoginPage extends JFrame implements Observer, ActionListener {
-    private UserService userService = Singleton.getInstance().getUserService();
+    private UserService userService = new UserService();
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
 
     private Panel panel;

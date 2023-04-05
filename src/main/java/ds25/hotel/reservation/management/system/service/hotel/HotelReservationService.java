@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
+import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
@@ -7,11 +8,12 @@ import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomReposi
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Slf4j
 public class HotelReservationService {
-    HotelReservationRepository hotelReservationRepository = Singleton.getInstance().getHotelReservationRepository();
+    HotelReservationRepository hotelReservationRepository = DependencyInjection.getInstance().getHotelReservationRepository();
 
     /**
      * 호텔 예약 추가
@@ -56,14 +58,13 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public void removeHotelReservation(int hotelReservationIdx) throws Exception {
+    public void removeHotelReservation(Long hotelReservationIdx)  {
         Optional<HotelReservation> oldHotelReservation = hotelReservationRepository.findById(hotelReservationIdx);
         if (oldHotelReservation.isPresent()) {
             log.info("호텔 예약이 삭제되었습니다");
-            hotelReservationRepository.deleteById(hotelReservationIdx);
+            hotelReservationRepository.delete(oldHotelReservation.get());
         } else {
             log.error("존재하지 않는 호텔 예약 정보입니다");
-            throw new Exception("존재하지 않는 호텔 예약 정보입니다");
         }
     }
 
@@ -75,7 +76,7 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public HotelReservation getHotelReservation(int hotelReservationIdx) throws Exception {
+    public HotelReservation getHotelReservation(Long hotelReservationIdx) throws Exception {
         Optional<HotelReservation> oldHotelReservation = hotelReservationRepository.findById(hotelReservationIdx);
         if (oldHotelReservation.isPresent()) {
             log.info("호텔 예약 정보를 조회합니다");
@@ -94,9 +95,9 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public ArrayList<HotelReservation> getHotelReservationByHotelRoomIdx(int hotelRoomIdx) throws IOException {
+    public List<HotelReservation> getHotelReservationByHotelRoomIdx(Long hotelRoomIdx) throws IOException {
         log.info("호텔 객실 별 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotelRoomId(hotelRoomIdx);
+        return hotelReservationRepository.findByHotel_Idx(hotelRoomIdx);
     }
 
     /**
@@ -107,9 +108,9 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public ArrayList<HotelReservation> getHotelReservationByUserId(int userId) throws IOException {
+    public List<HotelReservation> findByUser_Id(String id)  {
         log.info("유저 별 호텔 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByUserId(userId);
+        return hotelReservationRepository.findByUser_Id(id);
     }
 
     /**
@@ -120,9 +121,9 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public ArrayList<HotelReservation> getHotelReservationByHotelId(int hotelId) throws IOException {
+    public List<HotelReservation> getHotelReservationByHotelId(long hotelId) throws IOException {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotelId(hotelId);
+        return hotelReservationRepository.findByHotel_Idx(hotelId);
     }
 
     /**
@@ -135,8 +136,8 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public int getUsingRoomCount(int hotelRoomIdx, Date start, Date end) throws IOException {
-        ArrayList<HotelReservation> hotelReservations = hotelReservationRepository.findByHotelReservationsByRoomIdxAndTime(hotelRoomIdx, start, end);
+    public int getUsingRoomCount(int hotelRoomIdx, Timestamp start, Timestamp end) throws IOException {
+        List<HotelReservation> hotelReservations = hotelReservationRepository.findByHotelReservationsByRoomIdxAndTime(hotelRoomIdx, start, end);
 
         for (HotelReservation hotelReservation : hotelReservations) {
 

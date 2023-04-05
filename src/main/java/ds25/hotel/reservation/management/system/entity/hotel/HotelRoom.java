@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.entity.hotel;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,13 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class HotelRoom {
-    private int idx;
-    private int hotelIdx;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idx;
+    @ManyToOne
+    private Hotel hotel;
     private String name;
     private String description;
     private int price;
@@ -22,6 +27,6 @@ public class HotelRoom {
     private int peopleCount;
     private BedSize bedSize;
     private int roomSize;
-    private ArrayList<String> image;
+    //private ArrayList<String> image;
     private ArrayList<HotelService> service;
 }

@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
+import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
@@ -11,9 +12,10 @@ import java.util.Optional;
 
 @Slf4j
 public class HotelRoomService {
-    HotelRoomRepository hotelRoomRepository = Singleton.getInstance().getHotelRoomRepository();
+    HotelRoomRepository hotelRoomRepository = DependencyInjection.getInstance().getHotelRoomRepository();
 
-    /**
+
+        /**
      * 호텔 객실 추가
      *
      * @param hotelRoom 호텔 객실 정보
@@ -39,7 +41,7 @@ public class HotelRoomService {
      * @author 김남주
      */
     public HotelRoom updateHotelRoom(HotelRoom hotelRoom) throws IOException {
-        Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findByIdx(hotelRoom.getIdx());
+        Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findById(hotelRoom.getIdx());
         if (oldHotelRoom.isPresent()) {
             log.info("호텔 정보 객실이 수정되었습니다");
             return hotelRoomRepository.save(hotelRoom);
@@ -56,10 +58,10 @@ public class HotelRoomService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public void removeHotelRoom(int hotelRoomIdx) throws Exception{
-        Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findByIdx(hotelRoomIdx);
+    public void removeHotelRoom(Long hotelRoomIdx) throws Exception{
+        Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findById(hotelRoomIdx);
         if (oldHotelRoom.isPresent()) {
-            hotelRoomRepository.deleteByIdx(hotelRoomIdx);
+            hotelRoomRepository.delete(oldHotelRoom.get());
             log.info("호텔 객실 정보가 삭제되었습니다");
         } else {
             throw new Exception("존재하지 않는 호텔 객실 정보입니다");
@@ -74,8 +76,8 @@ public class HotelRoomService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Optional<HotelRoom> getHotelRoom(int hotelRoomIdx) throws IOException {
-        Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findByIdx(hotelRoomIdx);
+    public Optional<HotelRoom> getHotelRoom(Long hotelRoomIdx)  {
+        Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findById(hotelRoomIdx);
         if (oldHotelRoom.isPresent()) {
             log.info("호텔 객실 정보가 조회되었습니다");
             return oldHotelRoom;

@@ -1,20 +1,23 @@
 package ds25.hotel.reservation.management.system.service.user;
 
+import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class UserService {
-    UserRepository userRepository = Singleton.getInstance().getUserRepository();
+
+    DependencyInjection dependencyInjection = DependencyInjection.getInstance();
+    UserRepository userRepository = dependencyInjection.getUserRepository();
+
     Singleton instance = Singleton.getInstance();
 
-    public void init() {
-        userRepository.loadFromJson();
-    }
 
     /**
      * 로그인 메소드
@@ -25,14 +28,14 @@ public class UserService {
      * @author 김남주
      */
     public Optional<User> login(String id, String password) {
-        Optional<User> user = userRepository.findByIdAndPassword(id, password);
-
+        Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            instance.getUserProvider().updateUser(user.get());
-        } else {
-            instance.getUserProvider().updateUser(null);
+            if (user.get().getPassword().equals(password)) {
+                instance.getUserProvider().updateUser(user.get());
+                return user;
+            }
         }
-        return user;
+        return Optional.empty();
     }
 
     /**
@@ -42,11 +45,12 @@ public class UserService {
      * @return 회원가입 성공시 유저 정보, 실패시 null
      * @author 김남주
      */
-    public Optional<User> register(User user) throws IOException {
-        boolean isExist = userRepository.isExistId(user.getId());
-        if (isExist || user.getIdx() != 0) {
+    public User register(User user) throws Exception {
+
+        if (user.getIdx() != 0) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
+
         return userRepository.save(user);
     }
 
@@ -59,14 +63,14 @@ public class UserService {
      * @throws IOException 파일 저장 실패
      * @author 김남주
      */
-    public Optional<User> updateUser(User user) throws IOException {
+    public User updateUser(User user) throws Exception {
         if (user.getIdx() == 0) {
             throw new IllegalArgumentException("유저 정보가 없습니다.");
         }
-        Optional<User> updatedUser = userRepository.save(user);
+        User updatedUser = userRepository.save(user);
 
-        if (updatedUser.isPresent()) {
-            instance.userProvider.updateUser(updatedUser.get());
+        if (updatedUser != null) {
+            instance.userProvider.updateUser(updatedUser);
         }
         return updatedUser;
     }
@@ -77,7 +81,7 @@ public class UserService {
      * @return 유저 정보 리스트
      * @author 김남주
      */
-    public ArrayList<User> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
@@ -88,7 +92,7 @@ public class UserService {
      * @throws IOException 파일 저장 실패
      * @author 김남주
      */
-    public void deleteUser(User user) throws IOException {
+    public void deleteUser(User user) throws Exception {
         userRepository.delete(user);
     }
 
@@ -102,6 +106,6 @@ public class UserService {
     }
 
     public boolean isExistId(String id) {
-        return userRepository.isExistId(id);
+        return userRepository.existsById(id);
     }
 }

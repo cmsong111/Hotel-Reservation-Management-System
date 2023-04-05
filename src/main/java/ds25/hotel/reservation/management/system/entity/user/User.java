@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.entity.user;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "users")
 public class User {
-    int idx;
+    @Id
     String id;
+    int idx;
     String password;
     String name;
     String phone;

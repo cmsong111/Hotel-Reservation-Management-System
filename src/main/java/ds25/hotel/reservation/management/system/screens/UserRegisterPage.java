@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.screens;
 
+import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.entity.user.UserGrade;
@@ -16,7 +17,7 @@ import java.io.IOException;
 @Slf4j
 public class UserRegisterPage extends JFrame implements ActionListener {
 
-    private UserService userService = Singleton.getInstance().getUserService();
+    private UserService userService = new UserService();
 
     private JTextField idTextField;
     private JPasswordField passwordTextField;
@@ -36,13 +37,13 @@ public class UserRegisterPage extends JFrame implements ActionListener {
 
         panel = new Panel();
 
-        idTextField = new JTextField("ID");
+        idTextField = new JTextField("user");
         idTextField.setBounds(100, 100, 400, 30);
 
-        passwordTextField = new JPasswordField("Password");
+        passwordTextField = new JPasswordField("user");
         passwordTextField.setBounds(100, 150, 400, 30);
 
-        passwordConfirmField = new JPasswordField("Password");
+        passwordConfirmField = new JPasswordField("user");
         passwordConfirmField.setBounds(100, 200, 400, 30);
 
         nameTextField = new JTextField("Name");
@@ -105,11 +106,13 @@ public class UserRegisterPage extends JFrame implements ActionListener {
                     .grade(UserGrade.BRONZE)
                     .build();
             try {
-                userService.register(user);
+                log.info(( userService.register(user)).toString());
                 JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
                 dispose();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
+                ex.printStackTrace();
                 log.info("회원가입 실패");
+                JOptionPane.showMessageDialog(null, "회원가입에 실패 했습니다.");
             }
 
         } else if (command.equals("Check ID")) {

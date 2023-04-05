@@ -1,23 +1,35 @@
 package ds25.hotel.reservation.management.system.entity.hotel;
 
-import lombok.Data;
+import ds25.hotel.reservation.management.system.entity.user.User;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 
-@Data
+@Entity
+@Getter
+@Setter
+@ToString
 public class HotelReservation {
-    private int idx;
-    private int userIdx;
-    private int hotelIdx;
-    private int hotelRoomIdx;
-    private Date checkInDate;
-    private Date checkOutDate;
-    private int peopleCount;
-    private int totalPrice;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long idx;
+    @ManyToOne
+    private User user;
+    @ManyToOne
+    private Hotel hotel;
+    @ManyToOne
+    private HotelRoom hotelRoom;
+    private Timestamp checkInDate;
+    private Timestamp checkOutDate;
+    private long peopleCount;
+    private long totalPrice;
     private HotelReservationState status;
-    private Date createdAt;
-    private Date updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public HotelReservation() {
 
@@ -32,27 +44,26 @@ public class HotelReservation {
         return this;
     }
 
-    public HotelReservation userIdx(int userIdx) {
-        this.userIdx = userIdx;
+    public HotelReservation user(User user) {
+        this.user = user;
         return this;
     }
 
-    public HotelReservation hotelIdx(int hotelIdx) {
-        this.hotelIdx = hotelIdx;
+
+    public HotelReservation hotel(Hotel hotel) {
+        this.hotel = hotel;
         return this;
     }
-
-    public HotelReservation hotelRoomIdx(int hotelRoomIdx) {
-        this.hotelRoomIdx = hotelRoomIdx;
+    public HotelReservation hotelRoom(HotelRoom hotelRoom) {
+        this.hotelRoom = hotelRoom;
         return this;
     }
-
-    public HotelReservation checkInDate(Date checkInDate) {
+    public HotelReservation checkInDate(Timestamp checkInDate) {
         this.checkInDate = checkInDate;
         return this;
     }
 
-    public HotelReservation checkOutDate(Date checkOutDate) {
+    public HotelReservation checkOutDate(Timestamp checkOutDate) {
         this.checkOutDate = checkOutDate;
         return this;
     }
@@ -67,7 +78,7 @@ public class HotelReservation {
         return this;
     }
 
-    public HotelReservation createdAt(Date createdAt) {
+    public HotelReservation createdAt(Timestamp createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -76,7 +87,7 @@ public class HotelReservation {
         return this;
     }
 
-    public HotelReservation updatedAt(Date updatedAt) {
+    public HotelReservation updatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }

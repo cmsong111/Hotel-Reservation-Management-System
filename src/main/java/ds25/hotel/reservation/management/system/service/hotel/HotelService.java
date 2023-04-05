@@ -1,17 +1,20 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
+import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 public class HotelService {
-    HotelRepository hotelRepository = Singleton.getInstance().getHotelRepository();
+    HotelRepository hotelRepository = DependencyInjection.getInstance().getHotelRepository();
 
     /**
      * 호텔 추가
@@ -21,7 +24,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Hotel addHotel(Hotel hotel) throws IOException {
+    public Hotel addHotel(Hotel hotel) {
         if (hotel.getIdx() == 0) {
             log.info("호텔 정보가 추가되었습니다");
             return hotelRepository.save(hotel);
@@ -38,11 +41,11 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public void removeHotel(int hotelIdx) throws IOException {
-        Optional<Hotel> oldHotel = hotelRepository.findByIdx(hotelIdx);
+    public void removeHotel(Hotel hotel)  {
+        Optional<Hotel> oldHotel = hotelRepository.findById(hotel.getIdx());
         if (oldHotel.isPresent()) {
-            hotelRepository.deleteByIdx(hotelIdx);
             log.info("호텔 정보가 삭제되었습니다");
+            hotelRepository.delete(oldHotel.get());
         } else {
             log.info("삭제할 호텔 정보가 없습니다");
         }
@@ -55,8 +58,8 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Hotel updateHotel(Hotel hotel) throws IOException, Exception {
-        Optional<Hotel> oldHotel = hotelRepository.findByIdx(hotel.getIdx());
+    public Hotel updateHotel(Hotel hotel)  {
+        Optional<Hotel> oldHotel = hotelRepository.findById(hotel.getIdx());
         if (oldHotel.isPresent()) {
             log.info("호텔 정보가 수정되었습니다");
             return hotelRepository.save(hotel);
@@ -73,8 +76,8 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Optional<Hotel> getHotel(int idx) throws IOException {
-        return hotelRepository.findByIdx(idx);
+    public Optional<Hotel> getHotel(long idx) {
+        return hotelRepository.findById(idx);
     }
 
     /**
@@ -83,7 +86,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public ArrayList<Hotel> getHotelList() throws IOException {
+    public List<Hotel> getHotelList()  {
         return hotelRepository.findAll();
     }
 
@@ -94,7 +97,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public ArrayList<Hotel> getHotelByName(String name) throws IOException {
+    public List<Hotel> getHotelByName(String name) throws IOException {
         log.info("호텔 이름으로 정보 조회 : " + name);
         return hotelRepository.findByName(name);
     }
