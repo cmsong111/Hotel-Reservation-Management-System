@@ -20,6 +20,11 @@ public class AggregateImpl implements Aggregate {
         last++;
     }
 
+    public void popObject() {
+        this.objects[last] = null;
+        last--;
+    }
+
     public int getLength() {
         return last;
     }
