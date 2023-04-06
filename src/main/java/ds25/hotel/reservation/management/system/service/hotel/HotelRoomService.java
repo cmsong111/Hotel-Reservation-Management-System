@@ -3,7 +3,6 @@ package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
-import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

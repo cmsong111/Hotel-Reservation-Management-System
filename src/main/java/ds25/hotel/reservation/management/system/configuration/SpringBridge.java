@@ -1,6 +1,5 @@
 package ds25.hotel.reservation.management.system.configuration;
 
-import ds25.hotel.reservation.management.system.service.user.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

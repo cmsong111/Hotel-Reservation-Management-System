@@ -8,8 +8,6 @@ import ds25.hotel.reservation.management.system.pattern.observer.Observer;
 import ds25.hotel.reservation.management.system.provider.UserProvider;
 import ds25.hotel.reservation.management.system.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +18,7 @@ import java.util.Optional;
 
 @Slf4j
 public class LoginPage extends JFrame implements Observer, ActionListener {
-    private UserService userService ;
+    private UserService userService;
 
 
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
