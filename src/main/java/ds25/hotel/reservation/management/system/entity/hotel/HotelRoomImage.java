@@ -6,23 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class Hotel {
+public class HotelRoomImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
-    private String name;
-    private String address;
-    private String phone;
-    private String email;
-    private String description;
-    @OneToMany
-    private ArrayList<HotelImage> images;
-    private ArrayList<HotelService> service;
+    @ManyToOne
+    private HotelRoom hotelRoom;
+    private String image;
 }
