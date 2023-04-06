@@ -2,6 +2,7 @@ package ds25.hotel.reservation.management.system.service.hotel;
 
 
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,17 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class HotelRoomService {
-    HotelRoomRepository hotelRoomRepository ;
+    HotelRoomRepository hotelRoomRepository;
+    HotelRoomImageRepository hotelRoomImageRepository;
 
     @Autowired
-    public HotelRoomService(HotelRoomRepository hotelRoomRepository) {
+    public HotelRoomService(HotelRoomRepository hotelRoomRepository, HotelRoomImageRepository hotelRoomImageRepository) {
         this.hotelRoomRepository = hotelRoomRepository;
+        this.hotelRoomImageRepository = hotelRoomImageRepository;
     }
 
 
-        /**
+    /**
      * 호텔 객실 추가
      *
      * @param hotelRoom 호텔 객실 정보
@@ -64,7 +67,7 @@ public class HotelRoomService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public void removeHotelRoom(Long hotelRoomIdx) throws Exception{
+    public void removeHotelRoom(Long hotelRoomIdx) throws Exception {
         Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findById(hotelRoomIdx);
         if (oldHotelRoom.isPresent()) {
             hotelRoomRepository.delete(oldHotelRoom.get());
@@ -82,7 +85,7 @@ public class HotelRoomService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Optional<HotelRoom> getHotelRoom(Long hotelRoomIdx)  {
+    public Optional<HotelRoom> getHotelRoom(Long hotelRoomIdx) {
         Optional<HotelRoom> oldHotelRoom = hotelRoomRepository.findById(hotelRoomIdx);
         if (oldHotelRoom.isPresent()) {
             log.info("호텔 객실 정보가 조회되었습니다");

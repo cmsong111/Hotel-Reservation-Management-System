@@ -27,6 +27,7 @@ public class HotelRoom {
     private int peopleCount;
     private BedSize bedSize;
     private int roomSize;
-    //private ArrayList<String> image;
+    @OneToMany
+    private ArrayList<HotelRoomImage> images;
     private ArrayList<HotelService> service;
 }

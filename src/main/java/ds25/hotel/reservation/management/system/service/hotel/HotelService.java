@@ -1,13 +1,13 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,10 +15,12 @@ import java.util.Optional;
 @Service
 public class HotelService {
     HotelRepository hotelRepository;
+    HotelImageRepository hotelImageRepository;
 
     @Autowired
-    public HotelService(HotelRepository hotelRepository) {
+    public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository) {
         this.hotelRepository = hotelRepository;
+        this.hotelImageRepository = hotelImageRepository;
     }
 
 
