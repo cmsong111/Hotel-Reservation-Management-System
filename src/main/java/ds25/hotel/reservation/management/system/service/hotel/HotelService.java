@@ -1,13 +1,19 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
+import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +22,16 @@ import java.util.Optional;
 public class HotelService {
     HotelRepository hotelRepository;
     HotelImageRepository hotelImageRepository;
+    HotelRoomRepository hotelRoomRepository;
+    HotelReservationRepository hotelReservationRepository;
+    ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository) {
+    public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository, HotelRoomRepository hotelRoomRepository, HotelReservationRepository hotelReservationRepository) {
         this.hotelRepository = hotelRepository;
         this.hotelImageRepository = hotelImageRepository;
+        this.hotelRoomRepository = hotelRoomRepository;
+        this.hotelReservationRepository = hotelReservationRepository;
     }
 
 
@@ -32,49 +43,72 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Hotel addHotel(Hotel hotel) {
-        if (hotel.getIdx() == 0) {
-            log.info("호텔 정보가 추가되었습니다");
-            return hotelRepository.save(hotel);
-        } else {
-            log.info("호텔 정보가 추가되지 않았습니다");
-            return null;
+    public HotelDto addHotel(HotelDto hotelDto) throws Exception {
+
+        if (hotelDto.getName() == null) {
+            throw new Exception("호텔 이름이 없습니다");
+        } else if (hotelDto.getPhone() == null) {
+            throw new Exception("호텔 전화번호가 없습니다");
+        } else if (hotelDto.getAddress() == null) {
+            throw new Exception("호텔 주소가 없습니다");
         }
+        Hotel hotel = modelMapper.map(hotelDto, Hotel.class);
+        return modelMapper.map(hotelRepository.save(hotel), HotelDto.class);
     }
 
     /**
      * 호텔 삭제
      *
-     * @param hotelIdx 호텔 index 번호
-     * @throws IOException 파일 입출력 예외
+     * @param hotelDto 호텔 정보
+     * @throws Exception 예외처리
      * @author 김남주
      */
-    public void removeHotel(Hotel hotel) {
-        Optional<Hotel> oldHotel = hotelRepository.findById(hotel.getIdx());
-        if (oldHotel.isPresent()) {
+    public void removeHotel(HotelDto hotelDto) throws Exception {
+        Optional<Hotel> hotel = hotelRepository.findById(hotelDto.getIdx());
+
+        if (hotel.isPresent()) {
+            hotelRoomRepository.deleteByHotel(hotel.get());
+            log.info("호텔 방 정보가 삭제되었습니다");
+            hotelReservationRepository.deleteByHotel(hotel.get());
+            log.info("호텔 예약 정보가 삭제되었습니다");
+            hotelImageRepository.deleteByHotel(hotel.get());
+            log.info("호텔 이미지 정보가 삭제되었습니다");
+            hotelRepository.deleteById(hotelDto.getIdx());
             log.info("호텔 정보가 삭제되었습니다");
-            hotelRepository.delete(oldHotel.get());
         } else {
-            log.info("삭제할 호텔 정보가 없습니다");
+            throw new Exception("삭제할 호텔 정보가 없습니다");
         }
     }
 
     /**
      * 호텔 정보 수정
      *
-     * @param hotel 호텔 정보
+     * @param hotelDto 호텔 정보
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Hotel updateHotel(Hotel hotel) {
-        Optional<Hotel> oldHotel = hotelRepository.findById(hotel.getIdx());
-        if (oldHotel.isPresent()) {
-            log.info("호텔 정보가 수정되었습니다");
-            return hotelRepository.save(hotel);
-        } else {
-            log.info("수정할 호텔 정보가 없습니다");
-            return null;
+    public HotelDto modifyHotel(HotelDto hotelDto) throws Exception {
+        Optional<Hotel> oldHotel = hotelRepository.findById(hotelDto.getIdx());
+        if (oldHotel.isEmpty()) {
+            throw new Exception("수정할 호텔 정보가 없습니다");
         }
+        if (hotelDto.getName() != null) {
+            oldHotel.get().setName(hotelDto.getName());
+        }
+        if (hotelDto.getAddress() != null) {
+            oldHotel.get().setAddress(hotelDto.getAddress());
+        }
+        if (hotelDto.getPhone() != null) {
+            oldHotel.get().setPhone(hotelDto.getPhone());
+        }
+        if (hotelDto.getPhone() != null) {
+            oldHotel.get().setPhone(hotelDto.getPhone());
+        }
+        if (hotelDto.getDescription() != null) {
+            oldHotel.get().setDescription(hotelDto.getDescription());
+        }
+
+        return modelMapper.map(hotelRepository.save(oldHotel.get()), HotelDto.class);
     }
 
     /**
@@ -84,8 +118,14 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Optional<Hotel> getHotel(long idx) {
-        return hotelRepository.findById(idx);
+    public Optional<HotelDto> findHotel(long idx) {
+        Optional<Hotel> hotel = hotelRepository.findById(idx);
+
+        if (hotel.isPresent()) {
+            return Optional.of(modelMapper.map(hotel.get(), HotelDto.class));
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -94,8 +134,14 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<Hotel> getHotelList() {
-        return hotelRepository.findAll();
+    public List<HotelDto> findAllHotel() {
+        log.info("findAllHotel method called");
+        List<Hotel> hotels = hotelRepository.findAll();
+        List<HotelDto> hotelDto = new ArrayList<>();
+        for (Hotel hotel : hotels) {
+            hotelDto.add(modelMapper.map(hotel, HotelDto.class));
+        }
+        return hotelDto;
     }
 
     /**
@@ -105,8 +151,13 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<Hotel> getHotelByName(String name) throws IOException {
-        log.info("호텔 이름으로 정보 조회 : " + name);
-        return hotelRepository.findByName(name);
+    public List<HotelDto> getHotelByName(String name)  {
+        log.info("getHotelByName method called, keyword is " + name);
+        List<Hotel> hotels = hotelRepository.findByName(name);
+        List<HotelDto> hotelDto = new ArrayList<>();
+        for (Hotel hotel : hotels) {
+            hotelDto.add(modelMapper.map(hotel, HotelDto.class));
+        }
+        return hotelDto;
     }
 }

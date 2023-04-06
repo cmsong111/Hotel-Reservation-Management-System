@@ -19,6 +19,6 @@ public class HotelDto {
     private String phone;
     private String email;
     private String description;
-    private ArrayList<String> HotelImages;
+    private ArrayList<String> hotelImages;
     private ArrayList<HotelService> service;
 }
