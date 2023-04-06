@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserDto {
     String id;
-    int idx;
     String password;
     String name;
     String phone;

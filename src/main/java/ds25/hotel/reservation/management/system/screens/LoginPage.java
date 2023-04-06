@@ -98,10 +98,15 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
 
         if (command.equals("login")) {
             log.info("로그인 버튼 클릭");
-            Optional<User> user = userService.login(id, password);
-            if (!user.isPresent()) {
-                JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 틀렸습니다.");
-            } else {
+            Optional<User> user;
+            try {
+                user = userService.login(id, password);
+            } catch (Exception exception) {
+                String message = exception.getMessage();
+                JOptionPane.showMessageDialog(null, message);
+                return;
+            }
+            if (user.isPresent()) {
                 JOptionPane.showMessageDialog(null, "로그인 성공");
                 new HotelSelectionPage();
                 userProvider.removeObserver(this);

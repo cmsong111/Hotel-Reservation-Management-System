@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     String id;
-    int idx;
     String password;
     String name;
     String phone;

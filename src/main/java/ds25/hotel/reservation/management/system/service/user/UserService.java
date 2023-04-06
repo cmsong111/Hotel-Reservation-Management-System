@@ -3,8 +3,8 @@ package ds25.hotel.reservation.management.system.service.user;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +17,13 @@ import java.util.Optional;
 public class UserService {
 
     UserRepository userRepository;
+    ModelMapper modelMapper = new ModelMapper();
     Singleton instance = Singleton.getInstance();
 
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-
 
     /**
      * 로그인 메소드
@@ -34,15 +33,22 @@ public class UserService {
      * @return 로그인 성공시 유저 정보, 실패시 null
      * @author 김남주
      */
-    public Optional<User> login(String id, String password) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            if (user.get().getPassword().equals(password)) {
-                instance.getUserProvider().updateUser(user.get());
-                return user;
-            }
+    public Optional<User> login(String id, String password) throws Exception {
+
+        if (id == null || id.equals("")) {
+            throw new Exception("Id is null");
+        } else if (password == null || password.equals("")) {
+            throw new Exception("Password is null");
         }
-        return Optional.empty();
+
+        Optional<User> user = userRepository.findByIdAndPassword(id, password);
+        if (user.isPresent()) {
+            instance.userProvider.updateUser(user.get());
+        } else {
+            throw new Exception("Login failed");
+        }
+
+        return user;
     }
 
     /**
@@ -54,7 +60,7 @@ public class UserService {
      */
     public User register(User user) throws Exception {
 
-        if (user.getIdx() != 0) {
+        if (isExistId(user.getId())) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
 
@@ -71,7 +77,7 @@ public class UserService {
      * @author 김남주
      */
     public User updateUser(User user) throws Exception {
-        if (user.getIdx() == 0) {
+        if (user == null) {
             throw new IllegalArgumentException("유저 정보가 없습니다.");
         }
         User updatedUser = userRepository.save(user);
