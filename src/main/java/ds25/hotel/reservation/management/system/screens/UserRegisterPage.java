@@ -1,6 +1,7 @@
 package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.entity.user.UserGrade;
 import ds25.hotel.reservation.management.system.entity.user.UserRole;
@@ -96,7 +97,7 @@ public class UserRegisterPage extends JFrame implements ActionListener {
                 return;
             }
             // Builder 패턴을 사용하여 객체 생성
-            User user = User.builder()
+            UserDto user = UserDto.builder()
                     .id(idTextField.getText())
                     .password(passwordTextField.getText())
                     .name(nameTextField.getText())
@@ -106,13 +107,12 @@ public class UserRegisterPage extends JFrame implements ActionListener {
                     .grade(UserGrade.BRONZE)
                     .build();
             try {
-                log.info(( userService.register(user)).toString());
+                log.info((userService.register(user)).toString());
                 JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
                 dispose();
             } catch (Exception ex) {
-                ex.printStackTrace();
-                log.info("회원가입 실패");
-                JOptionPane.showMessageDialog(null, "회원가입에 실패 했습니다.");
+                String message = ex.getMessage();
+                JOptionPane.showMessageDialog(null, message);
             }
 
         } else if (command.equals("Check ID")) {

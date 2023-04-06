@@ -1,6 +1,7 @@
 package ds25.hotel.reservation.management.system.service.user;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class UserService {
      * @return 로그인 성공시 유저 정보, 실패시 null
      * @author 김남주
      */
-    public Optional<User> login(String id, String password) throws Exception {
+    public UserDto login(String id, String password) throws Exception {
 
         if (id == null || id.equals("")) {
             throw new Exception("Id is null");
@@ -43,12 +44,12 @@ public class UserService {
 
         Optional<User> user = userRepository.findByIdAndPassword(id, password);
         if (user.isPresent()) {
-            instance.userProvider.updateUser(user.get());
+            instance.userProvider.updateUser(modelMapper.map(user.get(), User.class));
         } else {
             throw new Exception("Login failed");
         }
 
-        return user;
+        return modelMapper.map(user.get(), UserDto.class);
     }
 
     /**
@@ -58,34 +59,54 @@ public class UserService {
      * @return 회원가입 성공시 유저 정보, 실패시 null
      * @author 김남주
      */
-    public User register(User user) throws Exception {
+    public UserDto register(UserDto user) throws Exception {
 
-        if (isExistId(user.getId())) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        if (user.getName().isEmpty()) {
+            throw new Exception("이름을 입력해주세요.");
+        } else if (user.getId().isEmpty()) {
+            throw new Exception("아이디를 입력해주세요.");
+        } else if (user.getPassword().isEmpty()) {
+            throw new Exception("비밀번호를 입력해주세요.");
+        } else if (user.getPhone().isEmpty()) {
+            throw new Exception("전화번호를 입력해주세요.");
+        } else if (user.getEmail().isEmpty()) {
+            throw new Exception("이메일을 입력해주세요.");
+        } else if (userRepository.existsById(user.getId())) {
+            throw new Exception("이미 존재하는 아이디입니다.");
         }
 
-        return userRepository.save(user);
+        User newUser = modelMapper.map(user, User.class);
+
+        return modelMapper.map(userRepository.save(newUser), UserDto.class);
     }
 
 
     /**
      * 유저 정보 수정 메소드
      *
-     * @param user 수정할 유저 정보
+     * @param newUser 수정할 유저 정보
      * @return 수정된 유저 정보
      * @throws IOException 파일 저장 실패
      * @author 김남주
      */
-    public User updateUser(User user) throws Exception {
-        if (user == null) {
-            throw new IllegalArgumentException("유저 정보가 없습니다.");
-        }
-        User updatedUser = userRepository.save(user);
+    public UserDto updateUser(UserDto newUser) throws Exception {
+        Optional<User> oldUser = userRepository.findById(newUser.getId());
 
-        if (updatedUser != null) {
-            instance.userProvider.updateUser(updatedUser);
+        if (oldUser.isEmpty()) {
+            throw new Exception("존재하지 않는 유저입니다.");
         }
-        return updatedUser;
+
+        if (!newUser.getName().isEmpty()) {
+            oldUser.get().setName(newUser.getName());
+        }
+        if (!newUser.getPassword().isEmpty()) {
+            oldUser.get().setPassword(newUser.getPassword());
+        }
+        if (!newUser.getPhone().isEmpty()) {
+            oldUser.get().setPhone(newUser.getPhone());
+        }
+
+        return modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
     }
 
     /**

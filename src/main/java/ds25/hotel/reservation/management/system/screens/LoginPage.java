@@ -2,6 +2,7 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
@@ -98,7 +99,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
 
         if (command.equals("login")) {
             log.info("로그인 버튼 클릭");
-            Optional<User> user;
+            UserDto user;
             try {
                 user = userService.login(id, password);
             } catch (Exception exception) {
@@ -106,7 +107,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
                 JOptionPane.showMessageDialog(null, message);
                 return;
             }
-            if (user.isPresent()) {
+            if (user != null) {
                 JOptionPane.showMessageDialog(null, "로그인 성공");
                 new HotelSelectionPage();
                 userProvider.removeObserver(this);
