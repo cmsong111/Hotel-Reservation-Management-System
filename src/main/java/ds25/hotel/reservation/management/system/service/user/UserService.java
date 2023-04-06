@@ -35,6 +35,7 @@ public class UserService {
      * @author 김남주
      */
     public UserDto login(String id, String password) throws Exception {
+        log.info("User Login method is called");
 
         if (id == null || id.equals("")) {
             throw new Exception("Id is null");
@@ -46,7 +47,7 @@ public class UserService {
         if (user.isPresent()) {
             instance.userProvider.updateUser(modelMapper.map(user.get(), User.class));
         } else {
-            throw new Exception("Login failed");
+            throw new Exception("Id or Password is wrong");
         }
 
         return modelMapper.map(user.get(), UserDto.class);
@@ -60,6 +61,7 @@ public class UserService {
      * @author 김남주
      */
     public UserDto register(UserDto user) throws Exception {
+        log.info("User Register method is called");
 
         if (user.getName().isEmpty()) {
             throw new Exception("이름을 입력해주세요.");
@@ -90,6 +92,7 @@ public class UserService {
      * @author 김남주
      */
     public UserDto updateUser(UserDto newUser) throws Exception {
+        log.info("updateUser method called");
         Optional<User> oldUser = userRepository.findById(newUser.getId());
 
         if (oldUser.isEmpty()) {
@@ -99,12 +102,31 @@ public class UserService {
         if (!newUser.getName().isEmpty()) {
             oldUser.get().setName(newUser.getName());
         }
-        if (!newUser.getPassword().isEmpty()) {
-            oldUser.get().setPassword(newUser.getPassword());
-        }
         if (!newUser.getPhone().isEmpty()) {
             oldUser.get().setPhone(newUser.getPhone());
         }
+        if (!newUser.getEmail().isEmpty()) {
+            oldUser.get().setEmail(newUser.getEmail());
+        }
+
+        return modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
+    }
+
+    public UserDto changePassword(UserDto user, String oldPassword, String newPassword,String newPassword2) throws Exception {
+        log.info("changePassword method called");
+        Optional<User> oldUser = userRepository.findById(user.getId());
+
+        if (oldUser.isEmpty()) {
+            throw new Exception("존재하지 않는 유저입니다.");
+        }
+        if (!oldUser.get().getPassword().equals(oldPassword)) {
+            throw new Exception("현재 비밀번호가 일치하지 않습니다.");
+        }
+        if (!newPassword.equals(newPassword2)) {
+            throw new Exception("비밀번호가 일치하지 않습니다.");
+        }
+
+        oldUser.get().setPassword(newPassword);
 
         return modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
     }
@@ -116,6 +138,7 @@ public class UserService {
      * @author 김남주
      */
     public List<User> findAll() {
+        log.info("User findAll method called");
         return userRepository.findAll();
     }
 
@@ -136,10 +159,12 @@ public class UserService {
      * @author 김남주
      */
     public void logout() {
+        log.info("User logout method called");
         instance.getUserProvider().updateUser(null);
     }
 
     public boolean isExistId(String id) {
+        log.info("isExistId method called");
         return userRepository.existsById(id);
     }
 }
