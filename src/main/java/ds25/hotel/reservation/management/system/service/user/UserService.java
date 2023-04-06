@@ -1,22 +1,29 @@
 package ds25.hotel.reservation.management.system.service.user;
 
-import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@Service
+@Slf4j
 public class UserService {
 
-    DependencyInjection dependencyInjection = DependencyInjection.getInstance();
-    UserRepository userRepository = dependencyInjection.getUserRepository();
-
+    UserRepository userRepository;
     Singleton instance = Singleton.getInstance();
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
 
     /**

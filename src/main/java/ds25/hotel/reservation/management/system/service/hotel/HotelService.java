@@ -1,11 +1,10 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,8 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Service
 public class HotelService {
-    HotelRepository hotelRepository = DependencyInjection.getInstance().getHotelRepository();
+    HotelRepository hotelRepository;
+
+    @Autowired
+    public HotelService(HotelRepository hotelRepository) {
+        this.hotelRepository = hotelRepository;
+    }
+
 
     /**
      * 호텔 추가
@@ -41,7 +47,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public void removeHotel(Hotel hotel)  {
+    public void removeHotel(Hotel hotel) {
         Optional<Hotel> oldHotel = hotelRepository.findById(hotel.getIdx());
         if (oldHotel.isPresent()) {
             log.info("호텔 정보가 삭제되었습니다");
@@ -58,7 +64,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public Hotel updateHotel(Hotel hotel)  {
+    public Hotel updateHotel(Hotel hotel) {
         Optional<Hotel> oldHotel = hotelRepository.findById(hotel.getIdx());
         if (oldHotel.isPresent()) {
             log.info("호텔 정보가 수정되었습니다");
@@ -86,7 +92,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<Hotel> getHotelList()  {
+    public List<Hotel> getHotelList() {
         return hotelRepository.findAll();
     }
 

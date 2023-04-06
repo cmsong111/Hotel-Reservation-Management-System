@@ -1,20 +1,28 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.PriorityQueue;
 
 @Slf4j
+@Service
 public class HotelReservationService {
-    HotelReservationRepository hotelReservationRepository = DependencyInjection.getInstance().getHotelReservationRepository();
 
+    HotelReservationRepository hotelReservationRepository;
+
+    @Autowired
+    public HotelReservationService(HotelReservationRepository hotelReservationRepository) {
+        this.hotelReservationRepository = hotelReservationRepository;
+    }
     /**
      * 호텔 예약 추가
      *
@@ -136,8 +144,8 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public int getUsingRoomCount(int hotelRoomIdx, Timestamp start, Timestamp end) throws IOException {
-        List<HotelReservation> hotelReservations = hotelReservationRepository.findByHotelReservationsByRoomIdxAndTime(hotelRoomIdx, start, end);
+    public int getUsingRoomCount(Long hotelRoomIdx, Timestamp start, Timestamp end) throws IOException {
+        List<HotelReservation> hotelReservations = hotelReservationRepository.findByHotelRoom_IdxAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqual(hotelRoomIdx, start, end);
 
         for (HotelReservation hotelReservation : hotelReservations) {
 

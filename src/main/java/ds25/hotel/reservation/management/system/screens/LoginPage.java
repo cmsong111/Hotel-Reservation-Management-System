@@ -1,12 +1,15 @@
 package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
+import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
 import ds25.hotel.reservation.management.system.provider.UserProvider;
 import ds25.hotel.reservation.management.system.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +20,9 @@ import java.util.Optional;
 
 @Slf4j
 public class LoginPage extends JFrame implements Observer, ActionListener {
-    private UserService userService = new UserService();
+    private UserService userService ;
+
+
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
 
     private Panel panel;
@@ -40,7 +45,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
     }
 
     public LoginPage() {
-
+        userService = SpringBridge.getInstance().getBean(UserService.class);
         Singleton.getInstance().getUserProvider().registerObserver(this);
 
         setTitle("호텔 예약 시스템");

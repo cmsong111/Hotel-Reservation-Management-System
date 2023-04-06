@@ -1,7 +1,6 @@
 package ds25.hotel.reservation.management.system.screens;
 
-import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
+import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.entity.user.UserGrade;
 import ds25.hotel.reservation.management.system.entity.user.UserRole;
@@ -12,12 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 @Slf4j
 public class UserRegisterPage extends JFrame implements ActionListener {
 
-    private UserService userService = new UserService();
+    private UserService userService;
 
     private JTextField idTextField;
     private JPasswordField passwordTextField;
@@ -32,6 +30,8 @@ public class UserRegisterPage extends JFrame implements ActionListener {
     private Panel panel;
 
     public UserRegisterPage() {
+        userService = SpringBridge.getInstance().getBean(UserService.class);
+
         setTitle("회원가입");
         setResizable(false);
 

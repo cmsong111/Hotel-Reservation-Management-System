@@ -1,18 +1,25 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import ds25.hotel.reservation.management.system.configuration.DependencyInjection;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
 
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
+import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
+@Service
 public class HotelRoomService {
-    HotelRoomRepository hotelRoomRepository = DependencyInjection.getInstance().getHotelRoomRepository();
+    HotelRoomRepository hotelRoomRepository ;
+
+    @Autowired
+    public HotelRoomService(HotelRoomRepository hotelRoomRepository) {
+        this.hotelRoomRepository = hotelRoomRepository;
+    }
 
 
         /**

@@ -2,16 +2,19 @@ package ds25.hotel.reservation.management.system.repository.hotel;
 
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Repository
 public interface HotelReservationRepository extends JpaRepository<HotelReservation, Long> {
 
 
     List<HotelReservation> findAll();
 
-    List<HotelReservation> findByHotelReservationsByRoomIdxAndTime(int roomIdx, Timestamp startDate, Timestamp endDate);
+    List<HotelReservation> findByHotelRoom_IdxAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqual(Long idx, Timestamp checkInDate, Timestamp checkOutDate);
+
 
     List<HotelReservation> findByHotel_Idx(Long idx);
 
