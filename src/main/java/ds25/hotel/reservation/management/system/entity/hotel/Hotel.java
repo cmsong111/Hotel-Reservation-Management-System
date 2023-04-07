@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class Hotel {
     private String phone;
     private String email;
     private String description;
-    @OneToMany
-    private ArrayList<HotelImage> images;
-    private ArrayList<HotelService> service;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<HotelImage> images;
+    private List<HotelService> service;
 }

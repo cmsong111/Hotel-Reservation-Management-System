@@ -1,21 +1,21 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Fetch;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,8 +73,7 @@ public class HotelService {
         if (hotel.isPresent()) {
             hotelRoomRepository.deleteByHotel(hotel.get());
             log.info("호텔 방 정보가 삭제되었습니다");
-            hotelReservationRepository.deleteByHotel(hotel.get());
-            log.info("호텔 예약 정보가 삭제되었습니다");
+
             hotelRepository.deleteById(hotelDto.getIdx());
             log.info("호텔 정보가 삭제되었습니다");
         } else {
@@ -163,46 +162,20 @@ public class HotelService {
         return hotelDto;
     }
 
-    @PostConstruct
-    public void initHotelData() {
+    public void initHotelData(List<Hotel> hotels) {
         log.info("initializeData method called");
-//        try {
-//            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/hotel.json"), StandardCharsets.UTF_8);
-//            ArrayList<Hotel> hotelArrayList = gson.fromJson(reader, new TypeToken<ArrayList<Hotel>>() {
-//            }.getType());
-//
-//            for (Hotel hotel : hotelArrayList) {
-//                log.info("hotel save : {}", hotelRepository.save(hotel));
-//            }
-//            log.info("hotel init end");
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        List<Hotel> hotels = hotelRepository.findAll();
-//        for (Hotel hotel : hotels) {
-//            log.info("hotel : {}", hotel);
-//        }
-
-        Hotel hotel = Hotel.builder()
-                .name("호텔1")
-                .address("서울시 강남구")
-                .phone("010-1234-5678")
-                .description("호텔1입니다")
-                .build();
-
-        log.info("hotel: {}", hotelRepository.save(hotel));
-        //file wirte to C:/temp/hotel.json
-        try {
-            Writer writer = new OutputStreamWriter(new FileOutputStream("C:/temp/hotel.json"), StandardCharsets.UTF_8);
-            gson.toJson(hotelRepository.findAll(), writer);
-            writer.flush();
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (Hotel hotel : hotels) {
+            List<HotelImage> saved = new ArrayList<>();
+            for(HotelImage hotelImage : hotel.getImages()){
+                saved.add(hotelImageRepository.save(hotelImage));
+            }
+            hotel.setImages(saved);
+            hotelRepository.save(hotel);
         }
 
+        for (Hotel hotel: hotelRepository.findAll()) {
+            log.info("hotel 입력 완. : {}", hotel.toString());
+        }
 
     }
 

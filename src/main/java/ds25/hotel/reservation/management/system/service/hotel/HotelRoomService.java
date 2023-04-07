@@ -2,10 +2,10 @@ package ds25.hotel.reservation.management.system.service.hotel;
 
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
-import ds25.hotel.reservation.management.system.entity.hotel.*;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelService;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
@@ -14,9 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +21,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class HotelRoomService {
+    private final HotelImageRepository hotelImageRepository;
     UserRepository userRepository;
     HotelRepository hotelRepository;
     HotelRoomRepository hotelRoomRepository;
@@ -33,10 +31,12 @@ public class HotelRoomService {
 
     @Autowired
     public HotelRoomService(HotelRoomRepository hotelRoomRepository, UserRepository userRepository,
-                            HotelRepository hotelRepository) {
+                            HotelRepository hotelRepository,
+                            HotelImageRepository hotelImageRepository) {
         this.hotelRoomRepository = hotelRoomRepository;
         this.userRepository = userRepository;
         this.hotelRepository = hotelRepository;
+        this.hotelImageRepository = hotelImageRepository;
     }
 
 
@@ -150,48 +150,19 @@ public class HotelRoomService {
         return hotelRoomDtos;
     }
 
-    public void initHotelRoomData() {
-//        log.info("init HotelRoom Service");
-//        try {
-//            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/hotelRoom.json"), StandardCharsets.UTF_8);
-//            ArrayList<HotelRoomDto> hotelRoomArrayList = gson.fromJson(reader, new TypeToken<ArrayList<HotelRoomDto>>() {
-//            }.getType());
-//
-//            for (HotelRoomDto hotelRoomDto : hotelRoomArrayList) {
-//                log.info("hotelRoomDto : " + hotelRoomDto.toString());
-//                Optional<Hotel> hotel = hotelRepository.findById(hotelRoomDto.getHotelIdx());
-//                if (hotel.isEmpty()) {
-//                    throw new Exception("존재하지 않는 호텔 정보입니다");
-//                }
-//                log.info("hotelRoomDto : " + hotelRoomDto.toString());
-//            }
-//
-//        } catch (Exception e) {
-//            log.error("init HotelRoom Service Error");
-//            e.printStackTrace();
-//        }
+    public void initHotelRoomData(List<HotelRoom> hotelRooms) {
+        log.info("init HotelRoom Service");
+        for (HotelRoom hotelRoom: hotelRooms){
+            List<HotelImage> saved = new ArrayList<>();
+            for(HotelImage hotelImage: hotelRoom.getImages()){
+                saved.add(hotelImageRepository.save(hotelImage));
+            }
+            hotelRoom.setImages(saved);
+            hotelRoomRepository.save(hotelRoom);
+        }
 
-//        HotelRoomDto test = new HotelRoomDto();
-//        test.setIdx(1L);
-//        test.setName("테스트");
-//        test.setPrice(10000);
-//        test.setDiscount(0);
-//        test.setRoomCount(1);
-//        test.setPeopleCount(1);
-//        test.setBedSize(BedSize.DOUBLE);
-//        test.setDescription("테스트");
-//        test.setHotelIdx(1L);
-//        test.setImages(new ArrayList<>() {{
-//                           add(HotelImage.builder().image("test").build());
-//                           add(HotelImage.builder().image("test2").build());
-//
-//                       }}
-//        );
-//        test.setService(
-//                new ArrayList<>() {{
-//
-//                }}
-//        );
-//        log.info("test : " + test.toString());
+        for (HotelRoom hotelRoom: hotelRoomRepository.findAll()){
+            log.info("hotelRoom : {} Saved ", hotelRoom);
+        }
     }
 }

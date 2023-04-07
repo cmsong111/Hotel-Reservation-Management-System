@@ -22,8 +22,6 @@ public class HotelReservation {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Hotel hotel;
-    @ManyToOne
     private HotelRoom hotelRoom;
     private Timestamp checkInDate;
     private Timestamp checkOutDate;

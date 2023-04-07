@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,8 +26,8 @@ public class HotelReview {
     User user;
     String content;
     int rating;
-    @OneToMany
-    ArrayList<HotelImage> images;
+    @OneToMany(fetch = FetchType.EAGER)
+    List<HotelImage> images;
     @OneToOne
     HotelReservation reservation;
     String reply;

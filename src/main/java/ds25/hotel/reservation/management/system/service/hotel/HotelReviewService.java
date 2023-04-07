@@ -88,12 +88,11 @@ public class HotelReviewService {
         }
 
         for (HotelImage image : hotelReviewDto.getImages()) {
-            Optional<HotelImage> found =  hotelImageRepository.findById(image.getImage());
+            Optional<HotelImage> found = hotelImageRepository.findByImage(image.getImage());
             if (found.isEmpty()) {
                 hotelImageRepository.save(image);
             }
         }
-
 
 
         HotelReview hotelReview = HotelReview.builder()
@@ -160,4 +159,13 @@ public class HotelReviewService {
         }
         hotelReviewRepository.delete(hotelReview.get());
     }
+
+    public void initHotelReviewData(List<HotelReview> hotelReviewList) {
+        log.info("initHotelReview");
+
+        for (HotelReview hotelReview : hotelReviewList) {
+            log.info("Review : {}" + hotelReviewRepository.save(hotelReview));
+        }
+    }
+
 }

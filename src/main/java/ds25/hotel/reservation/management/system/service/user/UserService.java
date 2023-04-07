@@ -1,22 +1,16 @@
 package ds25.hotel.reservation.management.system.service.user;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,7 +116,7 @@ public class UserService {
         return modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
     }
 
-    public UserDto changePassword(UserDto user, String oldPassword, String newPassword,String newPassword2) throws Exception {
+    public UserDto changePassword(UserDto user, String oldPassword, String newPassword, String newPassword2) throws Exception {
         log.info("changePassword method called");
         Optional<User> oldUser = userRepository.findById(user.getId());
 
@@ -178,25 +172,13 @@ public class UserService {
         return userRepository.existsById(id);
     }
 
-    @PostConstruct
-    public void initUserData() {
+    public void initUserData(List<User> users) {
         log.info("UserService init");
-        try {
-            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/user.json"), StandardCharsets.UTF_8);
-            ArrayList<User> userArrayList = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
-            }.getType());
-            for (User user : userArrayList) {
-                userRepository.save(user);
-                log.info("User save : {}", user);
-            }
-            log.info("UserService init end");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            log.info("User : {}", user);
+        userRepository.saveAll(users);
+
+        for (User user : userRepository.findAll()) {
+            log.info("User : {}", gson.toJson(user));
         }
     }
 }
