@@ -1,24 +1,17 @@
-package ds25.hotel.reservation.management.system.entity.user;
+package ds25.hotel.reservation.management.system.dto.user;
 
-import jakarta.persistence.*;
+import ds25.hotel.reservation.management.system.entity.user.UserGrade;
+import ds25.hotel.reservation.management.system.entity.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 유저 정보를 담는 클래스
- *
- * @author 김남주
- */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
+public class UserDto {
     String id;
     String password;
     String name;
