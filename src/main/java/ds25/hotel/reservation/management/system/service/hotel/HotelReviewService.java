@@ -150,4 +150,12 @@ public class HotelReviewService {
         log.info("Review found by user complete");
         return hotelReviewDtoList;
     }
+
+    public void deleteHotelReview(Long hotelReviewIdx) {
+        Optional<HotelReview> hotelReview = hotelReviewRepository.findById(hotelReviewIdx);
+        if (hotelReview.isEmpty()) {
+            throw new RuntimeException("Hotel Review not found");
+        }
+        hotelReviewRepository.delete(hotelReview.get());
+    }
 }
