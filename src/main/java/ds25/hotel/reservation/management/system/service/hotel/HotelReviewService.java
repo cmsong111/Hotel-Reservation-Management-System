@@ -150,4 +150,18 @@ public class HotelReviewService {
         log.info("Review found by user complete");
         return hotelReviewDtoList;
     }
+
+    /**
+     * 호텔 리뷰 삭제
+     *
+     * @param hotelReviewIdx 호텔 리뷰 인덱스
+     * @aothor 김남주
+     */
+    public void deleteHotelReview(Long hotelReviewIdx) {
+        Optional<HotelReview> hotelReview = hotelReviewRepository.findById(hotelReviewIdx);
+        if (hotelReview.isEmpty()) {
+            throw new RuntimeException("Hotel Review not found");
+        }
+        hotelReviewRepository.delete(hotelReview.get());
+    }
 }
