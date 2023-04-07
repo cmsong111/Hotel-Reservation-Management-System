@@ -1,17 +1,24 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
+import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +31,7 @@ public class HotelService {
     HotelRoomRepository hotelRoomRepository;
     HotelReservationRepository hotelReservationRepository;
     ModelMapper modelMapper = new ModelMapper();
-
+    Gson gson = new Gson();
     @Autowired
     public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository, HotelRoomRepository hotelRoomRepository, HotelReservationRepository hotelReservationRepository) {
         this.hotelRepository = hotelRepository;
@@ -159,4 +166,21 @@ public class HotelService {
         }
         return hotelDto;
     }
+    @PostConstruct
+    public void initializeData(){
+        log.info("initializeData method called");
+        try {
+            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/hotel.json"), StandardCharsets.UTF_8);
+            ArrayList<Hotel> hotelArrayList = gson.fromJson(reader, new TypeToken<ArrayList<Hotel>>() {
+            }.getType());
+            for (Hotel hotel : hotelArrayList) {
+                hotelRepository.save(hotel);
+                log.info("hotel save : {}", hotel);
+            }
+            log.info("hotel init end");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
