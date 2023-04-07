@@ -8,6 +8,7 @@
     "images": [
       null
     ],
+    "reservationIdx": 1,
     "reply": null,
     "createdAt": "Apr 1, 2023, 11:00:00 AM",
     "updatedAt": "Apr 1, 2023, 11:00:00 AM"
@@ -21,6 +22,7 @@
     "images": [
       null
     ],
+    "reservationIdx": 1,
     "reply": "감사합니다.",
     "createdAt": "Apr 4, 2023, 11:00:00 AM",
     "updatedAt": "Apr 4, 2023, 11:00:00 AM"
@@ -34,6 +36,7 @@
     "images": [
       null
     ],
+    "reservationIdx": 1,
     "reply": "다음에 또 놀러오세요.",
     "createdAt": "Apr 6, 2023, 11:00:00 AM",
     "updatedAt": "Apr 6, 2023, 11:00:00 AM"
@@ -47,6 +50,7 @@
     "images": [
       null
     ],
+    "reservationIdx": 1,
     "reply": null,
     "createdAt": "Apr 5, 2023, 11:00:00 AM",
     "updatedAt": "Apr 5, 2023, 11:00:00 AM"

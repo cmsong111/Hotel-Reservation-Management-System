@@ -1,6 +1,7 @@
 package ds25.hotel.reservation.management.system.entity.hotel;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +14,5 @@ import lombok.NoArgsConstructor;
 @Entity
 public class HotelImage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idx;
-    @ManyToOne
-    private Hotel hotel;
     private String image;
 }

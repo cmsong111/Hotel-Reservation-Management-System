@@ -1,4 +1,28 @@
 package ds25.hotel.reservation.management.system.entity.hotel;
 
 public enum HotelRoomService {
+    Bathtub,
+    bidet,
+    Shower,
+    bathrobe,
+    dryer,
+    WiFi,
+    television,
+    refrigerator,
+    AirConditioner,
+    ParkingAvailable,
+    SwimmingPool,
+    Breakfast,
+    terrace,
+    Sauna,
+    Restaurant,
+    Bar,
+    Fitness,
+    Buffet,
+    Amenities,
+    Desk24,
+    LendingNotebook,
+    Coffeeshop,
+    Business,
+    baggageStorage,
 }

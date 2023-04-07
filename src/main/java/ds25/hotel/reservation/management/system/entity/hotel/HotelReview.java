@@ -27,7 +27,9 @@ public class HotelReview {
     String content;
     int rating;
     @OneToMany
-    ArrayList<HotelReviewImage> images;
+    ArrayList<HotelImage> images;
+    @OneToOne
+    HotelReservation reservation;
     String reply;
     Timestamp createdAt;
     Timestamp updatedAt;

@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
+import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,6 @@ public class HotelDto {
     private String phone;
     private String email;
     private String description;
-    private ArrayList<String> hotelImages;
+    private ArrayList<HotelImage> images;
     private ArrayList<HotelService> service;
 }

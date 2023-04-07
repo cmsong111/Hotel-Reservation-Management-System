@@ -3,11 +3,11 @@ package ds25.hotel.reservation.management.system.service.hotel;
 import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReviewDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReview;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelReviewImage;
 import ds25.hotel.reservation.management.system.entity.user.User;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelReviewImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReviewRepository;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import ds25.hotel.reservation.management.system.util.AggregateImpl;
@@ -27,18 +27,18 @@ public class HotelReviewService {
     private final UserRepository userRepository;
     private final HotelRepository hotelRepository;
     private final HotelReviewRepository hotelReviewRepository;
-    private final HotelReviewImageRepository hotelReviewImageRepository;
+    private final HotelImageRepository hotelImageRepository;
 
     Gson gson = new Gson();
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public HotelReviewService(HotelReviewRepository hotelReviewRepository, HotelReviewImageRepository hotelReviewImageRepository, HotelRepository hotelRepository,
-                              UserRepository userRepository) {
+    public HotelReviewService(HotelReviewRepository hotelReviewRepository, HotelRepository hotelRepository,
+                              UserRepository userRepository, HotelImageRepository hotelImageRepository) {
         this.hotelReviewRepository = hotelReviewRepository;
-        this.hotelReviewImageRepository = hotelReviewImageRepository;
         this.hotelRepository = hotelRepository;
         this.userRepository = userRepository;
+        this.hotelImageRepository = hotelImageRepository;
     }
 
     /**
@@ -65,16 +65,9 @@ public class HotelReviewService {
      * @return 호텔 리뷰 이미지 인덱스
      * @author 김남주
      */
-    public Long addHotelReviewImage(Long HotelIdx, String imageUrl) {
-        Optional<Hotel> hotel = hotelRepository.findById(HotelIdx);
-        if (hotel.isEmpty()) {
-            throw new RuntimeException("Hotel not found");
-        }
-        HotelReviewImage hotelReviewImage = HotelReviewImage.builder()
-                .imageUrl(imageUrl)
-                .build();
-
-        return hotelReviewImageRepository.save(hotelReviewImage).getIdx();
+    public String addHotelReviewImage(String imageUrl) {
+        HotelImage hotelImage = HotelImage.builder().image(imageUrl).build();
+        return hotelImageRepository.save(hotelImage).getImage();
     }
 
     /**
@@ -94,11 +87,13 @@ public class HotelReviewService {
             throw new RuntimeException("User not found");
         }
 
-        ArrayList<HotelReviewImage> hotelReviewImages = new ArrayList<>();
-        for (Long hotelReviewImageIdx : hotelReviewDto.getImagesImageUrl()) {
-            Optional<HotelReviewImage> hotelReviewImage = hotelReviewImageRepository.findById(hotelReviewImageIdx);
-            hotelReviewImages.add(hotelReviewImage.get());
+        for (HotelImage image : hotelReviewDto.getImages()) {
+            Optional<HotelImage> found =  hotelImageRepository.findById(image.getImage());
+            if (found.isEmpty()) {
+                hotelImageRepository.save(image);
+            }
         }
+
 
 
         HotelReview hotelReview = HotelReview.builder()
@@ -106,7 +101,7 @@ public class HotelReviewService {
                 .user(user.get())
                 .content(hotelReviewDto.getContent())
                 .rating(hotelReviewDto.getRating())
-                .images(hotelReviewImages)
+                .images(hotelReviewDto.getImages())
                 .reply(null)
                 .createdAt(new Timestamp(System.currentTimeMillis()))
                 .updatedAt(new Timestamp(System.currentTimeMillis()))

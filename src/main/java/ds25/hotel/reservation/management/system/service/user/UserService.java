@@ -179,7 +179,7 @@ public class UserService {
     }
 
     @PostConstruct
-    public void init() {
+    public void initUserData() {
         log.info("UserService init");
         try {
             Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/user.json"), StandardCharsets.UTF_8);
@@ -192,6 +192,11 @@ public class UserService {
             log.info("UserService init end");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            log.info("User : {}", user);
         }
     }
 }

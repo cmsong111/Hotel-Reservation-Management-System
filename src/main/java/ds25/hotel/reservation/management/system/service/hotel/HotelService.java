@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
-import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
@@ -15,9 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,7 @@ public class HotelService {
     HotelReservationRepository hotelReservationRepository;
     ModelMapper modelMapper = new ModelMapper();
     Gson gson = new Gson();
+
     @Autowired
     public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository, HotelRoomRepository hotelRoomRepository, HotelReservationRepository hotelReservationRepository) {
         this.hotelRepository = hotelRepository;
@@ -77,8 +75,6 @@ public class HotelService {
             log.info("호텔 방 정보가 삭제되었습니다");
             hotelReservationRepository.deleteByHotel(hotel.get());
             log.info("호텔 예약 정보가 삭제되었습니다");
-            hotelImageRepository.deleteByHotel(hotel.get());
-            log.info("호텔 이미지 정보가 삭제되었습니다");
             hotelRepository.deleteById(hotelDto.getIdx());
             log.info("호텔 정보가 삭제되었습니다");
         } else {
@@ -157,7 +153,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<HotelDto> getHotelByName(String name)  {
+    public List<HotelDto> getHotelByName(String name) {
         log.info("getHotelByName method called, keyword is " + name);
         List<Hotel> hotels = hotelRepository.findByName(name);
         List<HotelDto> hotelDto = new ArrayList<>();
@@ -166,21 +162,48 @@ public class HotelService {
         }
         return hotelDto;
     }
+
     @PostConstruct
-    public void initializeData(){
+    public void initHotelData() {
         log.info("initializeData method called");
+//        try {
+//            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/hotel.json"), StandardCharsets.UTF_8);
+//            ArrayList<Hotel> hotelArrayList = gson.fromJson(reader, new TypeToken<ArrayList<Hotel>>() {
+//            }.getType());
+//
+//            for (Hotel hotel : hotelArrayList) {
+//                log.info("hotel save : {}", hotelRepository.save(hotel));
+//            }
+//            log.info("hotel init end");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        List<Hotel> hotels = hotelRepository.findAll();
+//        for (Hotel hotel : hotels) {
+//            log.info("hotel : {}", hotel);
+//        }
+
+        Hotel hotel = Hotel.builder()
+                .name("호텔1")
+                .address("서울시 강남구")
+                .phone("010-1234-5678")
+                .description("호텔1입니다")
+                .build();
+
+        log.info("hotel: {}", hotelRepository.save(hotel));
+        //file wirte to C:/temp/hotel.json
         try {
-            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/hotel.json"), StandardCharsets.UTF_8);
-            ArrayList<Hotel> hotelArrayList = gson.fromJson(reader, new TypeToken<ArrayList<Hotel>>() {
-            }.getType());
-            for (Hotel hotel : hotelArrayList) {
-                hotelRepository.save(hotel);
-                log.info("hotel save : {}", hotel);
-            }
-            log.info("hotel init end");
+            Writer writer = new OutputStreamWriter(new FileOutputStream("C:/temp/hotel.json"), StandardCharsets.UTF_8);
+            gson.toJson(hotelRepository.findAll(), writer);
+            writer.flush();
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
 }
