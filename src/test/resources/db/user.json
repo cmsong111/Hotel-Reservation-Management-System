@@ -1,6 +1,5 @@
 [
   {
-    "idx": 1,
     "id": "admin",
     "password": "admin",
     "name": "admin",
@@ -10,7 +9,6 @@
     "grade": "GOLD"
   },
   {
-    "idx": 2,
     "id": "user",
     "password": "user",
     "name": "user",

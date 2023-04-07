@@ -1,15 +1,24 @@
 package ds25.hotel.reservation.management.system.service.user;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,14 +26,18 @@ import java.util.Optional;
 @Slf4j
 public class UserService {
 
+
     UserRepository userRepository;
     ModelMapper modelMapper = new ModelMapper();
+    Gson gson = new Gson();
     Singleton instance = Singleton.getInstance();
 
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.init();
     }
+
 
     /**
      * 로그인 메소드
@@ -166,5 +179,21 @@ public class UserService {
     public boolean isExistId(String id) {
         log.info("isExistId method called");
         return userRepository.existsById(id);
+    }
+
+    public void init() {
+        log.info("UserService init");
+        try {
+            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/user.json"), StandardCharsets.UTF_8);
+            ArrayList<User> userArrayList = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
+            }.getType());
+            for (User user : userArrayList) {
+                userRepository.save(user);
+                log.info("User save : {}", user);
+            }
+            log.info("UserService init end");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
