@@ -1,6 +1,8 @@
 package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
+import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
@@ -17,7 +19,9 @@ import java.util.Optional;
 
 @Slf4j
 public class LoginPage extends JFrame implements Observer, ActionListener {
-    private UserService userService = Singleton.getInstance().getUserService();
+    private UserService userService;
+
+
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
 
     private Panel panel;
@@ -40,7 +44,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
     }
 
     public LoginPage() {
-
+        userService = SpringBridge.getInstance().getBean(UserService.class);
         Singleton.getInstance().getUserProvider().registerObserver(this);
 
         setTitle("호텔 예약 시스템");
@@ -95,10 +99,15 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
 
         if (command.equals("login")) {
             log.info("로그인 버튼 클릭");
-            Optional<User> user = userService.login(id, password);
-            if (!user.isPresent()) {
-                JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호가 틀렸습니다.");
-            } else {
+            UserDto user;
+            try {
+                user = userService.login(id, password);
+            } catch (Exception exception) {
+                String message = exception.getMessage();
+                JOptionPane.showMessageDialog(null, message);
+                return;
+            }
+            if (user != null) {
                 JOptionPane.showMessageDialog(null, "로그인 성공");
                 new HotelSelectionPage();
                 userProvider.removeObserver(this);

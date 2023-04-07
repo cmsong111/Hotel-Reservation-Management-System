@@ -1,7 +1,7 @@
 package ds25.hotel.reservation.management.system.screens;
 
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.entity.user.User;
+import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.UserGrade;
 import ds25.hotel.reservation.management.system.entity.user.UserRole;
 import ds25.hotel.reservation.management.system.service.user.UserService;
@@ -11,12 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 @Slf4j
 public class UserRegisterPage extends JFrame implements ActionListener {
 
-    private UserService userService = Singleton.getInstance().getUserService();
+    private UserService userService;
 
     private JTextField idTextField;
     private JPasswordField passwordTextField;
@@ -31,18 +30,20 @@ public class UserRegisterPage extends JFrame implements ActionListener {
     private Panel panel;
 
     public UserRegisterPage() {
+        userService = SpringBridge.getInstance().getBean(UserService.class);
+
         setTitle("회원가입");
         setResizable(false);
 
         panel = new Panel();
 
-        idTextField = new JTextField("ID");
+        idTextField = new JTextField("user");
         idTextField.setBounds(100, 100, 400, 30);
 
-        passwordTextField = new JPasswordField("Password");
+        passwordTextField = new JPasswordField("user");
         passwordTextField.setBounds(100, 150, 400, 30);
 
-        passwordConfirmField = new JPasswordField("Password");
+        passwordConfirmField = new JPasswordField("user");
         passwordConfirmField.setBounds(100, 200, 400, 30);
 
         nameTextField = new JTextField("Name");
@@ -95,7 +96,7 @@ public class UserRegisterPage extends JFrame implements ActionListener {
                 return;
             }
             // Builder 패턴을 사용하여 객체 생성
-            User user = User.builder()
+            UserDto user = UserDto.builder()
                     .id(idTextField.getText())
                     .password(passwordTextField.getText())
                     .name(nameTextField.getText())
@@ -105,11 +106,12 @@ public class UserRegisterPage extends JFrame implements ActionListener {
                     .grade(UserGrade.BRONZE)
                     .build();
             try {
-                userService.register(user);
+                log.info((userService.register(user)).toString());
                 JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다.");
                 dispose();
-            } catch (IOException ex) {
-                log.info("회원가입 실패");
+            } catch (Exception ex) {
+                String message = ex.getMessage();
+                JOptionPane.showMessageDialog(null, message);
             }
 
         } else if (command.equals("Check ID")) {

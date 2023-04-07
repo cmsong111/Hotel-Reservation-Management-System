@@ -1,20 +1,40 @@
 package ds25.hotel.reservation.management.system.service.user;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+@Service
+@Slf4j
 public class UserService {
-    UserRepository userRepository = Singleton.getInstance().getUserRepository();
+
+
+    UserRepository userRepository;
+    ModelMapper modelMapper = new ModelMapper();
+    Gson gson = new Gson();
     Singleton instance = Singleton.getInstance();
 
-    public void init() {
-        userRepository.loadFromJson();
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.init();
     }
+
 
     /**
      * 로그인 메소드
@@ -24,15 +44,23 @@ public class UserService {
      * @return 로그인 성공시 유저 정보, 실패시 null
      * @author 김남주
      */
-    public Optional<User> login(String id, String password) {
-        Optional<User> user = userRepository.findByIdAndPassword(id, password);
+    public UserDto login(String id, String password) throws Exception {
+        log.info("User Login method is called");
 
-        if (user.isPresent()) {
-            instance.getUserProvider().updateUser(user.get());
-        } else {
-            instance.getUserProvider().updateUser(null);
+        if (id == null || id.equals("")) {
+            throw new Exception("Id is null");
+        } else if (password == null || password.equals("")) {
+            throw new Exception("Password is null");
         }
-        return user;
+
+        Optional<User> user = userRepository.findByIdAndPassword(id, password);
+        if (user.isPresent()) {
+            instance.userProvider.updateUser(modelMapper.map(user.get(), User.class));
+        } else {
+            throw new Exception("Id or Password is wrong");
+        }
+
+        return modelMapper.map(user.get(), UserDto.class);
     }
 
     /**
@@ -42,33 +70,75 @@ public class UserService {
      * @return 회원가입 성공시 유저 정보, 실패시 null
      * @author 김남주
      */
-    public Optional<User> register(User user) throws IOException {
-        boolean isExist = userRepository.isExistId(user.getId());
-        if (isExist || user.getIdx() != 0) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+    public UserDto register(UserDto user) throws Exception {
+        log.info("User Register method is called");
+
+        if (user.getName().isEmpty()) {
+            throw new Exception("이름을 입력해주세요.");
+        } else if (user.getId().isEmpty()) {
+            throw new Exception("아이디를 입력해주세요.");
+        } else if (user.getPassword().isEmpty()) {
+            throw new Exception("비밀번호를 입력해주세요.");
+        } else if (user.getPhone().isEmpty()) {
+            throw new Exception("전화번호를 입력해주세요.");
+        } else if (user.getEmail().isEmpty()) {
+            throw new Exception("이메일을 입력해주세요.");
+        } else if (userRepository.existsById(user.getId())) {
+            throw new Exception("이미 존재하는 아이디입니다.");
         }
-        return userRepository.save(user);
+
+        User newUser = modelMapper.map(user, User.class);
+
+        return modelMapper.map(userRepository.save(newUser), UserDto.class);
     }
 
 
     /**
      * 유저 정보 수정 메소드
      *
-     * @param user 수정할 유저 정보
+     * @param newUser 수정할 유저 정보
      * @return 수정된 유저 정보
      * @throws IOException 파일 저장 실패
      * @author 김남주
      */
-    public Optional<User> updateUser(User user) throws IOException {
-        if (user.getIdx() == 0) {
-            throw new IllegalArgumentException("유저 정보가 없습니다.");
-        }
-        Optional<User> updatedUser = userRepository.save(user);
+    public UserDto updateUser(UserDto newUser) throws Exception {
+        log.info("updateUser method called");
+        Optional<User> oldUser = userRepository.findById(newUser.getId());
 
-        if (updatedUser.isPresent()) {
-            instance.userProvider.updateUser(updatedUser.get());
+        if (oldUser.isEmpty()) {
+            throw new Exception("존재하지 않는 유저입니다.");
         }
-        return updatedUser;
+
+        if (!newUser.getName().isEmpty()) {
+            oldUser.get().setName(newUser.getName());
+        }
+        if (!newUser.getPhone().isEmpty()) {
+            oldUser.get().setPhone(newUser.getPhone());
+        }
+        if (!newUser.getEmail().isEmpty()) {
+            oldUser.get().setEmail(newUser.getEmail());
+        }
+
+        return modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
+    }
+
+    public UserDto changePassword(UserDto user, String oldPassword, String newPassword,String newPassword2) throws Exception {
+        log.info("changePassword method called");
+        Optional<User> oldUser = userRepository.findById(user.getId());
+
+        if (oldUser.isEmpty()) {
+            throw new Exception("존재하지 않는 유저입니다.");
+        }
+        if (!oldUser.get().getPassword().equals(oldPassword)) {
+            throw new Exception("현재 비밀번호가 일치하지 않습니다.");
+        }
+        if (!newPassword.equals(newPassword2)) {
+            throw new Exception("비밀번호가 일치하지 않습니다.");
+        }
+
+        oldUser.get().setPassword(newPassword);
+
+        return modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
     }
 
     /**
@@ -77,7 +147,8 @@ public class UserService {
      * @return 유저 정보 리스트
      * @author 김남주
      */
-    public ArrayList<User> findAll() {
+    public List<User> findAll() {
+        log.info("User findAll method called");
         return userRepository.findAll();
     }
 
@@ -88,7 +159,7 @@ public class UserService {
      * @throws IOException 파일 저장 실패
      * @author 김남주
      */
-    public void deleteUser(User user) throws IOException {
+    public void deleteUser(User user) throws Exception {
         userRepository.delete(user);
     }
 
@@ -98,10 +169,28 @@ public class UserService {
      * @author 김남주
      */
     public void logout() {
+        log.info("User logout method called");
         instance.getUserProvider().updateUser(null);
     }
 
     public boolean isExistId(String id) {
-        return userRepository.isExistId(id);
+        log.info("isExistId method called");
+        return userRepository.existsById(id);
+    }
+
+    public void init() {
+        log.info("UserService init");
+        try {
+            Reader reader = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("data/user.json"), StandardCharsets.UTF_8);
+            ArrayList<User> userArrayList = gson.fromJson(reader, new TypeToken<ArrayList<User>>() {
+            }.getType());
+            for (User user : userArrayList) {
+                userRepository.save(user);
+                log.info("User save : {}", user);
+            }
+            log.info("UserService init end");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
