@@ -2,7 +2,6 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
-import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.entity.user.UserGrade;
 import ds25.hotel.reservation.management.system.entity.user.UserRole;
 import ds25.hotel.reservation.management.system.service.user.UserService;

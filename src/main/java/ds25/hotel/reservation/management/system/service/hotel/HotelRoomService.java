@@ -1,7 +1,6 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 
-import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomImageRepository;
@@ -11,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
