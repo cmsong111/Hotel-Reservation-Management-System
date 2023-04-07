@@ -41,6 +41,13 @@ public class HotelReviewService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * 호텔 별 리뷰 리스트 조회
+     *
+     * @param hotelIdx 호텔 인덱스
+     * @return 호텔 리뷰 리스트
+     * @author 김남주
+     */
     public AggregateImpl getHotelReviewListByHotelIdx(Long hotelIdx) {
         List<HotelReview> hotelReviewList = hotelReviewRepository.findByHotel_Idx(hotelIdx);
         AggregateImpl aggregate = new AggregateImpl(hotelReviewList.size());
@@ -50,8 +57,16 @@ public class HotelReviewService {
         return aggregate;
     }
 
-    public Long addHotelReviewImage(Long hotelReviewIdx, String imageUrl) {
-        Optional<Hotel> hotel = hotelRepository.findById(hotelReviewIdx);
+    /**
+     * 리뷰 이미지 추가
+     *
+     * @param HotelIdx 호텔 리뷰 인덱스
+     * @param imageUrl 이미지 URL
+     * @return 호텔 리뷰 이미지 인덱스
+     * @author 김남주
+     */
+    public Long addHotelReviewImage(Long HotelIdx, String imageUrl) {
+        Optional<Hotel> hotel = hotelRepository.findById(HotelIdx);
         if (hotel.isEmpty()) {
             throw new RuntimeException("Hotel not found");
         }
@@ -62,6 +77,13 @@ public class HotelReviewService {
         return hotelReviewImageRepository.save(hotelReviewImage).getIdx();
     }
 
+    /**
+     * 호텔 리뷰 추가
+     *
+     * @param hotelReviewDto 호텔 리뷰 DTO
+     * @return 호텔 리뷰 DTO
+     * @author 김남주
+     */
     public HotelReviewDto addHotelReview(HotelReviewDto hotelReviewDto) {
         Optional<Hotel> hotel = hotelRepository.findById(hotelReviewDto.getHotelIdx());
         Optional<User> user = userRepository.findById(hotelReviewDto.getUserId());
@@ -92,6 +114,13 @@ public class HotelReviewService {
         return modelMapper.map(hotelReviewRepository.save(hotelReview), HotelReviewDto.class);
     }
 
+    /**
+     * 호텔 리뷰 답글 달기
+     *
+     * @param HotelReviewIdx 호텔 리뷰 인덱스
+     * @param reply          답글 내용
+     * @aothor 김남주
+     */
     public void replyToReview(Long HotelReviewIdx, String reply) {
         log.info("replyToReview: " + HotelReviewIdx + ", " + reply);
         Optional<HotelReview> hotelReview = hotelReviewRepository.findById(HotelReviewIdx);
@@ -104,6 +133,13 @@ public class HotelReviewService {
         log.info("reply saved");
     }
 
+    /**
+     * 호텔 리뷰 유저별 조회
+     *
+     * @param userId 유저 아이디
+     * @return 호텔 리뷰 리스트
+     * @aothor 김남주
+     */
     public ArrayList<HotelReviewDto> findReviewByUser(String userId) {
         log.info("findReviewByUser: " + userId);
         List<HotelReview> hotelReviewList = hotelReviewRepository.findByUser_Id(userId);
