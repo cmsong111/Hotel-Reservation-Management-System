@@ -10,10 +10,15 @@ import ds25.hotel.reservation.management.system.pattern.observer.Observer;
 import ds25.hotel.reservation.management.system.provider.UserProvider;
 import ds25.hotel.reservation.management.system.screens.HotelSelectionPage;
 import ds25.hotel.reservation.management.system.screens.admin.AdminMainPage;
+import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
+import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
+import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
+import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,11 +31,12 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
 
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
 
-    private Panel panel;
+    private Panel centerPanel;
     private JLabel label;
     private JTextField tx_ID;
     private JPasswordField tx_PassWord;
-    private JButton btn_Login, btn_SignUp, btn_logout,btn_admin;
+    private JButton btn_Login, btn_SignUp, btn_logout, btn_admin;
+    private JLabel lb_ID, lb_PassWord;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -52,48 +58,53 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
         setTitle("호텔 예약 시스템");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+        setLayout(new BorderLayout());
 
-        panel = new Panel();
+        centerPanel = new Panel(new GridLayout(7, 2, 30, 30));
 
-        label = new JLabel("GS25 호텔 예약 시스템");
-        label.setBounds(100, 100, 400, 100);
-
+        lb_ID = new JLabel("ID");
+        lb_ID.setHorizontalAlignment(SwingConstants.CENTER);
         tx_ID = new JTextField("user");
-        tx_ID.setBounds(100, 300, 400, 50);
 
+        lb_PassWord = new JLabel("Password");
+        lb_PassWord.setHorizontalAlignment(SwingConstants.CENTER);
         tx_PassWord = new JPasswordField("user");
-        tx_PassWord.setBounds(100, 370, 400, 50);
 
         btn_Login = new JButton("로그인");
-        btn_Login.setBounds(100, 450, 400, 50);
         btn_Login.setActionCommand("login");
         btn_Login.addActionListener(this);
 
         btn_SignUp = new JButton("회원가입");
-        btn_SignUp.setBounds(100, 520, 400, 50);
         btn_SignUp.setActionCommand("signup");
         btn_SignUp.addActionListener(this);
 
         btn_logout = new JButton("로그아웃");
-        btn_logout.setBounds(100, 590, 400, 50);
         btn_logout.setActionCommand("logout");
         btn_logout.addActionListener(this);
         btn_logout.setVisible(false);
 
         btn_admin = new JButton("관리자");
-        btn_admin.setBounds(100, 660, 400, 50);
         btn_admin.setActionCommand("admin");
         btn_admin.addActionListener(this);
 
+        centerPanel.add(new JLabel());
+        centerPanel.add(new JLabel());
+        centerPanel.add(lb_ID);
+        centerPanel.add(tx_ID);
+        centerPanel.add(lb_PassWord);
+        centerPanel.add(tx_PassWord);
+        centerPanel.add(new JLabel());
+        centerPanel.add(new JLabel());
+        centerPanel.add(btn_Login);
+        centerPanel.add(btn_SignUp);
+        centerPanel.add(btn_logout);
+        centerPanel.add(btn_admin);
 
-        add(label);
-        add(tx_ID);
-        add(tx_PassWord);
-        add(btn_Login);
-        add(btn_SignUp);
-        add(btn_logout);
-        add(btn_admin);
-        add(panel);
+        add(centerPanel, BorderLayout.CENTER);
+        add(new NorthPanel(),BorderLayout.NORTH);
+        add(new WestPanel(),BorderLayout.WEST);
+        add(new EastPanel(),BorderLayout.EAST);
+        add(new SouthPanel(), BorderLayout.SOUTH);
 
         setSize(600, 800);
         setLocationRelativeTo(null);
@@ -117,12 +128,11 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
                 return;
             }
             if (user != null && user.getRole().equals(UserRole.ADMIN)) {
-            	JOptionPane.showMessageDialog(null, "관리자 로그인 성공");
-            	new AdminMainPage();
-            	userProvider.removeObserver(this);
-            	dispose();
-            } else
-            if (user != null) {
+                JOptionPane.showMessageDialog(null, "관리자 로그인 성공");
+                new AdminMainPage();
+                userProvider.removeObserver(this);
+                dispose();
+            } else if (user != null) {
                 JOptionPane.showMessageDialog(null, "로그인 성공");
                 new HotelSelectionPage();
                 userProvider.removeObserver(this);

@@ -99,7 +99,6 @@
             <artifactId>spring-core</artifactId>
             <version>6.0.7</version>
         </dependency>
-
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
@@ -113,6 +112,12 @@
             <version>3.1.1</version>
         </dependency>
 
+        <!-- Java Swing -->
+        <dependency>
+            <groupId>no.tornado.databinding</groupId>
+            <artifactId>jxdatepicker-support</artifactId>
+            <version>1.0</version>
+        </dependency>
 
 
     </dependencies>

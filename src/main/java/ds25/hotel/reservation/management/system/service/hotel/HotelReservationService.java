@@ -58,8 +58,8 @@ public class HotelReservationService {
         HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
         hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).get());
         hotelReservation.setHotelRoom(hotelRoomRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
-        hotelReservation.setCheckInDate(Timestamp.valueOf(hotelReservationDto.getCheckInDate()));
-        hotelReservation.setCheckOutDate(Timestamp.valueOf(hotelReservationDto.getCheckOutDate()));
+        hotelReservation.setCheckInDate(hotelReservationDto.getCheckInDate());
+        hotelReservation.setCheckOutDate(hotelReservationDto.getCheckOutDate());
 
         return modelMapper.map(hotelReservationRepository.save(hotelReservation), HotelReservationDto.class);
     }

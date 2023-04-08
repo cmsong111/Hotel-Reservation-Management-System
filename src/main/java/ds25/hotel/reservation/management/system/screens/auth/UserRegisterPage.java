@@ -81,7 +81,7 @@ public class UserRegisterPage extends JFrame implements ActionListener {
         add(cancelButton);
         add(panel);
 
-        setSize(600, 600);
+        setSize(600, 800);
         setLocationRelativeTo(null);
         setVisible(true);
     }

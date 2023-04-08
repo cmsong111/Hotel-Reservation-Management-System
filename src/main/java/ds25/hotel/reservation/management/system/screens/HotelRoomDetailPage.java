@@ -23,7 +23,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
     ImageIcon imageIcon;
     JLabel imageLabel;
     int imageIndex = 0;
-    JButton nextButton, prevButton;
+    JButton nextButton, prevButton, reserveButton, cancelButton;
     Optional<HotelRoomDto> room;
 
     public HotelRoomDetailPage(Long idx) {
@@ -46,12 +46,15 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
         imageIcon = ImageLoader.getImage(room.get().getImages().get(0).getImage());
 
-        imageLabel = new JLabel(imageIcon);
-        imageLabel.setBounds(10, 10, 500, 500);
+
+        imageLabel = new JLabel();
+        imageLabel.setIcon(imageIcon);
+
+        imageLabel.setBounds(10, 10, 500, 281);
 
 
         scrollPane = new JScrollPane(textArea);
-        scrollPane.setBounds(10, 400, 500, 500);
+        scrollPane.setBounds(10, 300, 500, 500);
 
         nextButton = new JButton("다음");
         nextButton.setBounds(600, 10, 100, 30);
@@ -63,14 +66,27 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         prevButton.setActionCommand("prevImage");
         prevButton.addActionListener(this);
 
+        reserveButton = new JButton("예약하기");
+        reserveButton.setBounds(600, 210, 100, 30);
+        reserveButton.setActionCommand("reserve");
+        reserveButton.addActionListener(this);
+
+        cancelButton = new JButton("취소");
+        cancelButton.setBounds(600, 310, 100, 30);
+        cancelButton.setActionCommand("cancel");
+        cancelButton.addActionListener(this);
+
         add(imageLabel);
         add(scrollPane);
         add(nextButton);
         add(prevButton);
+        add(reserveButton);
+        add(cancelButton);
         add(panel);
 
-        setBounds(100, 100, 800, 900);
-        setLayout(null);
+
+        setSize(600, 800);
+        setLocationRelativeTo(null);
         setVisible(true);
 
 
@@ -81,18 +97,25 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         String command = e.getActionCommand();
 
         if (command.equals("nextImage")) {
-            log.info("nextImage idx : {}" , ++imageIndex);
+            log.info("nextImage idx : {}", ++imageIndex);
 
             if (imageIndex >= room.get().getImages().size()) {
                 imageIndex = 0;
             }
             imageLabel.setIcon(ImageLoader.getImage(room.get().getImages().get(imageIndex).getImage()));
         } else if (command.equals("prevImage")) {
-            log.info("prevImage idx : {}" , --imageIndex);
+            log.info("prevImage idx : {}", --imageIndex);
             if (imageIndex < 0) {
                 imageIndex = room.get().getImages().size() - 1;
             }
             imageLabel.setIcon(ImageLoader.getImage(room.get().getImages().get(imageIndex).getImage()));
+        }
+        else if (command.equals("reserve")) {
+            log.info("reserve");
+            new HotelReservationPage(room.get().getIdx());
+        } else if (command.equals("cancel")) {
+            log.info("cancel");
+            dispose();
         }
 
     }

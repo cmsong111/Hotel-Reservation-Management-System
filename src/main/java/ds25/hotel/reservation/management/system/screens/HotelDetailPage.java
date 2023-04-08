@@ -2,16 +2,20 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
 import ds25.hotel.reservation.management.system.provider.UserProvider;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
+import ds25.hotel.reservation.management.system.screens.widget.*;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelService;
+import ds25.hotel.reservation.management.system.util.ImageLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
@@ -21,13 +25,13 @@ public class HotelDetailPage extends JFrame implements Observer, ActionListener 
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
     HotelService hotelService = SpringBridge.getInstance().getBean(HotelService.class);
     HotelRoomService hotelRoomService = SpringBridge.getInstance().getBean(HotelRoomService.class);
-    JLabel label = new JLabel("DS25 호텔 예약 관리 시스템");
-    JLabel userLabel;
+    Optional<HotelDto> hotelDto;
+
+    private Panel centerPanel;
+    JLabel userLabel, hotelImageLabel;
     JTextField number;
     JTextArea hotelDetailTextArea, hotelRoomTextArea;
-    JButton btn_logout = new JButton("로그아웃");
-    JButton btn_RoomDetail;
-    JPanel panel = new JPanel();
+    JButton btn_logout = new JButton("로그아웃"), btn_RoomDetail;
 
 
     @Override
@@ -48,46 +52,52 @@ public class HotelDetailPage extends JFrame implements Observer, ActionListener 
 
         setTitle("DS25 호텔 예약 관리 시스템");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        userLabel = new JLabel(userProvider.getUser().get().getName() + "님 환영합니다.");
+        hotelDto = hotelService.findHotel(hotelIdx);
+        if (hotelDto.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "존재하지 않는 호텔입니다.");
+            return;
+        }
 
-        label.setBounds(100, 50, 400, 100);
-        userLabel.setBounds(100, 100, 400, 100);
-        btn_logout.setBounds(300, 50, 100, 100);
+        centerPanel = new Panel(new GridLayout(0, 1));
+
+        hotelImageLabel = new JLabel(ImageLoader.getImage(hotelDto.get().getImages().get(0).getImage()));
+
 
         btn_logout.addActionListener(this);
         btn_logout.setActionCommand("logout");
 
         hotelDetailTextArea = new JTextArea(hotelService.findHotel(hotelIdx).toString());
-        hotelDetailTextArea.setBounds(0, 200, 800, 150);
         hotelDetailTextArea.setEditable(true);
         hotelDetailTextArea.setLineWrap(true);
 
         hotelRoomTextArea = new JTextArea(hotelRoomService.findHotelRoomByHotelIdx(hotelIdx).toString());
-        hotelRoomTextArea.setBounds(0, 360, 800, 200);
         hotelRoomTextArea.setEditable(true);
         hotelRoomTextArea.setLineWrap(true);
 
         btn_RoomDetail = new JButton("객실 상세보기");
-        btn_RoomDetail.setBounds(500, 100, 100, 100);
         btn_RoomDetail.addActionListener(this);
         btn_RoomDetail.setActionCommand("roomDetail");
 
         hotelRoomTextArea = new JTextArea("1");
-        hotelRoomTextArea.setBounds(500, 50, 100, 50);
         hotelRoomTextArea.setEditable(true);
 
-        add(label);
-        add(userLabel);
-        add(btn_logout);
-        add(hotelDetailTextArea);
-        add(hotelRoomTextArea);
-        add(btn_RoomDetail);
 
-        add(panel);
+        centerPanel.add(hotelImageLabel);
+        centerPanel.add(hotelDetailTextArea);
+        centerPanel.add(hotelRoomTextArea);
+        centerPanel.add(btn_RoomDetail);
+        centerPanel.add(btn_logout);
 
 
-        setSize(800, 600);
+        add(centerPanel, BorderLayout.CENTER);
+        add(new NorthPanel(), BorderLayout.NORTH);
+        add(new WestPanel(), BorderLayout.WEST);
+        add(new EastPanel(), BorderLayout.EAST);
+        add(new LoginPanel(), BorderLayout.SOUTH);
+
+        setSize(600, 800);
         setLocationRelativeTo(null);
         setVisible(true);
     }
