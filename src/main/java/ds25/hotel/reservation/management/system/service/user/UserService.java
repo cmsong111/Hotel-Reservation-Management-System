@@ -178,7 +178,7 @@ public class UserService {
         userRepository.saveAll(users);
 
         for (User user : userRepository.findAll()) {
-            log.info("User : {}", gson.toJson(user));
+            log.info("User : {}", user );
         }
     }
 }

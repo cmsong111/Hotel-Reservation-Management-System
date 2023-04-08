@@ -204,10 +204,13 @@ public class HotelReservationService {
         return priorityQueue.size();
     }
 
-    public void initHotelReservationData(List<HotelReservation> hotelReservations){
+    public void initHotelReservationData(List<HotelReservation> hotelReservations) {
         log.info("호텔 예약 데이터를 초기화합니다");
-        for (HotelReservation hotelReservation : hotelReservations) {
-            log.info("Saved hotelReservation = {}", hotelReservation.toString());
+
+        hotelReservationRepository.saveAll(hotelReservations);
+
+        for (HotelReservation hotelReservation : hotelReservationRepository.findAll()) {
+            log.info("Saved hotelReservation = {}", hotelReservation);
         }
     }
 

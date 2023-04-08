@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -327,7 +329,30 @@ public class DataInit {
                     .build()
     ));
     List<HotelReview> hotelReviews = new ArrayList<>(Arrays.asList());
-    List<HotelReservation> hotelReservations = new ArrayList<>(Arrays.asList());
+    List<HotelReservation> hotelReservations = new ArrayList<>(Arrays.asList(
+            HotelReservation.builder()
+                    .user(User.builder().id("user").build())
+                    .hotelRoom(HotelRoom.builder().idx(1L).build())
+                    .checkInDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 7, 0, 0)))
+                    .checkOutDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 8, 0, 0)))
+                    .peopleCount(2)
+                    .totalPrice(200000)
+                    .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                    .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
+                    .build(),
+            HotelReservation.builder()
+                    .user(User.builder().id("user").build())
+                    .hotelRoom(HotelRoom.builder().idx(2L).build())
+                    .checkInDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 15, 0, 0)))
+                    .checkOutDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 11, 0, 0)))
+                    .peopleCount(2)
+                    .totalPrice(200000)
+                    .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                    .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
+                    .build()
+
+
+    ));
 
     List<HotelImage> hotelImages = new ArrayList<>(Arrays.asList());
 

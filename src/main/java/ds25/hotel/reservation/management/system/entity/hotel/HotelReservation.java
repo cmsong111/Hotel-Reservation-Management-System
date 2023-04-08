@@ -27,7 +27,6 @@ public class HotelReservation {
     private Timestamp checkOutDate;
     private long peopleCount;
     private long totalPrice;
-    private HotelReservationState status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

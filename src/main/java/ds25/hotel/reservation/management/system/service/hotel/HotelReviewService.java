@@ -163,9 +163,13 @@ public class HotelReviewService {
     public void initHotelReviewData(List<HotelReview> hotelReviewList) {
         log.info("initHotelReview");
 
-        for (HotelReview hotelReview : hotelReviewList) {
-            log.info("Review : {}" + hotelReviewRepository.save(hotelReview));
+        hotelReviewRepository.saveAll(hotelReviewList);
+
+        for (HotelReview hotelReview : hotelReviewRepository.findAll()) {
+            log.info("Saved review : {}" , hotelReview);
         }
+
+
     }
 
 }
