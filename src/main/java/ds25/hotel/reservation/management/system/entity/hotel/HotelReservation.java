@@ -2,7 +2,10 @@ package ds25.hotel.reservation.management.system.entity.hotel;
 
 import ds25.hotel.reservation.management.system.entity.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
@@ -19,14 +22,11 @@ public class HotelReservation {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Hotel hotel;
-    @ManyToOne
     private HotelRoom hotelRoom;
     private Timestamp checkInDate;
     private Timestamp checkOutDate;
     private long peopleCount;
     private long totalPrice;
-    private HotelReservationState status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

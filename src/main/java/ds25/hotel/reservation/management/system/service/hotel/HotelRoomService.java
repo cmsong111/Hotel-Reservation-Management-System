@@ -1,10 +1,14 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 
+import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomImageRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
+import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +21,22 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class HotelRoomService {
+    private final HotelImageRepository hotelImageRepository;
+    UserRepository userRepository;
+    HotelRepository hotelRepository;
     HotelRoomRepository hotelRoomRepository;
-    HotelRoomImageRepository hotelRoomImageRepository;
     ModelMapper modelMapper = new ModelMapper();
+    Gson gson = new Gson();
+
 
     @Autowired
-    public HotelRoomService(HotelRoomRepository hotelRoomRepository, HotelRoomImageRepository hotelRoomImageRepository) {
+    public HotelRoomService(HotelRoomRepository hotelRoomRepository, UserRepository userRepository,
+                            HotelRepository hotelRepository,
+                            HotelImageRepository hotelImageRepository) {
         this.hotelRoomRepository = hotelRoomRepository;
-        this.hotelRoomImageRepository = hotelRoomImageRepository;
+        this.userRepository = userRepository;
+        this.hotelRepository = hotelRepository;
+        this.hotelImageRepository = hotelImageRepository;
     }
 
 
@@ -136,5 +148,21 @@ public class HotelRoomService {
             hotelRoomDtos.add(modelMapper.map(hotelRoom, HotelRoomDto.class));
         }
         return hotelRoomDtos;
+    }
+
+    public void initHotelRoomData(List<HotelRoom> hotelRooms) {
+        log.info("init HotelRoom Service");
+        for (HotelRoom hotelRoom: hotelRooms){
+            List<HotelImage> saved = new ArrayList<>();
+            for(HotelImage hotelImage: hotelRoom.getImages()){
+                saved.add(hotelImageRepository.save(hotelImage));
+            }
+            hotelRoom.setImages(saved);
+            hotelRoomRepository.save(hotelRoom);
+        }
+
+        for (HotelRoom hotelRoom: hotelRoomRepository.findAll()){
+            log.info("hotelRoom : {} Saved ", hotelRoom);
+        }
     }
 }

@@ -57,7 +57,6 @@ public class HotelReservationService {
         }
         HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
         hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).get());
-        hotelReservation.setHotel(hotelRepository.findById(hotelReservationDto.getHotelIdx()).get());
         hotelReservation.setHotelRoom(hotelRoomRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
         hotelReservation.setCheckInDate(Timestamp.valueOf(hotelReservationDto.getCheckInDate()));
         hotelReservation.setCheckOutDate(Timestamp.valueOf(hotelReservationDto.getCheckOutDate()));
@@ -130,7 +129,7 @@ public class HotelReservationService {
      */
     public List<HotelReservation> getHotelReservationByHotelRoomIdx(Long hotelRoomIdx) throws IOException {
         log.info("호텔 객실 별 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotel_Idx(hotelRoomIdx);
+        return hotelReservationRepository.findByHotelRoom_Hotel_Idx(hotelRoomIdx);
     }
 
     /**
@@ -146,7 +145,6 @@ public class HotelReservationService {
         List<HotelReservationDto> hotelReservationDtos = new ArrayList<>();
         for (HotelReservation hotelReservation : hotelReservations) {
             HotelReservationDto hotelReservationDto = modelMapper.map(hotelReservation, HotelReservationDto.class);
-            hotelReservationDto.setHotelIdx(hotelReservation.getHotel().getIdx());
             hotelReservationDto.setHotelRoomIdx(hotelReservation.getHotelRoom().getIdx());
             hotelReservationDtos.add(hotelReservationDto);
         }
@@ -163,7 +161,7 @@ public class HotelReservationService {
      */
     public List<HotelReservation> getHotelReservationByHotelId(long hotelId) throws IOException {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotel_Idx(hotelId);
+        return hotelReservationRepository.findByHotelRoom_Hotel_Idx(hotelId);
     }
 
     /**
@@ -204,6 +202,16 @@ public class HotelReservationService {
         }
 
         return priorityQueue.size();
+    }
+
+    public void initHotelReservationData(List<HotelReservation> hotelReservations) {
+        log.info("호텔 예약 데이터를 초기화합니다");
+
+        hotelReservationRepository.saveAll(hotelReservations);
+
+        for (HotelReservation hotelReservation : hotelReservationRepository.findAll()) {
+            log.info("Saved hotelReservation = {}", hotelReservation);
+        }
     }
 
 }

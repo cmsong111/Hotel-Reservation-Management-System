@@ -1,11 +1,8 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
 import ds25.hotel.reservation.management.system.entity.hotel.BedSize;
-import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelRoomImage;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelService;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +25,6 @@ public class HotelRoomDto {
     private int peopleCount;
     private BedSize bedSize;
     private int roomSize;
-    private ArrayList<String> images;
+    private ArrayList<HotelImage> images;
     private ArrayList<HotelService> service;
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +17,7 @@ public class HotelRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Hotel hotel;
     private String name;
     private String description;
@@ -27,7 +27,7 @@ public class HotelRoom {
     private int peopleCount;
     private BedSize bedSize;
     private int roomSize;
-    @OneToMany
-    private ArrayList<HotelRoomImage> images;
-    private ArrayList<HotelService> service;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<HotelImage> images;
+    private List<HotelService> service;
 }

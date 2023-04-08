@@ -1,15 +1,19 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
+import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Fetch;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ public class HotelService {
     HotelRoomRepository hotelRoomRepository;
     HotelReservationRepository hotelReservationRepository;
     ModelMapper modelMapper = new ModelMapper();
+    Gson gson = new Gson();
 
     @Autowired
     public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository, HotelRoomRepository hotelRoomRepository, HotelReservationRepository hotelReservationRepository) {
@@ -68,10 +73,7 @@ public class HotelService {
         if (hotel.isPresent()) {
             hotelRoomRepository.deleteByHotel(hotel.get());
             log.info("호텔 방 정보가 삭제되었습니다");
-            hotelReservationRepository.deleteByHotel(hotel.get());
-            log.info("호텔 예약 정보가 삭제되었습니다");
-            hotelImageRepository.deleteByHotel(hotel.get());
-            log.info("호텔 이미지 정보가 삭제되었습니다");
+
             hotelRepository.deleteById(hotelDto.getIdx());
             log.info("호텔 정보가 삭제되었습니다");
         } else {
@@ -150,7 +152,7 @@ public class HotelService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<HotelDto> getHotelByName(String name)  {
+    public List<HotelDto> getHotelByName(String name) {
         log.info("getHotelByName method called, keyword is " + name);
         List<Hotel> hotels = hotelRepository.findByName(name);
         List<HotelDto> hotelDto = new ArrayList<>();
@@ -159,4 +161,22 @@ public class HotelService {
         }
         return hotelDto;
     }
+
+    public void initHotelData(List<Hotel> hotels) {
+        log.info("initializeData method called");
+        for (Hotel hotel : hotels) {
+            List<HotelImage> saved = new ArrayList<>();
+            for(HotelImage hotelImage : hotel.getImages()){
+                saved.add(hotelImageRepository.save(hotelImage));
+            }
+            hotel.setImages(saved);
+            hotelRepository.save(hotel);
+        }
+
+        for (Hotel hotel: hotelRepository.findAll()) {
+            log.info("hotel 입력 완. : {}", hotel.toString());
+        }
+
+    }
+
 }

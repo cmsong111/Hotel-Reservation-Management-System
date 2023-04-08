@@ -19,7 +19,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "ds25.hotel.reservation.management.system.repository",
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
-@ComponentScan(basePackages = "ds25.hotel.reservation.management.system.service")
+@ComponentScan(basePackages = {"ds25.hotel.reservation.management.system.service", "ds25.hotel.reservation.management.system.configuration"})
 public class JpaConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean  entityManagerFactory() {

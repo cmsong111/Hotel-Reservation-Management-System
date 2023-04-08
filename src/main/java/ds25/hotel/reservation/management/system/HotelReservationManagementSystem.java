@@ -20,6 +20,8 @@ public class HotelReservationManagementSystem {
         log.info("인스턴스 초기화");
         Singleton.getInstance().init();
 
+
+
         new LoginPage();
     }
 }

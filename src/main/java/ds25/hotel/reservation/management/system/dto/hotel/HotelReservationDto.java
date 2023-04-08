@@ -1,16 +1,11 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
-import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservationState;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
-import ds25.hotel.reservation.management.system.entity.user.User;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data

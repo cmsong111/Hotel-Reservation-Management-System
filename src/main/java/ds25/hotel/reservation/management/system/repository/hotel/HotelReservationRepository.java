@@ -14,10 +14,7 @@ public interface HotelReservationRepository extends JpaRepository<HotelReservati
 
     List<HotelReservation> findByHotelRoom_IdxAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqual(Long idx, Timestamp checkInDate, Timestamp checkOutDate);
 
-    List<HotelReservation> findByHotel_Idx(Long idx);
+    List<HotelReservation> findByHotelRoom_Hotel_Idx(Long idx);
 
     List<HotelReservation> findByUser_Id(String id);
-
-    long deleteByHotel(Hotel hotel);
-
 }
