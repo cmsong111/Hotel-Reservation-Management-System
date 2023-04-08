@@ -29,5 +29,5 @@ public class HotelRoom {
     private int roomSize;
     @OneToMany(fetch = FetchType.EAGER)
     private List<HotelImage> images;
-    private List<HotelService> service;
+    private List<HotelServiceEnum> service;
 }

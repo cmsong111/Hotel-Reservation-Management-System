@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.configuration;
 
+import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.provider.UserProvider;
 import lombok.Data;
 
@@ -18,6 +19,9 @@ public class Singleton {
     }
 
     public UserProvider userProvider;
+    public User admin;
+    public User user;
+
 
     public void init() {
         userProvider = new UserProvider();

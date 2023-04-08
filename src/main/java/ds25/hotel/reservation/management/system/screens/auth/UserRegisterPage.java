@@ -1,4 +1,4 @@
-package ds25.hotel.reservation.management.system.screens;
+package ds25.hotel.reservation.management.system.screens.auth;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;

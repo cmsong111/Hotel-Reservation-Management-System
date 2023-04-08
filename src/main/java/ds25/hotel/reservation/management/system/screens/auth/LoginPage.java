@@ -1,12 +1,15 @@
-package ds25.hotel.reservation.management.system.screens;
+package ds25.hotel.reservation.management.system.screens.auth;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
+import ds25.hotel.reservation.management.system.entity.user.UserRole;
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
 import ds25.hotel.reservation.management.system.provider.UserProvider;
+import ds25.hotel.reservation.management.system.screens.HotelSelectionPage;
+import ds25.hotel.reservation.management.system.screens.admin.AdminMainPage;
 import ds25.hotel.reservation.management.system.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,15 +24,13 @@ import java.util.Optional;
 public class LoginPage extends JFrame implements Observer, ActionListener {
     private UserService userService;
 
-
     UserProvider userProvider = Singleton.getInstance().getUserProvider();
 
     private Panel panel;
     private JLabel label;
     private JTextField tx_ID;
     private JPasswordField tx_PassWord;
-    private JButton btn_Login, btn_SignUp, btn_logout;
-
+    private JButton btn_Login, btn_SignUp, btn_logout,btn_admin;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -42,6 +43,7 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
             log.info(user.get().getName() + "가 로그인했습니다.");
         }
     }
+
 
     public LoginPage() {
         userService = SpringBridge.getInstance().getBean(UserService.class);
@@ -78,12 +80,19 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
         btn_logout.addActionListener(this);
         btn_logout.setVisible(false);
 
+        btn_admin = new JButton("관리자");
+        btn_admin.setBounds(100, 660, 400, 50);
+        btn_admin.setActionCommand("admin");
+        btn_admin.addActionListener(this);
+
+
         add(label);
         add(tx_ID);
         add(tx_PassWord);
         add(btn_Login);
         add(btn_SignUp);
         add(btn_logout);
+        add(btn_admin);
         add(panel);
 
         setSize(600, 800);
@@ -107,6 +116,12 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
                 JOptionPane.showMessageDialog(null, message);
                 return;
             }
+            if (user != null && user.getRole().equals(UserRole.ADMIN)) {
+            	JOptionPane.showMessageDialog(null, "관리자 로그인 성공");
+            	new AdminMainPage();
+            	userProvider.removeObserver(this);
+            	dispose();
+            } else
             if (user != null) {
                 JOptionPane.showMessageDialog(null, "로그인 성공");
                 new HotelSelectionPage();
@@ -120,6 +135,9 @@ public class LoginPage extends JFrame implements Observer, ActionListener {
             log.info("로그아웃 버튼 클릭");
             userProvider.updateUser(null);
             JOptionPane.showMessageDialog(null, "로그아웃 성공");
+        } else if (command.equals("admin")) {
+            log.info("관리자 버튼 클릭");
+            new LoginPage();
         }
     }
 }
