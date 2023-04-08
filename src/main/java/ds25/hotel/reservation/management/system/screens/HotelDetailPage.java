@@ -73,7 +73,7 @@ public class HotelDetailPage extends JFrame implements Observer, ActionListener 
         btn_RoomDetail.addActionListener(this);
         btn_RoomDetail.setActionCommand("roomDetail");
 
-        hotelRoomTextArea = new JTextArea();
+        hotelRoomTextArea = new JTextArea("1");
         hotelRoomTextArea.setBounds(500, 50, 100, 50);
         hotelRoomTextArea.setEditable(true);
 
