@@ -3,15 +3,15 @@ package ds25.hotel.reservation.management.system.screens;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
-import ds25.hotel.reservation.management.system.entity.user.User;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.pattern.facoryMethod.HotelReservationFactoryMethod;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
-import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
+import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
 import ds25.hotel.reservation.management.system.service.user.UserService;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -26,11 +26,11 @@ import java.util.Optional;
 
 public class HotelReservationPage extends JFrame implements ActionListener {
 
-    Optional<User> user;
+    UserDto user;
     HotelReservationDto hotelReservationDto;
 
     UserService userService;
-    HotelRoomService hotelRoomService;
+    HotelRoomTypeService hotelRoomTypeService;
     HotelReservationService hotelReservationService;
 
 
@@ -43,19 +43,19 @@ public class HotelReservationPage extends JFrame implements ActionListener {
     private JButton reserveButton, cancelButton;
 
 
-    Optional<HotelRoomDto> hotelRoomDto;
+    Optional<HotelRoomTypeDto> hotelRoomDto;
 
     public HotelReservationPage(Long hotelRoomIdx) {
 
         userService = SpringBridge.getInstance().getBean(UserService.class);
-        hotelRoomService = SpringBridge.getInstance().getBean(HotelRoomService.class);
+        hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
         hotelReservationService = SpringBridge.getInstance().getBean(HotelReservationService.class);
 
-        user = Singleton.getInstance().getUserProvider().getUser();
+        user = Singleton.getInstance().getUser();
         hotelReservationDto = HotelReservationFactoryMethod.createReservation(hotelRoomIdx);
-        hotelRoomDto = hotelRoomService.findHotelRoomByIdx(hotelRoomIdx);
+        hotelRoomDto = hotelRoomTypeService.findHotelRoomByIdx(hotelRoomIdx);
 
-        if (user.isEmpty() || hotelRoomDto.isEmpty()) {
+        if (user == null || hotelRoomDto.isEmpty()) {
             JOptionPane.showMessageDialog(null, "로그인이 필요합니다.");
             return;
         }

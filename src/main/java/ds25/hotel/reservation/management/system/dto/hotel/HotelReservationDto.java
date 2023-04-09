@@ -22,8 +22,6 @@ public class HotelReservationDto {
     private Timestamp checkOutDate;
     private long peopleCount;
     private long totalPrice;
-    private HotelReservationState status;
-    // TODO : 추후 Swing 에서 쓰기 편한 객체로 변경
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

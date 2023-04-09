@@ -1,8 +1,8 @@
 package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
-import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
 import ds25.hotel.reservation.management.system.util.ImageLoader;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,17 +17,17 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
     JTextArea textArea;
     JScrollPane scrollPane;
-    HotelRoomService roomService;
+    HotelRoomTypeService roomService;
     Panel panel;
 
     ImageIcon imageIcon;
     JLabel imageLabel;
     int imageIndex = 0;
     JButton nextButton, prevButton, reserveButton, cancelButton;
-    Optional<HotelRoomDto> room;
+    Optional<HotelRoomTypeDto> room;
 
     public HotelRoomDetailPage(Long idx) {
-        roomService = SpringBridge.getInstance().getBean(HotelRoomService.class);
+        roomService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
         room = roomService.findHotelRoomByIdx(idx);
         if (room.isEmpty()) {
             JOptionPane.showMessageDialog(null, "해당 호텔 방이 존재하지 않습니다.");

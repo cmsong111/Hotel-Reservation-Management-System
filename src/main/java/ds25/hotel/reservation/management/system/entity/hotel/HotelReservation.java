@@ -22,7 +22,7 @@ public class HotelReservation {
     @ManyToOne
     private User user;
     @ManyToOne
-    private HotelRoom hotelRoom;
+    private HotelRoomType hotelRoomType;
     private Timestamp checkInDate;
     private Timestamp checkOutDate;
     private long peopleCount;

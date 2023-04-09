@@ -7,7 +7,7 @@ import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
-import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
+import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelService;
 import ds25.hotel.reservation.management.system.util.ImageLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class HotelDetailPage extends JFrame implements  ActionListener {
     HotelService hotelService = SpringBridge.getInstance().getBean(HotelService.class);
-    HotelRoomService hotelRoomService = SpringBridge.getInstance().getBean(HotelRoomService.class);
+    HotelRoomTypeService hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
     Optional<HotelDto> hotelDto;
 
     private Panel centerPanel;
@@ -56,7 +56,7 @@ public class HotelDetailPage extends JFrame implements  ActionListener {
         hotelDetailTextArea.setEditable(true);
         hotelDetailTextArea.setLineWrap(true);
 
-        hotelRoomTextArea = new JTextArea(hotelRoomService.findHotelRoomByHotelIdx(hotelIdx).toString());
+        hotelRoomTextArea = new JTextArea(hotelRoomTypeService.findHotelRoomByHotelIdx(hotelIdx).toString());
         hotelRoomTextArea.setEditable(true);
         hotelRoomTextArea.setLineWrap(true);
 

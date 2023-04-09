@@ -48,9 +48,7 @@ public class UserService {
         }
 
         Optional<User> user = userRepository.findByIdAndPassword(id, password);
-        if (user.isPresent()) {
-            instance.userProvider.updateUser(modelMapper.map(user.get(), User.class));
-        } else {
+        if (user.isEmpty()) {
             throw new Exception("Id or Password is wrong");
         }
 
@@ -164,7 +162,7 @@ public class UserService {
      */
     public void logout() {
         log.info("User logout method called");
-        instance.getUserProvider().updateUser(null);
+        instance.setUser(null);
     }
 
     public boolean isExistId(String id) {

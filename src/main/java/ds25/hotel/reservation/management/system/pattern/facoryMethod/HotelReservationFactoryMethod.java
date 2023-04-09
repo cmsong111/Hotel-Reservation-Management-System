@@ -9,7 +9,7 @@ public class HotelReservationFactoryMethod {
 
         return HotelReservationDto.builder()
                 .hotelIdx(HotelRoomIdx)
-                .userId(Singleton.getInstance().getUserProvider().getUser().get().getId())
+                .userId(Singleton.getInstance().getUser().getId())
                 .peopleCount(2)
                 .hotelRoomIdx(HotelRoomIdx)
                 .build();

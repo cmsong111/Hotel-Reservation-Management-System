@@ -32,7 +32,6 @@ public class AdminMainPage extends JFrame implements ActionListener {
 
 
         setTitle("관리자 페이지");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setSize(500, 500);
         setVisible(true);

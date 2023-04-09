@@ -10,10 +10,7 @@ import java.util.List;
 @Repository
 public interface HotelReservationRepository extends JpaRepository<HotelReservation, Long> {
     List<HotelReservation> findAll();
-
-    List<HotelReservation> findByHotelRoom_IdxAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqual(Long idx, Timestamp checkInDate, Timestamp checkOutDate);
-
-    List<HotelReservation> findByHotelRoom_Hotel_Idx(Long idx);
+    List<HotelReservation> findByHotelRoomType_Hotel_Idx(Long idx);
 
     List<HotelReservation> findByUser_Id(String id);
 }
