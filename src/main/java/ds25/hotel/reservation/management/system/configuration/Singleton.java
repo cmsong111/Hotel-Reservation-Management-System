@@ -1,10 +1,11 @@
 package ds25.hotel.reservation.management.system.configuration;
 
-import ds25.hotel.reservation.management.system.entity.user.User;
-import ds25.hotel.reservation.management.system.provider.UserProvider;
+import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
+@Slf4j
 public class Singleton {
     private static Singleton singleton = new Singleton();
 
@@ -18,12 +19,11 @@ public class Singleton {
         return singleton;
     }
 
-    public UserProvider userProvider;
-    public User admin;
-    public User user;
+    public UserDto admin;
+    public UserDto user;
 
 
     public void init() {
-        userProvider = new UserProvider();
+        log.info("싱글톤 초기화");
     }
 }
