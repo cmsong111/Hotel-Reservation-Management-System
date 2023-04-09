@@ -2,6 +2,9 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelRoomType;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
@@ -13,17 +16,23 @@ import ds25.hotel.reservation.management.system.util.ImageLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
 
 @Slf4j
-public class HotelDetailPage extends JFrame implements  ActionListener {
+public class HotelDetailPage extends JFrame implements ActionListener, ListSelectionListener {
     private final HotelService hotelService = SpringBridge.getInstance().getBean(HotelService.class);
     private final HotelRoomTypeService hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
 
     Optional<HotelDto> hotelDto;
+
+    private JList hotelRoomList;
+    private DefaultListModel hotelRoomListModel;
+    private JScrollPane hotelRoomListScrollPane;
 
     private Panel centerPanel;
     LoginPanel loginPanel;
@@ -33,8 +42,20 @@ public class HotelDetailPage extends JFrame implements  ActionListener {
     JButton btn_logout = new JButton("로그아웃"), btn_RoomDetail;
 
 
-
     public HotelDetailPage(long hotelIdx) {
+
+        hotelRoomListModel = new DefaultListModel();
+        hotelRoomList = new JList(hotelRoomListModel);
+        hotelRoomList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        hotelRoomList.addListSelectionListener(this);
+
+        hotelRoomListScrollPane = new JScrollPane(hotelRoomList);
+        hotelRoomListScrollPane.setPreferredSize(new Dimension(250, 80));
+
+        hotelRoomTypeService.findHotelRoomByHotelIdx(hotelIdx).forEach(hotelRoomTypeDto -> {
+            hotelRoomListModel.addElement(hotelRoomTypeDto);
+        });
+
 
         setTitle("DS25 호텔 예약 관리 시스템");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +67,7 @@ public class HotelDetailPage extends JFrame implements  ActionListener {
             return;
         }
 
-        centerPanel = new Panel(new GridLayout(0, 1));
+        centerPanel = new Panel(new BorderLayout());
 
         hotelImageLabel = new JLabel(ImageLoader.getImage(hotelDto.get().getImages().get(0).getImage()));
 
@@ -70,14 +91,12 @@ public class HotelDetailPage extends JFrame implements  ActionListener {
         hotelRoomTextArea.setEditable(true);
 
 
-        centerPanel.add(hotelImageLabel);
-        centerPanel.add(hotelDetailTextArea);
-        centerPanel.add(hotelRoomTextArea);
-        centerPanel.add(btn_RoomDetail);
+        centerPanel.add(hotelImageLabel, BorderLayout.NORTH);
+        centerPanel.add(hotelRoomListScrollPane, BorderLayout.CENTER);
 
 
         add(centerPanel, BorderLayout.CENTER);
-        add(new NorthPanel(), BorderLayout.NORTH);
+        add(new NorthPanel(hotelDto.get().getName()), BorderLayout.NORTH);
         add(new WestPanel(), BorderLayout.WEST);
         add(new EastPanel(), BorderLayout.EAST);
         loginPanel = new LoginPanel();
@@ -97,13 +116,20 @@ public class HotelDetailPage extends JFrame implements  ActionListener {
             this.dispose();
             new LoginPage();
         }
-        if (command.equals("roomDetail")) {
-            log.info("객실 상세보기 버튼 클릭");
-            if (hotelRoomTextArea.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "객실 번호를 입력해주세요.");
-                return;
-            }
-            new HotelRoomDetailPage(Long.valueOf(hotelRoomTextArea.getText()));
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (e.getValueIsAdjusting()) {
+            return;
+        }
+        if (e.getSource() == hotelRoomList) {
+            // hotelRoomList 에서 idx 를 가져와서 new HotelRoomDetailPage(hotelIdx)로 이동
+            log.info(e.getSource().toString());
+            log.info(hotelRoomList.getSelectedValue().toString());
+            HotelRoomTypeDto hotelRoomDto = (HotelRoomTypeDto) hotelRoomList.getSelectedValue();
+            new HotelRoomDetailPage(hotelRoomDto.getIdx());
+
         }
     }
 }

@@ -12,4 +12,12 @@ public class NorthPanel extends JPanel {
         add(label);
     }
 
+    public NorthPanel(String title) {
+        JLabel label = new JLabel(title);
+        Font font = label.getFont();
+        float fontSize = 24.0f;
+        label.setFont(font.deriveFont(fontSize));
+        add(label);
+    }
+
 }
