@@ -4,7 +4,7 @@ import ds25.hotel.reservation.management.system.entity.hotel.*;
 import ds25.hotel.reservation.management.system.entity.user.User;
 import ds25.hotel.reservation.management.system.entity.user.UserGrade;
 import ds25.hotel.reservation.management.system.entity.user.UserRole;
-import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
+import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
 import ds25.hotel.reservation.management.system.service.hotel.*;
 import ds25.hotel.reservation.management.system.service.user.UserService;
 import jakarta.annotation.PostConstruct;
@@ -26,16 +26,19 @@ public class DataInit {
     HotelRoomTypeService hotelRoomTypeService;
     HotelReservationService hotelReservationService;
     HotelImageService hotelImageService;
+    HotelRoomService hotelRoomService;
     UserService userService;
 
+
     @Autowired
-    public DataInit(HotelImageService hotelImageService, HotelReservationService hotelReservationService, HotelService hotelService, HotelReviewService hotelReviewService, HotelRoomTypeService hotelRoomTypeService, UserService userService) {
+    public DataInit(HotelImageService hotelImageService, HotelReservationService hotelReservationService, HotelService hotelService, HotelReviewService hotelReviewService, HotelRoomTypeService hotelRoomTypeService, UserService userService, HotelRoomService hotelRoomService) {
         this.hotelService = hotelService;
         this.hotelReviewService = hotelReviewService;
         this.hotelRoomTypeService = hotelRoomTypeService;
         this.userService = userService;
         this.hotelReservationService = hotelReservationService;
         this.hotelImageService = hotelImageService;
+        this.hotelRoomService = hotelRoomService;
     }
 
     @PostConstruct
@@ -49,6 +52,8 @@ public class DataInit {
         hotelService.initHotelData(hotels);
         // 호텔 방 데이터 초기화
         hotelRoomTypeService.initHotelRoomData(hotelRoomTypes);
+        // 호텔 방 객실 데이터 초기화
+        hotelRoomService.initHotelRoomData(getHotelRooms());
         // 호텔 예약 데이터 초기화
         hotelReservationService.initHotelReservationData(hotelReservations);
         // 호텔 리뷰 데이터 초기화
@@ -287,7 +292,7 @@ public class DataInit {
                             HotelImage.builder()
                                     .image("https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/accommodation/suite/3292-2-2000-roo-LTSG.jpg.thumb.1920.1920.jpg")
                                     .build()
-                            )))
+                    )))
                     .build(),
             HotelRoomType.builder()
                     .hotel(Hotel.builder().idx(1L).build())
@@ -314,14 +319,14 @@ public class DataInit {
                             HotelImage.builder()
                                     .image("https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/accommodation/suite/3291-6-2000-roo-LTSG.jpg.thumb.1920.1920.jpg")
                                     .build()
-                            )))
+                    )))
                     .build()
     ));
     List<HotelReview> hotelReviews = new ArrayList<>(Arrays.asList());
     List<HotelReservation> hotelReservations = new ArrayList<>(Arrays.asList(
             HotelReservation.builder()
                     .user(User.builder().id("user").build())
-                    .hotelRoomType(HotelRoomType.builder().idx(1L).build())
+                    .hotelRoom(HotelRoom.builder().idx(1L).build())
                     .checkInDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 7, 0, 0)))
                     .checkOutDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 8, 0, 0)))
                     .peopleCount(2)
@@ -331,7 +336,7 @@ public class DataInit {
                     .build(),
             HotelReservation.builder()
                     .user(User.builder().id("user").build())
-                    .hotelRoomType(HotelRoomType.builder().idx(2L).build())
+                    .hotelRoom(HotelRoom.builder().idx(2L).build())
                     .checkInDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 15, 0, 0)))
                     .checkOutDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 11, 0, 0)))
                     .peopleCount(2)
@@ -344,6 +349,22 @@ public class DataInit {
     ));
 
     List<HotelImage> hotelImages = new ArrayList<>(Arrays.asList());
+
+
+    public List<HotelRoom> getHotelRooms() {
+        List<HotelRoom> hotelRooms = new ArrayList<>();
+        for (int roomType = 1; roomType <= 9; roomType++) {
+            for (int roomNumber = roomType * 100 + 1; roomNumber <= roomType * 100 + 9; roomNumber++) {
+                HotelRoomType hotelRoomType = HotelRoomType.builder().idx((long) roomType).build();
+                HotelRoom hotelRoom = HotelRoom.builder()
+                        .roomNumber((long) roomNumber)
+                        .roomType(hotelRoomType)
+                        .build();
+                hotelRooms.add(hotelRoom);
+            }
+        }
+        return hotelRooms;
+    }
 
 
 }

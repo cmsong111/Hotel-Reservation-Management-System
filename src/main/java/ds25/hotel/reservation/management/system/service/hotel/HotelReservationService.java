@@ -4,6 +4,7 @@ import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +14,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class HotelReservationService {
+    private final HotelRoomRepository hotelRoomRepository;
 
     HotelReservationRepository hotelReservationRepository;
     HotelRepository hotelRepository;
@@ -26,11 +30,13 @@ public class HotelReservationService {
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public HotelReservationService(HotelReservationRepository hotelReservationRepository, HotelRepository hotelRepository, HotelRoomTypeRepository hotelRoomTypeRepository, UserRepository userRepository) {
+    public HotelReservationService(HotelReservationRepository hotelReservationRepository, HotelRepository hotelRepository, HotelRoomTypeRepository hotelRoomTypeRepository, UserRepository userRepository,
+                                   HotelRoomRepository hotelRoomRepository) {
         this.hotelReservationRepository = hotelReservationRepository;
         this.hotelRepository = hotelRepository;
         this.hotelRoomTypeRepository = hotelRoomTypeRepository;
         this.userRepository = userRepository;
+        this.hotelRoomRepository = hotelRoomRepository;
     }
 
     /**
@@ -57,7 +63,7 @@ public class HotelReservationService {
         }
         HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
         hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).get());
-        hotelReservation.setHotelRoomType(hotelRoomTypeRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
+        hotelReservation.setHotelRoom(hotelRoomRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
         hotelReservation.setCheckInDate(hotelReservationDto.getCheckInDate());
         hotelReservation.setCheckOutDate(hotelReservationDto.getCheckOutDate());
 
@@ -129,7 +135,7 @@ public class HotelReservationService {
      */
     public List<HotelReservation> getHotelReservationByHotelRoomIdx(Long hotelRoomIdx) throws IOException {
         log.info("호텔 객실 별 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotelRoomType_Hotel_Idx(hotelRoomIdx);
+        return hotelReservationRepository.findByHotelRoom_Idx(hotelRoomIdx);
     }
 
     /**
@@ -145,7 +151,7 @@ public class HotelReservationService {
         List<HotelReservationDto> hotelReservationDtos = new ArrayList<>();
         for (HotelReservation hotelReservation : hotelReservations) {
             HotelReservationDto hotelReservationDto = modelMapper.map(hotelReservation, HotelReservationDto.class);
-            hotelReservationDto.setHotelRoomIdx(hotelReservation.getHotelRoomType().getIdx());
+            hotelReservationDto.setHotelRoomIdx(hotelReservation.getHotelRoom().getIdx());
             hotelReservationDtos.add(hotelReservationDto);
         }
         return hotelReservationDtos;
@@ -161,7 +167,7 @@ public class HotelReservationService {
      */
     public List<HotelReservation> getHotelReservationByHotelId(long hotelId) throws IOException {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotelRoomType_Hotel_Idx(hotelId);
+        return hotelReservationRepository.findByHotelRoom_Idx(hotelId);
     }
 
     public void initHotelReservationData(List<HotelReservation> hotelReservations) {

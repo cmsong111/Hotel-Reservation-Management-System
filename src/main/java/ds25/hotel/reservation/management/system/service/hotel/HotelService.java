@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelRoomType;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;

@@ -19,10 +19,10 @@ public class HotelReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idx;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
-    @ManyToOne
-    private HotelRoomType hotelRoomType;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private HotelRoom hotelRoom;
     private Timestamp checkInDate;
     private Timestamp checkOutDate;
     private long peopleCount;

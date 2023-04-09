@@ -1,6 +1,5 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
-import ds25.hotel.reservation.management.system.entity.hotel.HotelReservationState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

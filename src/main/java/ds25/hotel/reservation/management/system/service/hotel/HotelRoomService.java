@@ -89,12 +89,17 @@ public class HotelRoomService {
         return modelMapper.map(hotelRoom, HotelRoomDto.class);
     }
 
-    //getHotelRoom
 
+    public void initHotelRoomData(List<HotelRoom> hotelRooms) {
+        hotelRoomRepository.saveAll(hotelRooms);
 
-    public void initHotelRoomData() {
-        log.info("initHotelRoomData");
+        for(HotelRoom hotelRoom : hotelRoomRepository.findAll()) {
+            log.info("initHotelRoomData: " + gson.toJson(hotelRoom));
+        }
+
+        log.info("initHotelRoomData completed");
     }
+
 
 
 }

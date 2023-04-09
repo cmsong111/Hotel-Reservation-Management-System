@@ -147,6 +147,10 @@ public class HotelRoomTypeService {
         return hotelRoomTypeDtos;
     }
 
+    public HotelRoomType getEntityFindById(Long idx){
+        return hotelRoomTypeRepository.findById(idx).get();
+    }
+
     public void initHotelRoomData(List<HotelRoomType> hotelRoomTypes) {
         log.info("init HotelRoom Service");
         for (HotelRoomType hotelRoomType : hotelRoomTypes){
@@ -159,7 +163,7 @@ public class HotelRoomTypeService {
         }
 
         for (HotelRoomType hotelRoomType : hotelRoomTypeRepository.findAll()){
-            log.info("hotelRoom : {} Saved ", hotelRoomType);
+            log.info("hotelRoomType : {} Saved ", hotelRoomType);
         }
     }
 }
