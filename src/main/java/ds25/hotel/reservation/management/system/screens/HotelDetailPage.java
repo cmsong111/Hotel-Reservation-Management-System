@@ -20,11 +20,13 @@ import java.util.Optional;
 
 @Slf4j
 public class HotelDetailPage extends JFrame implements  ActionListener {
-    HotelService hotelService = SpringBridge.getInstance().getBean(HotelService.class);
-    HotelRoomTypeService hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
+    private final HotelService hotelService = SpringBridge.getInstance().getBean(HotelService.class);
+    private final HotelRoomTypeService hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
+
     Optional<HotelDto> hotelDto;
 
     private Panel centerPanel;
+    LoginPanel loginPanel;
     JLabel userLabel, hotelImageLabel;
     JTextField number;
     JTextArea hotelDetailTextArea, hotelRoomTextArea;
@@ -72,14 +74,15 @@ public class HotelDetailPage extends JFrame implements  ActionListener {
         centerPanel.add(hotelDetailTextArea);
         centerPanel.add(hotelRoomTextArea);
         centerPanel.add(btn_RoomDetail);
-        centerPanel.add(btn_logout);
 
 
         add(centerPanel, BorderLayout.CENTER);
         add(new NorthPanel(), BorderLayout.NORTH);
         add(new WestPanel(), BorderLayout.WEST);
         add(new EastPanel(), BorderLayout.EAST);
-        add(new LoginPanel(), BorderLayout.SOUTH);
+        loginPanel = new LoginPanel();
+        loginPanel.btn_logout.addActionListener(this);
+        add(loginPanel, BorderLayout.SOUTH);
 
         setSize(600, 800);
         setLocationRelativeTo(null);
