@@ -3,6 +3,7 @@ package ds25.hotel.reservation.management.system.screens;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
+import ds25.hotel.reservation.management.system.screens.auth.MyPage;
 import ds25.hotel.reservation.management.system.screens.auth.UserInfo;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
@@ -76,7 +77,7 @@ public class HotelSelectionPage extends JFrame implements ActionListener, ListSe
             new LoginPage();
         } else if (command.equals("myPage")) {
             log.info("마이페이지 버튼 클릭");
-            new UserInfo();
+            new MyPage();
         }
     }
 

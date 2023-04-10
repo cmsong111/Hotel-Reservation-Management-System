@@ -4,6 +4,7 @@ import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
 import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
+import ds25.hotel.reservation.management.system.screens.auth.MyPage;
 import ds25.hotel.reservation.management.system.screens.auth.UserInfo;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
@@ -150,7 +151,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
             dispose();
         } else if (command.equals("myPage")) {
             log.info("my page");
-            new UserInfo();
+            new MyPage();
         }
 
     }

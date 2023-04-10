@@ -5,6 +5,7 @@ import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
 import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
+import ds25.hotel.reservation.management.system.screens.auth.MyPage;
 import ds25.hotel.reservation.management.system.screens.auth.UserInfo;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
@@ -99,6 +100,7 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
         loginPanel = new LoginPanel();
         loginPanel.btn_logout.addActionListener(this);
         loginPanel.btn_myPage.addActionListener(this);
+        loginPanel.btn_myPage.setActionCommand("myPage");
         add(loginPanel, BorderLayout.SOUTH);
 
         setSize(600, 800);
@@ -115,7 +117,7 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
             new HotelSelectionPage();
         } else if (command.equals("myPage")) {
             log.info("마이페이지 버튼 클릭");
-            new UserInfo();
+            new MyPage();
         }
     }
 
