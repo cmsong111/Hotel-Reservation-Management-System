@@ -109,10 +109,10 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("logout")) {
-            log.info("로그아웃 버튼 클릭");
+        if (command.equals("back")) {
+            log.info("back 버튼 클릭");
             this.dispose();
-            new LoginPage();
+            new HotelSelectionPage();
         } else if (command.equals("myPage")) {
             log.info("마이페이지 버튼 클릭");
             new UserInfo();
@@ -125,12 +125,10 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
             return;
         }
         if (e.getSource() == hotelRoomList) {
-            // hotelRoomList 에서 idx 를 가져와서 new HotelRoomDetailPage(hotelIdx)로 이동
             log.info(e.getSource().toString());
             log.info(hotelRoomList.getSelectedValue().toString());
             HotelRoomTypeDto hotelRoomDto = (HotelRoomTypeDto) hotelRoomList.getSelectedValue();
             new HotelRoomDetailPage(hotelRoomDto.getIdx());
-
         }
     }
 }

@@ -13,8 +13,8 @@ public class LoginPanel extends JPanel  {
 
         JPanel eastPanel = new JPanel();
 
-        btn_logout = new JButton("Log out");
-        btn_logout.setActionCommand("logout");
+        btn_logout = new JButton("back");
+        btn_logout.setActionCommand("back");
 
         btn_myPage = new JButton("My Page");
         btn_myPage.setActionCommand("myPage");

@@ -4,6 +4,7 @@ import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
 import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
+import ds25.hotel.reservation.management.system.screens.auth.UserInfo;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
@@ -29,7 +30,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
     JLabel imageLabel;
     int imageIndex = 0;
     JButton nextButton, prevButton, reserveButton, cancelButton;
-    JPanel centerPanel, imageControlPanel,mainPanel;
+    JPanel centerPanel, imageControlPanel, mainPanel, buttonPanel;
     Optional<HotelRoomTypeDto> room;
 
     public HotelRoomDetailPage(Long idx) {
@@ -45,7 +46,6 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         mainPanel = new JPanel(new BorderLayout());
 
 
-
         centerPanel = new JPanel(new GridLayout(-1, 1));
 
 
@@ -59,7 +59,6 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
         imageLabel = new JLabel();
         imageLabel.setIcon(imageIcon);
-
 
 
         scrollPane = new JScrollPane(textArea);
@@ -78,6 +77,8 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         prevButton.setActionCommand("prevImage");
         prevButton.addActionListener(this);
 
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+
         reserveButton = new JButton("예약하기");
         reserveButton.setBounds(600, 210, 100, 30);
         reserveButton.setActionCommand("reserve");
@@ -91,18 +92,24 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         imageControlPanel.add(nextButton);
         imageControlPanel.add(prevButton);
 
+        buttonPanel.add(reserveButton);
+        buttonPanel.add(cancelButton);
+
 
         centerPanel.add(imageControlPanel);
         centerPanel.add(scrollPane);
-        centerPanel.add(reserveButton);
-        centerPanel.add(cancelButton);
+        centerPanel.add(buttonPanel);
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         mainPanel.add(imageLabel, BorderLayout.NORTH);
 
         add(mainPanel, BorderLayout.CENTER);
-        add(new NorthPanel(), BorderLayout.NORTH);
-        add(new LoginPanel(), BorderLayout.SOUTH);
+        add(new NorthPanel(room.get().getName()), BorderLayout.NORTH);
+        LoginPanel loginPanel = new LoginPanel();
+        loginPanel.btn_myPage.addActionListener(this);
+        loginPanel.btn_logout.addActionListener(this);
+
+        add(loginPanel, BorderLayout.SOUTH);
         add(new WestPanel(), BorderLayout.WEST);
         add(new EastPanel(), BorderLayout.EAST);
 
@@ -138,6 +145,12 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         } else if (command.equals("cancel")) {
             log.info("cancel");
             dispose();
+        } else if (command.equals("back")){
+            log.info("back");
+            dispose();
+        } else if (command.equals("myPage")){
+            log.info("my page");
+            new UserInfo();
         }
 
     }
