@@ -18,5 +18,6 @@ public class HotelRoom {
     private Long roomNumber;
     @ManyToOne(fetch = FetchType.EAGER)
     private HotelRoomType roomType;
+    private Long payedPrice;
 }
 

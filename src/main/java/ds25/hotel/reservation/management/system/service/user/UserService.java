@@ -97,6 +97,7 @@ public class UserService {
     public UserDto updateUser(UserDto newUser) throws Exception {
         log.info("updateUser method called");
         Optional<User> oldUser = userRepository.findById(newUser.getId());
+        UserDto savedUser;
 
         if (oldUser.isEmpty()) {
             throw new Exception("존재하지 않는 유저입니다.");
@@ -104,15 +105,26 @@ public class UserService {
 
         if (!newUser.getName().isEmpty()) {
             oldUser.get().setName(newUser.getName());
+            log.info("name changed");
         }
         if (!newUser.getPhone().isEmpty()) {
             oldUser.get().setPhone(newUser.getPhone());
+            log.info("phone changed");
         }
         if (!newUser.getEmail().isEmpty()) {
             oldUser.get().setEmail(newUser.getEmail());
+            log.info("email changed");
         }
+        if (!newUser.getPassword().isEmpty()){
+            oldUser.get().setPassword(newUser.getPassword());
+            log.info("password changed");
+        }
+        savedUser = modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
+        Singleton.getInstance().setUser(savedUser);
 
-        return modelMapper.map(userRepository.save(oldUser.get()), UserDto.class);
+        log.info("user info changed");
+        return savedUser;
+
     }
 
     public UserDto changePassword(UserDto user, String oldPassword, String newPassword, String newPassword2) throws Exception {
@@ -177,7 +189,7 @@ public class UserService {
         userRepository.saveAll(users);
 
         for (User user : userRepository.findAll()) {
-            log.info("User : {}", user );
+            log.info("User : {}", user);
         }
     }
 }

@@ -2,10 +2,9 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelRoomType;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
+import ds25.hotel.reservation.management.system.screens.auth.UserInfo;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
@@ -39,7 +38,7 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
     JLabel userLabel, hotelImageLabel;
     JTextField number;
     JTextArea hotelDetailTextArea, hotelRoomTextArea;
-    JButton btn_logout = new JButton("로그아웃"), btn_RoomDetail;
+    JButton btn_RoomDetail;
 
 
     public HotelDetailPage(long hotelIdx) {
@@ -72,9 +71,6 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
         hotelImageLabel = new JLabel(ImageLoader.getImage(hotelDto.get().getImages().get(0).getImage()));
 
 
-        btn_logout.addActionListener(this);
-        btn_logout.setActionCommand("logout");
-
         hotelDetailTextArea = new JTextArea(hotelService.findHotel(hotelIdx).toString());
         hotelDetailTextArea.setEditable(true);
         hotelDetailTextArea.setLineWrap(true);
@@ -101,6 +97,7 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
         add(new EastPanel(), BorderLayout.EAST);
         loginPanel = new LoginPanel();
         loginPanel.btn_logout.addActionListener(this);
+        loginPanel.btn_myPage.addActionListener(this);
         add(loginPanel, BorderLayout.SOUTH);
 
         setSize(600, 800);
@@ -115,6 +112,9 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
             log.info("로그아웃 버튼 클릭");
             this.dispose();
             new LoginPage();
+        } else if (command.equals("myPage")) {
+            log.info("마이페이지 버튼 클릭");
+            new UserInfo();
         }
     }
 
