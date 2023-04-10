@@ -180,4 +180,13 @@ public class HotelReservationService {
         }
     }
 
+    public void reservationPay(Long reservationIdx, int payment) {
+        HotelReservation hotelReservation = hotelReservationRepository.findById(reservationIdx).get();
+
+        hotelReservation.setPayedMoney(hotelReservation.getPayedMoney()+payment);
+
+        hotelReservationRepository.save(hotelReservation);
+        log.info("Saved hotelReservation = {}", hotelReservation);
+    }
+
 }

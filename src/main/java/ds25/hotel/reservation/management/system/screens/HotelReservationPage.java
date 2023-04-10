@@ -6,6 +6,7 @@ import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.pattern.facoryMethod.HotelReservationFactoryMethod;
+import ds25.hotel.reservation.management.system.screens.pay.Payment;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
@@ -144,8 +145,8 @@ public class HotelReservationPage extends JFrame implements ActionListener {
             hotelReservationDto.setCheckOutDate(new Timestamp(checkOutDatePicker.getDate().getTime()));
             hotelReservationDto.setPeopleCount((Integer) numGuestsSpinner.getValue());
 
-            hotelReservationService.addHotelReservation(hotelReservationDto);
             this.dispose();
+            new Payment(hotelReservationService.addHotelReservation(hotelReservationDto));
 
         } else if (command.equals("Cancel")) {
             this.dispose();

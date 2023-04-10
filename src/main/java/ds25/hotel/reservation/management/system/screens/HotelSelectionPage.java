@@ -70,7 +70,7 @@ public class HotelSelectionPage extends JFrame implements ActionListener, ListSe
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("logout")) {
+        if (command.equals("back")) {
             log.info("로그아웃 버튼 클릭");
             this.dispose();
             new LoginPage();

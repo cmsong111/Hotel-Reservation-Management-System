@@ -145,10 +145,10 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         } else if (command.equals("cancel")) {
             log.info("cancel");
             dispose();
-        } else if (command.equals("back")){
+        } else if (command.equals("back")) {
             log.info("back");
             dispose();
-        } else if (command.equals("myPage")){
+        } else if (command.equals("myPage")) {
             log.info("my page");
             new UserInfo();
         }

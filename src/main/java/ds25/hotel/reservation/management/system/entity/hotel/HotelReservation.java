@@ -29,4 +29,5 @@ public class HotelReservation {
     private long totalPrice;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private int payedMoney;
 }
