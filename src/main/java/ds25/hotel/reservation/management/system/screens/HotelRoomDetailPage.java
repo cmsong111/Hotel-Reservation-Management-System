@@ -2,6 +2,11 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
+import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
+import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
+import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
+import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
 import ds25.hotel.reservation.management.system.util.ImageLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +23,12 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
     JTextArea textArea;
     JScrollPane scrollPane;
     HotelRoomTypeService roomService;
-    Panel panel;
 
     ImageIcon imageIcon;
     JLabel imageLabel;
     int imageIndex = 0;
     JButton nextButton, prevButton, reserveButton, cancelButton;
+    JPanel centerPanel, imageControlPanel,mainPanel;
     Optional<HotelRoomTypeDto> room;
 
     public HotelRoomDetailPage(Long idx) {
@@ -36,13 +41,18 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
         setTitle("호텔 방 상세 정보");
 
-        panel = new Panel();
+        mainPanel = new JPanel(new BorderLayout());
+
+
+
+        centerPanel = new JPanel(new GridLayout(-1, 1));
+
 
         textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setText(roomService.findHotelRoomByIdx(idx).toString());
+        textArea.setText(roomService.findHotelRoomByIdx(idx).get().getDescription());
 
         imageIcon = ImageLoader.getImage(room.get().getImages().get(0).getImage());
 
@@ -50,11 +60,13 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         imageLabel = new JLabel();
         imageLabel.setIcon(imageIcon);
 
-        imageLabel.setBounds(10, 10, 500, 281);
 
 
         scrollPane = new JScrollPane(textArea);
         scrollPane.setBounds(10, 300, 500, 500);
+
+        imageControlPanel = new JPanel(new GridLayout(1, 2));
+
 
         nextButton = new JButton("다음");
         nextButton.setBounds(600, 10, 100, 30);
@@ -76,13 +88,23 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         cancelButton.setActionCommand("cancel");
         cancelButton.addActionListener(this);
 
-        add(imageLabel);
-        add(scrollPane);
-        add(nextButton);
-        add(prevButton);
-        add(reserveButton);
-        add(cancelButton);
-        add(panel);
+        imageControlPanel.add(nextButton);
+        imageControlPanel.add(prevButton);
+
+
+        centerPanel.add(imageControlPanel);
+        centerPanel.add(scrollPane);
+        centerPanel.add(reserveButton);
+        centerPanel.add(cancelButton);
+
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        mainPanel.add(imageLabel, BorderLayout.NORTH);
+
+        add(mainPanel, BorderLayout.CENTER);
+        add(new NorthPanel(), BorderLayout.NORTH);
+        add(new LoginPanel(), BorderLayout.SOUTH);
+        add(new WestPanel(), BorderLayout.WEST);
+        add(new EastPanel(), BorderLayout.EAST);
 
 
         setSize(600, 800);
@@ -109,8 +131,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
                 imageIndex = room.get().getImages().size() - 1;
             }
             imageLabel.setIcon(ImageLoader.getImage(room.get().getImages().get(imageIndex).getImage()));
-        }
-        else if (command.equals("reserve")) {
+        } else if (command.equals("reserve")) {
             log.info("reserve");
             new HotelReservationPage(room.get().getIdx());
         } else if (command.equals("cancel")) {

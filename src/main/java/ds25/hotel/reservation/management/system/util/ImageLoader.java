@@ -17,7 +17,7 @@ public class ImageLoader {
     public static ImageIcon getImage(String internetPath) {
         try {
             URL url = new URL(internetPath);
-            Image image = ImageIO.read(url).getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+            Image image = ImageIO.read(url);
             int width = image.getWidth(null);
             int height = image.getHeight(null);
             int newWidth = 500;

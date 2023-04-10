@@ -51,6 +51,7 @@ public class UserService {
         if (user.isEmpty()) {
             throw new Exception("Id or Password is wrong");
         }
+        Singleton.getInstance().setUser(modelMapper.map(user.get(), UserDto.class));
 
         return modelMapper.map(user.get(), UserDto.class);
     }
