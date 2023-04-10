@@ -2,6 +2,7 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
@@ -24,7 +25,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
     JScrollPane scrollPane;
     HotelRoomTypeService roomService;
 
-    ImageIcon imageIcon;
+    ProxyImage imageIcon;
     JLabel imageLabel;
     int imageIndex = 0;
     JButton nextButton, prevButton, reserveButton, cancelButton;
@@ -54,8 +55,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         textArea.setWrapStyleWord(true);
         textArea.setText(roomService.findHotelRoomByIdx(idx).get().getDescription());
 
-        imageIcon = ImageLoader.getImage(room.get().getImages().get(0).getImage());
-
+        imageIcon = new ProxyImage(room.get().getImages().get(0).getImage());
 
         imageLabel = new JLabel();
         imageLabel.setIcon(imageIcon);
@@ -119,18 +119,19 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         String command = e.getActionCommand();
 
         if (command.equals("nextImage")) {
-            log.info("nextImage idx : {}", ++imageIndex);
-
+            ++imageIndex;
             if (imageIndex >= room.get().getImages().size()) {
                 imageIndex = 0;
             }
-            imageLabel.setIcon(ImageLoader.getImage(room.get().getImages().get(imageIndex).getImage()));
+            log.info("nextImage index {}", imageIndex);
+            imageLabel.setIcon(new ProxyImage(room.get().getImages().get(imageIndex).getImage()));
         } else if (command.equals("prevImage")) {
-            log.info("prevImage idx : {}", --imageIndex);
+            --imageIndex;
             if (imageIndex < 0) {
                 imageIndex = room.get().getImages().size() - 1;
             }
-            imageLabel.setIcon(ImageLoader.getImage(room.get().getImages().get(imageIndex).getImage()));
+            log.info("prevImage index {}", imageIndex);
+            imageLabel.setIcon(new ProxyImage(room.get().getImages().get(imageIndex).getImage()));
         } else if (command.equals("reserve")) {
             log.info("reserve");
             new HotelReservationPage(room.get().getIdx());
