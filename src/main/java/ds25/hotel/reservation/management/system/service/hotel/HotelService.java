@@ -7,13 +7,11 @@ import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Fetch;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,16 +23,16 @@ import java.util.Optional;
 public class HotelService {
     HotelRepository hotelRepository;
     HotelImageRepository hotelImageRepository;
-    HotelRoomRepository hotelRoomRepository;
+    HotelRoomTypeRepository hotelRoomTypeRepository;
     HotelReservationRepository hotelReservationRepository;
     ModelMapper modelMapper = new ModelMapper();
     Gson gson = new Gson();
 
     @Autowired
-    public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository, HotelRoomRepository hotelRoomRepository, HotelReservationRepository hotelReservationRepository) {
+    public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository, HotelRoomTypeRepository hotelRoomTypeRepository, HotelReservationRepository hotelReservationRepository) {
         this.hotelRepository = hotelRepository;
         this.hotelImageRepository = hotelImageRepository;
-        this.hotelRoomRepository = hotelRoomRepository;
+        this.hotelRoomTypeRepository = hotelRoomTypeRepository;
         this.hotelReservationRepository = hotelReservationRepository;
     }
 
@@ -71,8 +69,6 @@ public class HotelService {
         Optional<Hotel> hotel = hotelRepository.findById(hotelDto.getIdx());
 
         if (hotel.isPresent()) {
-            hotelRoomRepository.deleteByHotel(hotel.get());
-            log.info("호텔 방 정보가 삭제되었습니다");
 
             hotelRepository.deleteById(hotelDto.getIdx());
             log.info("호텔 정보가 삭제되었습니다");

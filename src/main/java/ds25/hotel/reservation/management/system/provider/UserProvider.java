@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Slf4j
+@Deprecated
 public class UserProvider implements Observable {
     private ArrayList<Observer> obervers = new ArrayList<Observer>();
     Optional<User> user = Optional.empty();

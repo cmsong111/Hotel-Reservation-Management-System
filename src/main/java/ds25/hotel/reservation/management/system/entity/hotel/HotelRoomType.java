@@ -13,15 +13,19 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Hotel {
+public class HotelRoomType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Hotel hotel;
     private String name;
-    private String address;
-    private String phone;
-    private String email;
     private String description;
+    private int price;
+    private int discount;
+    private int peopleCount;
+    private BedSize bedSize;
+    private int roomSize;
     @OneToMany(fetch = FetchType.EAGER)
     private List<HotelImage> images;
     private List<HotelServiceEnum> service;

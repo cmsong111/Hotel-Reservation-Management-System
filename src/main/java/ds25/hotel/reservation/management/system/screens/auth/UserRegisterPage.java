@@ -1,4 +1,4 @@
-package ds25.hotel.reservation.management.system.screens;
+package ds25.hotel.reservation.management.system.screens.auth;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
@@ -81,7 +81,7 @@ public class UserRegisterPage extends JFrame implements ActionListener {
         add(cancelButton);
         add(panel);
 
-        setSize(600, 600);
+        setSize(600, 800);
         setLocationRelativeTo(null);
         setVisible(true);
     }

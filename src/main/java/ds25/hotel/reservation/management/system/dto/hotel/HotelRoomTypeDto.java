@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
+import ds25.hotel.reservation.management.system.entity.hotel.BedSize;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelServiceEnum;
 import lombok.AllArgsConstructor;
@@ -13,13 +14,17 @@ import java.util.ArrayList;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelDto {
+public class HotelRoomTypeDto {
     private Long idx;
+    private Long hotelIdx;
     private String name;
-    private String address;
-    private String phone;
-    private String email;
     private String description;
+    private int price;
+    private int discount;
+    private int roomCount;
+    private int peopleCount;
+    private BedSize bedSize;
+    private int roomSize;
     private ArrayList<HotelImage> images;
     private ArrayList<HotelServiceEnum> service;
 }

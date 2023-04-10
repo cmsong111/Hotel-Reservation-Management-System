@@ -5,6 +5,7 @@ import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -13,24 +14,29 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class HotelReservationService {
+    private final HotelRoomRepository hotelRoomRepository;
 
     HotelReservationRepository hotelReservationRepository;
     HotelRepository hotelRepository;
-    HotelRoomRepository hotelRoomRepository;
+    HotelRoomTypeRepository hotelRoomTypeRepository;
     UserRepository userRepository;
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public HotelReservationService(HotelReservationRepository hotelReservationRepository, HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository, UserRepository userRepository) {
+    public HotelReservationService(HotelReservationRepository hotelReservationRepository, HotelRepository hotelRepository, HotelRoomTypeRepository hotelRoomTypeRepository, UserRepository userRepository,
+                                   HotelRoomRepository hotelRoomRepository) {
         this.hotelReservationRepository = hotelReservationRepository;
         this.hotelRepository = hotelRepository;
-        this.hotelRoomRepository = hotelRoomRepository;
+        this.hotelRoomTypeRepository = hotelRoomTypeRepository;
         this.userRepository = userRepository;
+        this.hotelRoomRepository = hotelRoomRepository;
     }
 
     /**
@@ -58,8 +64,8 @@ public class HotelReservationService {
         HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
         hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).get());
         hotelReservation.setHotelRoom(hotelRoomRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
-        hotelReservation.setCheckInDate(Timestamp.valueOf(hotelReservationDto.getCheckInDate()));
-        hotelReservation.setCheckOutDate(Timestamp.valueOf(hotelReservationDto.getCheckOutDate()));
+        hotelReservation.setCheckInDate(hotelReservationDto.getCheckInDate());
+        hotelReservation.setCheckOutDate(hotelReservationDto.getCheckOutDate());
 
         return modelMapper.map(hotelReservationRepository.save(hotelReservation), HotelReservationDto.class);
     }
@@ -129,7 +135,7 @@ public class HotelReservationService {
      */
     public List<HotelReservation> getHotelReservationByHotelRoomIdx(Long hotelRoomIdx) throws IOException {
         log.info("호텔 객실 별 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotelRoom_Hotel_Idx(hotelRoomIdx);
+        return hotelReservationRepository.findByHotelRoom_Idx(hotelRoomIdx);
     }
 
     /**
@@ -161,47 +167,7 @@ public class HotelReservationService {
      */
     public List<HotelReservation> getHotelReservationByHotelId(long hotelId) throws IOException {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
-        return hotelReservationRepository.findByHotelRoom_Hotel_Idx(hotelId);
-    }
-
-    /**
-     * 예약 날짜 내에 사용중인 객실 수를 반환
-     *
-     * @param hotelRoomIdx 호텔 객실 idx
-     * @param start        예약 시작 날짜
-     * @param end          예약 종료 날짜
-     * @return 사용중인 객실 수
-     * @throws IOException 파일 입출력 예외
-     * @author 김남주
-     */
-    public int getUsingRoomCount(Long hotelRoomIdx, Timestamp start, Timestamp end) throws IOException {
-        List<HotelReservation> hotelReservations = hotelReservationRepository.findByHotelRoom_IdxAndCheckInDateLessThanEqualAndCheckOutDateGreaterThanEqual(hotelRoomIdx, start, end);
-
-        for (HotelReservation hotelReservation : hotelReservations) {
-
-            log.info(hotelReservation.toString());
-        }
-
-        int availableRoomCount = 0;
-
-        if (hotelReservations.isEmpty()) {
-            return 0;
-        }
-
-        hotelReservations.sort(Comparator.comparing(HotelReservation::getCheckOutDate));
-        PriorityQueue<HotelReservation> priorityQueue = new PriorityQueue<>(Comparator.comparing(HotelReservation::getCheckOutDate));
-
-        priorityQueue.add(hotelReservations.get(0));
-        for (int i = 1; i < hotelReservations.size(); i++) {
-            HotelReservation hotelReservation = hotelReservations.get(i);
-            HotelReservation peek = priorityQueue.peek();
-            if (hotelReservation.getCheckInDate().after(peek.getCheckOutDate())) {
-                priorityQueue.poll();
-            }
-            priorityQueue.add(hotelReservation);
-        }
-
-        return priorityQueue.size();
+        return hotelReservationRepository.findByHotelRoom_Idx(hotelId);
     }
 
     public void initHotelReservationData(List<HotelReservation> hotelReservations) {
@@ -212,6 +178,15 @@ public class HotelReservationService {
         for (HotelReservation hotelReservation : hotelReservationRepository.findAll()) {
             log.info("Saved hotelReservation = {}", hotelReservation);
         }
+    }
+
+    public void reservationPay(Long reservationIdx, int payment) {
+        HotelReservation hotelReservation = hotelReservationRepository.findById(reservationIdx).get();
+
+        hotelReservation.setPayedMoney(hotelReservation.getPayedMoney()+payment);
+
+        hotelReservationRepository.save(hotelReservation);
+        log.info("Saved hotelReservation = {}", hotelReservation);
     }
 
 }

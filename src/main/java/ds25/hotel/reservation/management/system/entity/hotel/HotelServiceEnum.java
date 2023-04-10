@@ -1,6 +1,6 @@
 package ds25.hotel.reservation.management.system.entity.hotel;
 
-public enum HotelService {
+public enum HotelServiceEnum {
     Bathtub,
     bidet,
     Shower,
