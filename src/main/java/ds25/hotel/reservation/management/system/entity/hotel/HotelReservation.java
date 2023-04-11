@@ -2,10 +2,7 @@ package ds25.hotel.reservation.management.system.entity.hotel;
 
 import ds25.hotel.reservation.management.system.entity.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -18,6 +15,7 @@ import java.sql.Timestamp;
 public class HotelReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private long idx;
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
