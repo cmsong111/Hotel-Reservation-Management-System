@@ -31,7 +31,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
     JLabel imageLabel;
     int imageIndex = 0;
     JButton nextButton, prevButton, reserveButton, cancelButton;
-    JPanel centerPanel, imageControlPanel, mainPanel, buttonPanel;
+    JPanel centerPanel, imageControlPanel, mainPanel, buttonPanel, textPanel;
     Optional<HotelRoomTypeDto> room;
 
     public HotelRoomDetailPage(Long idx) {
@@ -47,7 +47,8 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         mainPanel = new JPanel(new BorderLayout());
 
 
-        centerPanel = new JPanel(new GridLayout(-1, 1));
+        centerPanel = new JPanel(new GridLayout(5, 5));
+        textPanel = new JPanel(new GridLayout(-1,1));
 
 
         textArea = new JTextArea();
@@ -78,9 +79,9 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         prevButton.setActionCommand("prevImage");
         prevButton.addActionListener(this);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10,0));
 
-        reserveButton = new JButton("예약하기");
+        reserveButton = new JButton("예약");
         reserveButton.setBounds(600, 210, 100, 30);
         reserveButton.setActionCommand("reserve");
         reserveButton.addActionListener(this);
@@ -90,19 +91,21 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         cancelButton.setActionCommand("cancel");
         cancelButton.addActionListener(this);
 
-        imageControlPanel.add(nextButton);
-        imageControlPanel.add(prevButton);
+        buttonPanel.add(nextButton);
+        buttonPanel.add(prevButton);
 
         buttonPanel.add(reserveButton);
         buttonPanel.add(cancelButton);
 
 
         centerPanel.add(imageControlPanel);
-        centerPanel.add(scrollPane);
-        centerPanel.add(buttonPanel);
+        centerPanel.add(buttonPanel,BorderLayout.CENTER);
+        textPanel.add(scrollPane, BorderLayout.SOUTH);
+        centerPanel.add(textPanel, BorderLayout.SOUTH);
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         mainPanel.add(imageLabel, BorderLayout.NORTH);
+        mainPanel.add(textPanel, BorderLayout.SOUTH);
 
         add(mainPanel, BorderLayout.CENTER);
         add(new NorthPanel(room.get().getName()), BorderLayout.NORTH);
