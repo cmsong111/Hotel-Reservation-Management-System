@@ -66,6 +66,8 @@ public class HotelReservationService {
         hotelReservation.setHotelRoom(hotelRoomRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
         hotelReservation.setCheckInDate(hotelReservationDto.getCheckInDate());
         hotelReservation.setCheckOutDate(hotelReservationDto.getCheckOutDate());
+        hotelReservation.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        hotelReservation.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
         return modelMapper.map(hotelReservationRepository.save(hotelReservation), HotelReservationDto.class);
     }
