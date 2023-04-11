@@ -3,7 +3,10 @@ package ds25.hotel.reservation.management.system.entity.hotel;
 
 import ds25.hotel.reservation.management.system.entity.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,7 +19,6 @@ import java.util.List;
 public class HotelReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     Long idx;
     @ManyToOne
     Hotel hotel;
