@@ -191,4 +191,9 @@ public class HotelReservationService {
         log.info("Saved hotelReservation = {}", hotelReservation);
     }
 
+    public boolean checkAlreadyReservation(Long roomIdx, Timestamp checkIn, Timestamp checkOut ){
+        return hotelReservationRepository.existsByHotelRoom_IdxAndCheckInDateGreaterThanEqualAndCheckOutDateLessThanEqualAllIgnoreCase(roomIdx, checkIn, checkOut);
+
+    }
+
 }
