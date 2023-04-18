@@ -72,7 +72,6 @@ public class HotelRoomService {
         return hotelRoomDtos;
     }
 
-
     /**
      * 호텔 방 정보 수정
      *
@@ -87,6 +86,15 @@ public class HotelRoomService {
         hotelRoom.setRoomType(hotelRoomTypeRepository.findById(hotelRoomDto.getRoomTypeIdx()).get());
 
         return modelMapper.map(hotelRoom, HotelRoomDto.class);
+    }
+
+    public List<HotelRoomDto> findByHotelTypeIdx(Long hotelTypeIdx) {
+        List<HotelRoom> hotelRooms = hotelRoomRepository.findByRoomType_Idx(hotelTypeIdx);
+        List<HotelRoomDto> hotelRoomDtos = new ArrayList<>();
+        for (HotelRoom hotelRoom : hotelRooms) {
+            hotelRoomDtos.add(modelMapper.map(hotelRoom, HotelRoomDto.class));
+        }
+        return hotelRoomDtos;
     }
 
 

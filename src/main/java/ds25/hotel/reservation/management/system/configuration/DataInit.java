@@ -353,7 +353,7 @@ public class DataInit {
 
     public List<HotelRoom> getHotelRooms() {
         List<HotelRoom> hotelRooms = new ArrayList<>();
-        for (int roomType = 1; roomType <= 9; roomType++) {
+        for (int roomType = 1; roomType <= 10; roomType++) {
             for (int roomNumber = roomType * 100 + 1; roomNumber <= roomType * 100 + 9; roomNumber++) {
                 HotelRoomType hotelRoomType = HotelRoomType.builder().idx((long) roomType).build();
                 HotelRoom hotelRoom = HotelRoom.builder()

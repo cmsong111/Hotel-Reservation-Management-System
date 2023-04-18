@@ -1,64 +1,90 @@
 package ds25.hotel.reservation.management.system.screens.admin;
 
+import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
+import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
+import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
+import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
+import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
+import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
-public class AdminHotelDetailPage extends JFrame { // 방 10개 띄워놓고 객실현황 확인하는 틀(?)
+@Slf4j
+public class AdminHotelDetailPage extends JFrame implements ActionListener { // 방 10개 띄워놓고 객실현황 확인하는 틀(?)
 
-    JButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10;
-    JList<String> listBox;
-    DefaultListModel<String> listModel;
+    private HotelRoomService hotelRoomService;
+    private HotelRoomTypeService hotelRoomTypeService;
+    private JPanel roomListPanel;
 
     public AdminHotelDetailPage(long hotelIdx) {
-        super("Example Frame");
+        super("호텔 예약 현황");
+        roomListPanel = new JPanel(new GridLayout(-1, 1));
 
-        // 버튼 생성
-        button1 = new JButton("방 1");
-        button2 = new JButton("방 2");
-        button3 = new JButton("방 3");
-        button4 = new JButton("방 4");
-        button5 = new JButton("방 5");
-        button6 = new JButton("방 6");
-        button7 = new JButton("방 7");
-        button8 = new JButton("방 8");
-        button9 = new JButton("방 9");
-        button10 = new JButton("방 10");
+        hotelRoomService = SpringBridge.getInstance().getBean(HotelRoomService.class);
+        hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
 
-        // 리스트 박스 생성
-        listModel = new DefaultListModel<>();
-        listBox = new JList<>(listModel);
 
-        // 리스트 박스에 데이터 추가
-        ArrayList<String> items = new ArrayList<>();
-        items.add("Item 1");
-        items.add("Item 2");
-        items.add("Item 3");
-        items.add("Item 4");
-        items.add("Item 5");
-        items.add("Item 6");
-        items.add("Item 7");
-        items.add("Item 8");
-        for (String item : items) {
-            listModel.addElement(item);
-        }
+        hotelRoomTypeService.findHotelRoomByHotelIdx(hotelIdx).forEach(hotelRoomTypeDto -> {
+            log.info("{}", hotelRoomTypeDto);
+            roomListPanel.add(new HotelRoomTypePanel(
+                    hotelRoomTypeDto,
+                    hotelRoomService.findByHotelTypeIdx(hotelRoomTypeDto.getIdx()
+                    )
+            ));
+        });
 
-        setLayout(new GridLayout(6, 4,6,6));
-        add(button1);
-        add(button2);
-        add(button3);
-        add(button4);
-        add(button5);
-        add(button6);
-        add(button7);
-        add(button8);
-        add(button9);
-        add(button10);
-        add(new JScrollPane(listBox));
 
-        setSize(1200, 600);
+        setLayout(new BorderLayout());
+
+        add(new NorthPanel(), BorderLayout.NORTH);
+        add(new EastPanel(), BorderLayout.EAST);
+        add(new WestPanel(), BorderLayout.WEST);
+        add(new SouthPanel(), BorderLayout.SOUTH);
+        add(roomListPanel, BorderLayout.CENTER);
+
+
+        setSize(1200, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals("")) {
+            //
+        } else {
+            log.info("{}", command);
+        }
+
+    }
+
+}
+
+@Slf4j
+class HotelRoomTypePanel extends JPanel  {
+    public HotelRoomTypePanel(HotelRoomTypeDto hotelRoomTypeDto, List<HotelRoomDto> hotelRoomDtoList) {
+        JPanel roomPanel = new JPanel(new GridLayout(1, -1));
+        for (HotelRoomDto hotelRoomDto : hotelRoomDtoList) {
+            roomPanel.add(new JButton(
+                    hotelRoomDto.getRoomNumber().toString() + "호")
+            );
+        }
+
+        setLayout(new GridLayout(2, 1));
+        add(new JLabel(hotelRoomTypeDto.getName()));
+        add(roomPanel);
+    }
+
 }
