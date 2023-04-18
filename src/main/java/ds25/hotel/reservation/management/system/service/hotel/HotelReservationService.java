@@ -135,7 +135,7 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<HotelReservation> getHotelReservationByHotelRoomIdx(Long hotelRoomIdx) throws IOException {
+    public List<HotelReservation> getHotelReservationByHotelRoomIdx(Long hotelRoomIdx) {
         log.info("호텔 객실 별 예약 내역을 조회합니다");
         return hotelReservationRepository.findByHotelRoom_Idx(hotelRoomIdx);
     }
@@ -167,7 +167,7 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<HotelReservation> getHotelReservationByHotelId(long hotelId) throws IOException {
+    public List<HotelReservation> getHotelReservationByHotelId(long hotelId)  {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
         return hotelReservationRepository.findByHotelRoom_Idx(hotelId);
     }
