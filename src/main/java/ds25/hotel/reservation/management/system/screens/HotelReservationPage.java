@@ -2,6 +2,7 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
@@ -12,8 +13,10 @@ import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
+import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
 import ds25.hotel.reservation.management.system.service.user.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
@@ -22,16 +25,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Optional;
 
+@Slf4j
 public class HotelReservationPage extends JFrame implements ActionListener {
 
     UserDto user;
+    HotelDto hotel;
+    HotelRoomTypeDto hotelRoomTypeDto;
+    ArrayList<HotelRoomTypeDto> hotelRoomTypeDtoArrayList;
     HotelReservationDto hotelReservationDto;
 
     UserService userService;
     HotelRoomTypeService hotelRoomTypeService;
+    HotelRoomService hotelRoomService;
     HotelReservationService hotelReservationService;
 
 
@@ -43,19 +52,24 @@ public class HotelReservationPage extends JFrame implements ActionListener {
 
     private JButton reserveButton, cancelButton;
 
-
     Optional<HotelRoomTypeDto> hotelRoomDto;
 
     public HotelReservationPage(Long hotelRoomIdx) {
 
+
         userService = SpringBridge.getInstance().getBean(UserService.class);
+        hotelRoomService = SpringBridge.getInstance().getBean(HotelRoomService.class);
         hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
         hotelReservationService = SpringBridge.getInstance().getBean(HotelReservationService.class);
 
         user = Singleton.getInstance().getUser();
+
+
         hotelReservationDto = HotelReservationFactoryMethod.createReservation(hotelRoomIdx);
         hotelRoomDto = hotelRoomTypeService.findHotelRoomByIdx(hotelRoomIdx);
+        hotelRoomTypeDtoArrayList = hotelRoomTypeService.findHotelRoomByHotelIdx(hotelRoomDto.get().getHotelIdx());
 
+        int roomTypeIndex = 0;
         if (user == null || hotelRoomDto.isEmpty()) {
             JOptionPane.showMessageDialog(null, "로그인이 필요합니다.");
             return;
@@ -79,7 +93,20 @@ public class HotelReservationPage extends JFrame implements ActionListener {
         checkOutDatePicker.setDate(getTomorrowDate().getTime());
         checkOutDatePicker.setFormats(new SimpleDateFormat("yyyy-MM-dd"));
         roomTypeLabel = new JLabel("방 유형");
-        roomTypeComboBox = new JComboBox<>(new String[]{"Single", "Double", "Suite"});
+
+        hotelRoomTypeDtoArrayList.forEach(hotelRoomTypeDto -> log.info(hotelRoomTypeDto.getName()));
+        String[] roomType = new String[hotelRoomTypeDtoArrayList.size()];
+        for (int i = 0; i < hotelRoomTypeDtoArrayList.size(); i++) {
+            roomType[i] = hotelRoomTypeDtoArrayList.get(i).getName();
+            log.info(hotelRoomTypeDtoArrayList.get(i).getName());
+            if (hotelRoomTypeDtoArrayList.get(i).getIdx().equals(hotelRoomIdx)) {
+                roomTypeIndex = i;
+            }
+        }
+        roomTypeComboBox = new JComboBox<>(roomType);
+        roomTypeComboBox.setSelectedIndex(roomTypeIndex);
+
+
         numGuestsLabel = new JLabel("Number of Guests: ");
         numGuestsSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
         numRoomsLabel = new JLabel("Number of Rooms: ");
