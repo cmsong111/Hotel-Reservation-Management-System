@@ -3,7 +3,10 @@ package ds25.hotel.reservation.management.system.screens.auth;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
-import ds25.hotel.reservation.management.system.screens.widget.*;
+import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
+import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
+import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
+import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.user.UserService;
 
 import javax.swing.*;

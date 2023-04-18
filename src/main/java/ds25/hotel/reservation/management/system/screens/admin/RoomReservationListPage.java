@@ -14,7 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RoomReservationListPage extends JFrame  implements ActionListener, ListSelectionListener { // ReservationPage 버튼 누르면 나오는 페이지로 생각중
+public class RoomReservationListPage extends JFrame implements ActionListener, ListSelectionListener { // ReservationPage 버튼 누르면 나오는 페이지로 생각중
 
 
     private JList hotelList;
@@ -45,13 +45,12 @@ public class RoomReservationListPage extends JFrame  implements ActionListener, 
         setLayout(new BorderLayout());
 
         add(reservationListScrollPane, BorderLayout.CENTER);
-        add(new NorthPanel(hotelRoomIdx.toString()+"객실"), BorderLayout.NORTH);
+        add(new NorthPanel(hotelRoomIdx.toString() + "객실"), BorderLayout.NORTH);
         add(new WestPanel(), BorderLayout.WEST);
         add(new SouthPanel(), BorderLayout.SOUTH);
         add(new EastPanel(), BorderLayout.EAST);
 
         setVisible(true);
-
 
 
     }

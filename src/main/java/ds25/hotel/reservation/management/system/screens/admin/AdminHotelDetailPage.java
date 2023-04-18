@@ -1,8 +1,6 @@
 package ds25.hotel.reservation.management.system.screens.admin;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
@@ -12,14 +10,9 @@ import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeServi
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
 
 @Slf4j
 public class AdminHotelDetailPage extends JFrame implements ActionListener { // 방 10개 띄워놓고 객실현황 확인하는 틀(?)
@@ -39,7 +32,7 @@ public class AdminHotelDetailPage extends JFrame implements ActionListener { // 
         hotelRoomTypeService.findHotelRoomByHotelIdx(hotelIdx).forEach(hotelRoomTypeDto -> {
             log.info("{}", hotelRoomTypeDto);
             JPanel roomTypePanel = new JPanel(new GridLayout(2, 1));
-            JPanel roomButtonPanel = new JPanel(new GridLayout(1, -1,1,5));
+            JPanel roomButtonPanel = new JPanel(new GridLayout(1, -1, 1, 5));
             roomTypePanel.add(new JLabel(hotelRoomTypeDto.getName()));
             hotelRoomService.findByHotelTypeIdx(hotelRoomTypeDto.getIdx()).forEach(hotelRoom -> {
                 JButton button = new JButton(hotelRoom.getRoomNumber().toString() + "호");

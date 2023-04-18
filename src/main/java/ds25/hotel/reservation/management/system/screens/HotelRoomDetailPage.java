@@ -3,15 +3,12 @@ package ds25.hotel.reservation.management.system.screens;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
 import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
-import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
 import ds25.hotel.reservation.management.system.screens.auth.MyPage;
-import ds25.hotel.reservation.management.system.screens.auth.UserInfo;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
-import ds25.hotel.reservation.management.system.util.ImageLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -48,7 +45,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
 
         centerPanel = new JPanel(new GridLayout(5, 5));
-        textPanel = new JPanel(new GridLayout(-1,1));
+        textPanel = new JPanel(new GridLayout(-1, 1));
 
 
         textArea = new JTextArea();
@@ -79,7 +76,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         prevButton.setActionCommand("prevImage");
         prevButton.addActionListener(this);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10,0));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 0));
 
         reserveButton = new JButton("예약");
         reserveButton.setBounds(600, 210, 100, 30);
@@ -99,7 +96,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
 
         centerPanel.add(imageControlPanel);
-        centerPanel.add(buttonPanel,BorderLayout.CENTER);
+        centerPanel.add(buttonPanel, BorderLayout.CENTER);
         textPanel.add(scrollPane, BorderLayout.SOUTH);
         centerPanel.add(textPanel, BorderLayout.SOUTH);
 
