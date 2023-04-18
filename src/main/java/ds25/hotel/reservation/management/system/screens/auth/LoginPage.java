@@ -5,7 +5,7 @@ import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.UserRole;
 import ds25.hotel.reservation.management.system.screens.HotelSelectionPage;
-import ds25.hotel.reservation.management.system.screens.admin.AdminMainPage;
+import ds25.hotel.reservation.management.system.screens.admin.AdminHotelSelectPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
@@ -97,7 +97,7 @@ public class LoginPage extends JFrame implements ActionListener {
             if (user != null && user.getRole().equals(UserRole.ADMIN)) {
                 JOptionPane.showMessageDialog(null, "관리자 로그인 성공");
                 Singleton.getInstance().setAdmin(user);
-                new AdminMainPage();
+                new AdminHotelSelectPage();
             } else if (user != null) {
                 JOptionPane.showMessageDialog(null, "로그인 성공");
                 new HotelSelectionPage();
