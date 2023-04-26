@@ -44,42 +44,11 @@ public class DataInit {
     @PostConstruct
     public void init() {
         log.info("데이터 초기화 시작");
-        // 사용자 데이터 초기화
-        userService.initUserData(users);
-        // 호텔 이미지 데이터 초기화
-        hotelImageService.initHotelImageData(hotelImages);
         // 호텔 데이터 초기화
         hotelService.initHotelData(hotels);
         // 호텔 방 데이터 초기화
         hotelRoomTypeService.initHotelRoomData(hotelRoomTypes);
-        // 호텔 방 객실 데이터 초기화
-        hotelRoomService.initHotelRoomData(getHotelRooms());
-        // 호텔 예약 데이터 초기화
-        hotelReservationService.initHotelReservationData(hotelReservations);
-        // 호텔 리뷰 데이터 초기화
-        hotelReviewService.initHotelReviewData(hotelReviews);
     }
-
-    List<User> users = new ArrayList<>(Arrays.asList(
-            User.builder()
-                    .id("admin")
-                    .password("admin")
-                    .name("관리자")
-                    .phone("010-0000-0000")
-                    .email("admin@hotel.com")
-                    .grade(UserGrade.GOLD)
-                    .role(UserRole.ADMIN)
-                    .build(),
-            User.builder()
-                    .id("user")
-                    .password("user")
-                    .name("일반회원")
-                    .phone("010-0000-0000")
-                    .email("user@hotel.com")
-                    .grade(UserGrade.SILVER)
-                    .role(UserRole.USER)
-                    .build()
-    ));
 
     List<Hotel> hotels = new ArrayList<>(Arrays.asList(
             Hotel.builder()
@@ -322,49 +291,5 @@ public class DataInit {
                     )))
                     .build()
     ));
-    List<HotelReview> hotelReviews = new ArrayList<>(Arrays.asList());
-    List<HotelReservation> hotelReservations = new ArrayList<>(Arrays.asList(
-            HotelReservation.builder()
-                    .user(User.builder().id("user").build())
-                    .hotelRoom(HotelRoom.builder().idx(1L).build())
-                    .checkInDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 7, 0, 0)))
-                    .checkOutDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 8, 0, 0)))
-                    .peopleCount(2)
-                    .totalPrice(200000)
-                    .createdAt(Timestamp.valueOf(LocalDateTime.now()))
-                    .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
-                    .build(),
-            HotelReservation.builder()
-                    .user(User.builder().id("user").build())
-                    .hotelRoom(HotelRoom.builder().idx(2L).build())
-                    .checkInDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 15, 0, 0)))
-                    .checkOutDate(Timestamp.valueOf(LocalDateTime.of(2023, 4, 11, 0, 0)))
-                    .peopleCount(2)
-                    .totalPrice(200000)
-                    .createdAt(Timestamp.valueOf(LocalDateTime.now()))
-                    .updatedAt(Timestamp.valueOf(LocalDateTime.now()))
-                    .build()
-
-
-    ));
-
-    List<HotelImage> hotelImages = new ArrayList<>(Arrays.asList());
-
-
-    public List<HotelRoom> getHotelRooms() {
-        List<HotelRoom> hotelRooms = new ArrayList<>();
-        for (int roomType = 1; roomType <= 10; roomType++) {
-            for (int roomNumber = roomType * 100 + 1; roomNumber <= roomType * 100 + 9; roomNumber++) {
-                HotelRoomType hotelRoomType = HotelRoomType.builder().idx((long) roomType).build();
-                HotelRoom hotelRoom = HotelRoom.builder()
-                        .roomNumber((long) roomNumber)
-                        .roomType(hotelRoomType)
-                        .build();
-                hotelRooms.add(hotelRoom);
-            }
-        }
-        return hotelRooms;
-    }
-
 
 }
