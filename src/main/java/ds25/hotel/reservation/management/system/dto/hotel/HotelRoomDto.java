@@ -14,5 +14,4 @@ public class HotelRoomDto {
     private Long idx;
     private Long roomNumber;
     private Long roomTypeIdx;
-    private Long payedPrice;
 }

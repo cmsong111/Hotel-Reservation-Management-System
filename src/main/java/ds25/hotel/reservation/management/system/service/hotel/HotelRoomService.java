@@ -17,48 +17,51 @@ import java.util.Optional;
 @Slf4j
 public class HotelRoomService {
     private final HotelRoomTypeRepository hotelRoomTypeRepository;
-
-    HotelRoomRepository hotelRoomRepository;
+    private final HotelRoomRepository hotelRoomRepository;
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public HotelRoomService(HotelRoomRepository hotelRoomRepository,
-                            HotelRoomTypeRepository hotelRoomTypeRepository) {
+    public HotelRoomService(HotelRoomRepository hotelRoomRepository, HotelRoomTypeRepository hotelRoomTypeRepository) {
         this.hotelRoomRepository = hotelRoomRepository;
         this.hotelRoomTypeRepository = hotelRoomTypeRepository;
     }
 
 
+    /**
+     * 호텔 방 정보 추가
+     *
+     * @param hotelRoomDto 호텔 방 정보
+     * @return 호텔 방 정보 DTO
+     * @author 김남주
+     */
     public HotelRoomDto addHotelRoom(HotelRoomDto hotelRoomDto) {
         HotelRoom hotelRoom = hotelRoomRepository.save(modelMapper.map(hotelRoomDto, HotelRoom.class));
         log.info("addHotelRoom: " + hotelRoom.toString());
         return modelMapper.map(hotelRoom, HotelRoomDto.class);
     }
 
+    /**
+     * 호텔 방 정보 삭제
+     *
+     * @param hotelROomIdx 호텔 방 정보 인덱스
+     * @author 김남주
+     */
+    public void deleteHotelRoom(Long hotelROomIdx) {
+        Optional<HotelRoom> hotelRoom = hotelRoomRepository.findById(hotelROomIdx);
 
-    public void deleteHotelRoom(Long hotelRoomId) {
-        Optional<HotelRoom> hotelRoom = hotelRoomRepository.findById(hotelRoomId);
-        if (hotelRoom.isEmpty()) {
-            log.info("deleteHotelRoom: " + hotelRoomId + " not found");
-        } else {
+        if (hotelRoom.isPresent()) {
+            log.info("deleteHotelRoom: " + hotelROomIdx + " deleted");
             hotelRoomRepository.delete(hotelRoom.get());
+        } else {
+            log.info("deleteHotelRoom: " + hotelROomIdx + " not found");
         }
-    }
-
-    public List<HotelRoomDto> getHotelRooms() {
-        List<HotelRoom> hotelRooms = hotelRoomRepository.findAll();
-        List<HotelRoomDto> hotelRoomDtos = new ArrayList<>();
-        for (HotelRoom hotelRoom : hotelRooms) {
-            hotelRoomDtos.add(modelMapper.map(hotelRoom, HotelRoomDto.class));
-        }
-        return hotelRoomDtos;
     }
 
     /**
      * 호텔 아이디로 호텔 방 정보 가져오기
      *
      * @param hotelId 호텔 아이디
-     * @return 호텔 방 정보
+     * @return 호텔 방 정보 DTO 리스트
      * @author 김남주
      */
     public List<HotelRoomDto> findHotelRoomsByHotelId(Long hotelId) {
@@ -74,7 +77,7 @@ public class HotelRoomService {
      * 호텔 방 정보 수정
      *
      * @param hotelRoomDto 호텔 방 정보
-     * @return 호텔 방 정보
+     * @return 호텔 방 정보 DTO
      * @author 김남주
      */
     public HotelRoomDto updateHotelRoom(HotelRoomDto hotelRoomDto) {
@@ -86,7 +89,14 @@ public class HotelRoomService {
         return modelMapper.map(hotelRoom, HotelRoomDto.class);
     }
 
-    public List<HotelRoomDto> findByHotelTypeIdx(Long hotelTypeIdx) {
+    /**
+     * 호텔 방 타입 Idx 로 호텔 방 정보 가져오기
+     *
+     * @param hotelTypeIdx 호텔 방 타입 Idx
+     * @return 호텔 방 정보 DTO 리스트
+     * @author 김남주
+     */
+    public List<HotelRoomDto> findByHotelRoomTypeIdx(Long hotelTypeIdx) {
         List<HotelRoom> hotelRooms = hotelRoomRepository.findByRoomType_Idx(hotelTypeIdx);
         List<HotelRoomDto> hotelRoomDtos = new ArrayList<>();
         for (HotelRoom hotelRoom : hotelRooms) {
