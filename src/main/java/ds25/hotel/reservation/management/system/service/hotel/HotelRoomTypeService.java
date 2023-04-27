@@ -173,19 +173,4 @@ public class HotelRoomTypeService {
         return hotelRoomTypeRepository.findById(idx).get();
     }
 
-//    public void initHotelRoomData(List<HotelRoomType> hotelRoomTypes) {
-//        log.info("init HotelRoom Service");
-//        for (HotelRoomType hotelRoomType : hotelRoomTypes){
-//            List<HotelImage> saved = new ArrayList<>();
-//            for(HotelRoomTypeImage hotelImage: hotelRoomType.getImages()){
-//                saved.add(hotelRoomTypeImageRepository.save(hotelImage));
-//            }
-//            hotelRoomType.setImages(saved);
-//            hotelRoomTypeRepository.save(hotelRoomType);
-//        }
-//
-//        for (HotelRoomType hotelRoomType : hotelRoomTypeRepository.findAll()){
-//            log.info("hotelRoomType : {} Saved ", hotelRoomType);
-//        }
-//    }
 }

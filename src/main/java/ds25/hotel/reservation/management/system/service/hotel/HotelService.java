@@ -157,22 +157,6 @@ public class HotelService {
         return hotelDto;
     }
 
-    public void initHotelData(List<Hotel> hotels) {
-        log.info("initializeData method called");
-        for (Hotel hotel : hotels) {
-            List<HotelImage> saved = new ArrayList<>();
-            for(HotelImage hotelImage : hotel.getImages()){
-                saved.add(hotelImageRepository.save(hotelImage));
-            }
-            hotel.setImages(saved);
-            hotelRepository.save(hotel);
-        }
-
-        for (Hotel hotel: hotelRepository.findAll()) {
-            log.info("hotel 입력 완. : {}", hotel.toString());
-        }
-
-    }
 
     private HotelDto convertToDto(Hotel hotel) {
         HotelDto hotelDto = modelMapper.map(hotel, HotelDto.class);

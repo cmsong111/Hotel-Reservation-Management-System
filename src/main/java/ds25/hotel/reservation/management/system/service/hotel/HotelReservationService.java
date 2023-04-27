@@ -81,7 +81,6 @@ public class HotelReservationService {
         oldHotelReservation.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         return modelMapper.map(hotelReservationRepository.save(oldHotelReservation.get()), HotelReservationDto.class);
-
     }
 
     /**
@@ -164,15 +163,6 @@ public class HotelReservationService {
         return hotelReservationRepository.findByHotelRoom_Idx(hotelId);
     }
 
-    public void initHotelReservationData(List<HotelReservation> hotelReservations) {
-        log.info("호텔 예약 데이터를 초기화합니다");
-
-        hotelReservationRepository.saveAll(hotelReservations);
-
-        for (HotelReservation hotelReservation : hotelReservationRepository.findAll()) {
-            log.info("Saved hotelReservation = {}", hotelReservation);
-        }
-    }
 
     public void reservationPay(Long reservationIdx, int payment) {
         HotelReservation hotelReservation = hotelReservationRepository.findById(reservationIdx).get();

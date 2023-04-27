@@ -158,16 +158,4 @@ public class HotelReviewService {
         hotelReviewRepository.delete(hotelReview.get());
     }
 
-    public void initHotelReviewData(List<HotelReview> hotelReviewList) {
-        log.info("initHotelReview");
-
-        hotelReviewRepository.saveAll(hotelReviewList);
-
-        for (HotelReview hotelReview : hotelReviewRepository.findAll()) {
-            log.info("Saved review : {}" , hotelReview);
-        }
-
-
-    }
-
 }
