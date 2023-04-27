@@ -26,7 +26,7 @@ public class HotelReview {
     User user;
     String content;
     int rating;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<HotelImage> images;
     @OneToOne
     HotelReservation reservation;

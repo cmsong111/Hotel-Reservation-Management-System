@@ -26,7 +26,7 @@ public class HotelRoomType {
     private int peopleCount;
     private BedSize bedSize;
     private int roomSize;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<HotelImage> images;
     private List<HotelServiceEnum> service;
 }
