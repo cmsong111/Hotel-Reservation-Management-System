@@ -94,18 +94,4 @@ public class HotelRoomService {
         }
         return hotelRoomDtos;
     }
-
-
-    public void initHotelRoomData(List<HotelRoom> hotelRooms) {
-        hotelRoomRepository.saveAll(hotelRooms);
-
-        for(HotelRoom hotelRoom : hotelRoomRepository.findAll()) {
-            log.info("initHotelRoomData: " + hotelRoom.toString());
-        }
-
-        log.info("initHotelRoomData completed");
-    }
-
-
-
 }
