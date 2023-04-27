@@ -2,10 +2,8 @@ package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,19 +20,13 @@ import java.util.Optional;
 @Service
 public class HotelReservationService {
     private final HotelRoomRepository hotelRoomRepository;
-
-    HotelReservationRepository hotelReservationRepository;
-    HotelRepository hotelRepository;
-    HotelRoomTypeRepository hotelRoomTypeRepository;
-    UserRepository userRepository;
+    private final HotelReservationRepository hotelReservationRepository;
+    private final UserRepository userRepository;
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public HotelReservationService(HotelReservationRepository hotelReservationRepository, HotelRepository hotelRepository, HotelRoomTypeRepository hotelRoomTypeRepository, UserRepository userRepository,
-                                   HotelRoomRepository hotelRoomRepository) {
+    public HotelReservationService(HotelReservationRepository hotelReservationRepository, UserRepository userRepository, HotelRoomRepository hotelRoomRepository) {
         this.hotelReservationRepository = hotelReservationRepository;
-        this.hotelRepository = hotelRepository;
-        this.hotelRoomTypeRepository = hotelRoomTypeRepository;
         this.userRepository = userRepository;
         this.hotelRoomRepository = hotelRoomRepository;
     }
@@ -44,7 +36,7 @@ public class HotelReservationService {
      *
      * @param hotelReservationDto 호텔 예약 정보
      * @return 호텔 예약 정보
-     * @throws Exception 예외 처리
+     * @throws IllegalArgumentException 잘못된 인자 값 전달
      * @author 김남주
      */
     public HotelReservationDto addHotelReservation(HotelReservationDto hotelReservationDto) throws IllegalArgumentException {
@@ -167,7 +159,7 @@ public class HotelReservationService {
      * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<HotelReservation> getHotelReservationByHotelId(long hotelId)  {
+    public List<HotelReservation> getHotelReservationByHotelId(long hotelId) {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
         return hotelReservationRepository.findByHotelRoom_Idx(hotelId);
     }
@@ -185,7 +177,7 @@ public class HotelReservationService {
     public void reservationPay(Long reservationIdx, int payment) {
         HotelReservation hotelReservation = hotelReservationRepository.findById(reservationIdx).get();
 
-        hotelReservation.setPayedMoney(hotelReservation.getPayedMoney()+payment);
+        hotelReservation.setPayedMoney(hotelReservation.getPayedMoney() + payment);
 
         hotelReservationRepository.save(hotelReservation);
         log.info("Saved hotelReservation = {}", hotelReservation);

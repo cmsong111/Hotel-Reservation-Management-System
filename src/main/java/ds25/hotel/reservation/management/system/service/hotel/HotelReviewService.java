@@ -1,6 +1,5 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReviewDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
@@ -29,7 +28,6 @@ public class HotelReviewService {
     private final HotelReviewRepository hotelReviewRepository;
     private final HotelImageRepository hotelImageRepository;
 
-    Gson gson = new Gson();
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
