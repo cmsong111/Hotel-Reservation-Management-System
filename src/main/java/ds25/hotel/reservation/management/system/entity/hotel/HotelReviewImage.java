@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.entity.hotel;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class HotelImage {
+public class HotelReviewImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
     private String image;
     @ManyToOne
-    private Hotel hotel;
+    private HotelReview review;
 }
+

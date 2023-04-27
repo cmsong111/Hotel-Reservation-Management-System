@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class HotelImage {
+public class HotelRoomTypeImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
     private String image;
     @ManyToOne
-    private Hotel hotel;
+    private HotelRoomType roomType;
 }
