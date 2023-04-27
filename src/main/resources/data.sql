@@ -21,7 +21,18 @@ values (1, '로얄 스위트 룸',
         '시그니엘 서울의 100층에 위치한 로얄스위트 룸은 세계 각국의 국빈과 국내외 VVIP를 위한 시그니엘 서울의 단 하나뿐인 최고급 객실입니다.
         럭셔리한 응접실과 회의실은 물론 비서관 전용 객실, 자쿠지 등 최신 시설과 보안 시스템을 갖추고 있으며 시그니엘 서울만의 세심하고 격조 높은 서비스는 잊지 못할 감동을 선사합니다.'
            , 2500000, 0, 2, 2, 353);
+insert into HotelRoomTypeImage(roomType_IDX, image)
+values (1,
+        'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/accommodation/suite/3291-2-2000-roo-LTSG.jpg.thumb.1920.1920.jpg');
 
+insert into HOTELROOMTYPE (HOTEL_IDX, NAME, DESCRIPTION, PRICE, DISCOUNT, PEOPLECOUNT, BEDSIZE, ROOMSIZE)
+values (1, '로얄 스위트 룸',
+        '시그니엘 서울의 100층에 위치한 로얄스위트 룸은 세계 각국의 국빈과 국내외 VVIP를 위한 시그니엘 서울의 단 하나뿐인 최고급 객실입니다.
+        럭셔리한 응접실과 회의실은 물론 비서관 전용 객실, 자쿠지 등 최신 시설과 보안 시스템을 갖추고 있으며 시그니엘 서울만의 세심하고 격조 높은 서비스는 잊지 못할 감동을 선사합니다.'
+           , 2500000, 0, 2, 2, 353);
+insert into HotelRoomTypeImage(roomType_IDX, image)
+values (1,
+        'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/accommodation/suite/3291-2-2000-roo-LTSG.jpg.thumb.1920.1920.jpg');
 
 
 -- Hotel Room 데이터 입력
@@ -43,58 +54,61 @@ values (1, 101),
        (2, 206),
        (2, 207),
        (2, 208),
-       (2, 209),
-       (3, 301),
-       (3, 302),
-       (3, 303),
-       (3, 304),
-       (3, 305),
-       (3, 306),
-       (3, 307),
-       (3, 308),
-       (4, 401),
-       (4, 402),
-       (4, 403),
-       (4, 404),
-       (4, 405),
-       (4, 406),
-       (4, 407),
-       (4, 408),
-       (5, 501),
-       (5, 502),
-       (5, 503),
-       (5, 504),
-       (5, 505),
-       (5, 506),
-       (5, 507),
-       (6, 601),
-       (6, 602),
-       (6, 603),
-       (6, 604),
-       (6, 605),
-       (6, 606),
-       (6, 607),
-       (7, 701),
-       (7, 702),
-       (7, 703),
-       (7, 704),
-       (7, 705),
-       (8, 801),
-       (8, 802),
-       (8, 803),
-       (8, 804),
-       (8, 805),
-       (9, 901),
-       (9, 902),
-       (9, 903),
-       (9, 904),
-       (9, 905),
-       (10, 1001);
+       (2, 209);
+--        (3, 301),
+--        (3, 302),
+--        (3, 303),
+--        (3, 304),
+--        (3, 305),
+--        (3, 306),
+--        (3, 307),
+--        (3, 308),
+--        (4, 401),
+--        (4, 402),
+--        (4, 403),
+--        (4, 404),
+--        (4, 405),
+--        (4, 406),
+--        (4, 407),
+--        (4, 408),
+--        (5, 501),
+--        (5, 502),
+--        (5, 503),
+--        (5, 504),
+--        (5, 505),
+--        (5, 506),
+--        (5, 507),
+--        (6, 601),
+--        (6, 602),
+--        (6, 603),
+--        (6, 604),
+--        (6, 605),
+--        (6, 606),
+--        (6, 607),
+--        (7, 701),
+--        (7, 702),
+--        (7, 703),
+--        (7, 704),
+--        (7, 705),
+--        (8, 801),
+--        (8, 802),
+--        (8, 803),
+--        (8, 804),
+--        (8, 805),
+--        (9, 901),
+--        (9, 902),
+--        (9, 903),
+--        (9, 904),
+--        (9, 905),
+--        (10, 1001);
 
 -- Hotel 예약 데이터 입력
-insert into HOTELRESERVATION (USER_ID, HOTELROOM_IDX, CHECKINDATE, CHECKOUTDATE, PEOPLECOUNT, TOTALPRICE, CREATEDAT, UPDATEDAT, PAYEDMONEY)
-values ('user', 1, '2023-04-07 15:00:00', '2023-04-08 11:00:00', 2, 700000, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 700000),
-       ('user', 2, '2023-04-07 15:00:00', '2023-04-08 11:00:00', 2, 700000, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 700000);
+insert into HOTELRESERVATION (USER_ID, HOTELROOM_IDX, CHECKINDATE, CHECKOUTDATE, PEOPLECOUNT, TOTALPRICE, CREATEDAT,
+                              UPDATEDAT, PAYEDMONEY)
+values ('user', 1, '2023-04-07 15:00:00', '2023-04-08 11:00:00', 2, 700000, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+        700000),
+       ('user', 2, '2023-04-07 15:00:00', '2023-04-08 11:00:00', 2, 700000, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,
+        700000);
 
 -- Hotel 리뷰 데이터 입력
 

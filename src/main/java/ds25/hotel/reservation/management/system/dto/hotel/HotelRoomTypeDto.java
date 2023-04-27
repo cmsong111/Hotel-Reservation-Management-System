@@ -1,7 +1,6 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
 import ds25.hotel.reservation.management.system.entity.hotel.BedSize;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelServiceEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +24,6 @@ public class HotelRoomTypeDto {
     private int peopleCount;
     private BedSize bedSize;
     private int roomSize;
-    private ArrayList<HotelImage> images;
+    private ArrayList<HotelRoomTypeImageDto> images;
     private ArrayList<HotelServiceEnum> service;
 }

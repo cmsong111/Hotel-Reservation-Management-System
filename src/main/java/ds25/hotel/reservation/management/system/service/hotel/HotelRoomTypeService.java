@@ -3,14 +3,18 @@ package ds25.hotel.reservation.management.system.service.hotel;
 
 import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeImageDto;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoomType;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelRoomTypeImage;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,22 +25,21 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class HotelRoomTypeService {
-    private final HotelImageRepository hotelImageRepository;
-    UserRepository userRepository;
-    HotelRepository hotelRepository;
-    HotelRoomTypeRepository hotelRoomTypeRepository;
+    private final HotelRoomTypeRepository hotelRoomTypeRepository;
+    private final HotelRoomTypeImageRepository hotelRoomTypeImageRepository;
+    private final UserRepository userRepository;
+    private final HotelRepository hotelRepository;
     ModelMapper modelMapper = new ModelMapper();
-    Gson gson = new Gson();
 
 
     @Autowired
     public HotelRoomTypeService(HotelRoomTypeRepository hotelRoomTypeRepository, UserRepository userRepository,
                                 HotelRepository hotelRepository,
-                                HotelImageRepository hotelImageRepository) {
+                                HotelRoomTypeImageRepository hotelRoomTypeImageRepository) {
         this.hotelRoomTypeRepository = hotelRoomTypeRepository;
         this.userRepository = userRepository;
         this.hotelRepository = hotelRepository;
-        this.hotelImageRepository = hotelImageRepository;
+        this.hotelRoomTypeImageRepository = hotelRoomTypeImageRepository;
     }
 
 
@@ -118,17 +121,40 @@ public class HotelRoomTypeService {
     /**
      * 호텔 객실 정보 조회
      *
-     * @param hotelRoomIdx 호텔 객실 index 번호
+     * @param hotelRoomIdx 호텔 객실 타입 index 번호
      * @return 호텔 객실 정보
      * @author 김남주
      */
     public Optional<HotelRoomTypeDto> findHotelRoomByIdx(Long hotelRoomIdx) {
-        Optional<HotelRoomType> hotelRoom = hotelRoomTypeRepository.findById(hotelRoomIdx);
-        if (hotelRoom.isEmpty()) {
+        log.info("호텔 객실 정보를 조회합니다. 검색 조건 : " + hotelRoomIdx);
+        Optional<HotelRoomType> hotelRoomType = hotelRoomTypeRepository.findById(hotelRoomIdx);
+
+        if (hotelRoomType.isEmpty()) {
+            log.info("호텔 객실 정보가 없습니다");
             return Optional.empty();
-        } else {
-            return Optional.of(modelMapper.map(hotelRoom.get(), HotelRoomTypeDto.class));
         }
+        // 이미지 불러오기
+        log.info("호텔 객실 이미지를 불러옵니다");
+        List<HotelRoomTypeImage> hotelRoomTypeImageList = hotelRoomTypeImageRepository.findByRoomType_Idx(hotelRoomIdx);
+        ArrayList<HotelRoomTypeImageDto> hotelRoomTypeImageDtoList = new ArrayList<>();
+
+        // 이미지 Entity -> Dto
+        for (HotelRoomTypeImage hotelRoomTypeImage : hotelRoomTypeImageList) {
+            HotelRoomTypeImageDto hotelRoomTypeImageDto = modelMapper.map(hotelRoomTypeImage, HotelRoomTypeImageDto.class);
+            hotelRoomTypeImageDtoList.add(hotelRoomTypeImageDto);
+        }
+
+        // 이미지가 없을 경우 기본 이미지 추가
+        if (hotelRoomTypeImageDtoList.isEmpty()) {
+            log.info("호텔 객실 이미지가 존재하지 않습니다");
+            hotelRoomTypeImageDtoList.add(new HotelRoomTypeImageDto(1L, "https://lh6.googleusercontent.com/Bu-pRqU_tWZV7O3rJ5nV1P6NjqFnnAs8kVLC5VGz_Kf7ws0nDUXoGTc7pP87tyUCfu8VyXi0YviIm7CxAISDr2lJSwWwXQxxz98qxVfMcKTJfLPqbcfhn-QEeOowjrlwX1LYDFJN"));
+        }
+
+        // 호텔 객실 Entity -> Dto
+        HotelRoomTypeDto hotelTypeDto = modelMapper.map(hotelRoomType.get(), HotelRoomTypeDto.class);
+        hotelTypeDto.setImages(hotelRoomTypeImageDtoList);
+        log.info("호텔 객실 정보를 불러왔습니다,{}", hotelTypeDto.getName());
+        return Optional.of(hotelTypeDto);
     }
 
     /**
@@ -147,23 +173,23 @@ public class HotelRoomTypeService {
         return hotelRoomTypeDtos;
     }
 
-    public HotelRoomType getEntityFindById(Long idx){
+    public HotelRoomType getEntityFindById(Long idx) {
         return hotelRoomTypeRepository.findById(idx).get();
     }
 
-    public void initHotelRoomData(List<HotelRoomType> hotelRoomTypes) {
-        log.info("init HotelRoom Service");
-        for (HotelRoomType hotelRoomType : hotelRoomTypes){
-            List<HotelImage> saved = new ArrayList<>();
-            for(HotelImage hotelImage: hotelRoomType.getImages()){
-                saved.add(hotelImageRepository.save(hotelImage));
-            }
-            hotelRoomType.setImages(saved);
-            hotelRoomTypeRepository.save(hotelRoomType);
-        }
-
-        for (HotelRoomType hotelRoomType : hotelRoomTypeRepository.findAll()){
-            log.info("hotelRoomType : {} Saved ", hotelRoomType);
-        }
-    }
+//    public void initHotelRoomData(List<HotelRoomType> hotelRoomTypes) {
+//        log.info("init HotelRoom Service");
+//        for (HotelRoomType hotelRoomType : hotelRoomTypes){
+//            List<HotelImage> saved = new ArrayList<>();
+//            for(HotelRoomTypeImage hotelImage: hotelRoomType.getImages()){
+//                saved.add(hotelRoomTypeImageRepository.save(hotelImage));
+//            }
+//            hotelRoomType.setImages(saved);
+//            hotelRoomTypeRepository.save(hotelRoomType);
+//        }
+//
+//        for (HotelRoomType hotelRoomType : hotelRoomTypeRepository.findAll()){
+//            log.info("hotelRoomType : {} Saved ", hotelRoomType);
+//        }
+//    }
 }
