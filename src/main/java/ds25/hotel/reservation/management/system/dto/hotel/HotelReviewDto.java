@@ -1,6 +1,5 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
-import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,7 @@ public class HotelReviewDto {
     String userId;
     String content;
     int rating;
-    private ArrayList<HotelImage> images;
+    private ArrayList<HotelReviewImageDto> images;
     long reservationIdx;
     String reply;
     Timestamp createdAt;

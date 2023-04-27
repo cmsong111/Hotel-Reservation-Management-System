@@ -1,13 +1,12 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReviewDto;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelReviewImageDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReview;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelReviewImage;
 import ds25.hotel.reservation.management.system.entity.user.User;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
-import ds25.hotel.reservation.management.system.repository.hotel.HotelReviewRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.*;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import ds25.hotel.reservation.management.system.util.AggregateImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -26,17 +25,19 @@ public class HotelReviewService {
     private final UserRepository userRepository;
     private final HotelRepository hotelRepository;
     private final HotelReviewRepository hotelReviewRepository;
-    private final HotelImageRepository hotelImageRepository;
+    private final HotelReservationRepository hotelReservationRepository;
+    private final HotelReviewImageRepository hotelReviewImageRepository;
 
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public HotelReviewService(HotelReviewRepository hotelReviewRepository, HotelRepository hotelRepository,
-                              UserRepository userRepository, HotelImageRepository hotelImageRepository) {
+                              UserRepository userRepository, HotelReservationRepository hotelReservationRepository, HotelReviewImageRepository hotelReviewImageRepository) {
         this.hotelReviewRepository = hotelReviewRepository;
         this.hotelRepository = hotelRepository;
         this.userRepository = userRepository;
-        this.hotelImageRepository = hotelImageRepository;
+        this.hotelReviewImageRepository = hotelReviewImageRepository;
+        this.hotelReservationRepository = hotelReservationRepository;
     }
 
     /**
@@ -50,23 +51,11 @@ public class HotelReviewService {
         List<HotelReview> hotelReviewList = hotelReviewRepository.findByHotel_Idx(hotelIdx);
         AggregateImpl aggregate = new AggregateImpl(hotelReviewList.size());
         for (HotelReview hotelReview : hotelReviewList) {
-            aggregate.appendObject(modelMapper.map(hotelReview, HotelReviewDto.class));
+            aggregate.appendObject(convertToDto(hotelReview));
         }
         return aggregate;
     }
 
-    /**
-     * 리뷰 이미지 추가
-     *
-     * @param HotelIdx 호텔 리뷰 인덱스
-     * @param imageUrl 이미지 URL
-     * @return 호텔 리뷰 이미지 인덱스
-     * @author 김남주
-     */
-    public String addHotelReviewImage(String imageUrl) {
-        HotelImage hotelImage = HotelImage.builder().image(imageUrl).build();
-        return hotelImageRepository.save(hotelImage).getImage();
-    }
 
     /**
      * 호텔 리뷰 추가
@@ -75,35 +64,40 @@ public class HotelReviewService {
      * @return 호텔 리뷰 DTO
      * @author 김남주
      */
-    public HotelReviewDto addHotelReview(HotelReviewDto hotelReviewDto) {
+    public HotelReviewDto addHotelReview(HotelReviewDto hotelReviewDto) throws IllegalArgumentException {
+        log.info("리뷰 추가: " + hotelReviewDto.toString());
         Optional<Hotel> hotel = hotelRepository.findById(hotelReviewDto.getHotelIdx());
         Optional<User> user = userRepository.findById(hotelReviewDto.getUserId());
 
         if (hotel.isEmpty()) {
-            throw new RuntimeException("Hotel not found");
+            throw new IllegalArgumentException("Hotel not found");
         } else if (user.isEmpty()) {
-            throw new RuntimeException("User not found");
+            throw new IllegalArgumentException("User not found");
         }
-
-        for (HotelImage image : hotelReviewDto.getImages()) {
-            Optional<HotelImage> found = hotelImageRepository.findByImage(image.getImage());
-            if (found.isEmpty()) {
-                hotelImageRepository.save(image);
-            }
-        }
-
 
         HotelReview hotelReview = HotelReview.builder()
                 .hotel(hotel.get())
                 .user(user.get())
                 .content(hotelReviewDto.getContent())
                 .rating(hotelReviewDto.getRating())
-                .images(hotelReviewDto.getImages())
                 .reply(null)
                 .createdAt(new Timestamp(System.currentTimeMillis()))
                 .updatedAt(new Timestamp(System.currentTimeMillis()))
                 .build();
-        return modelMapper.map(hotelReviewRepository.save(hotelReview), HotelReviewDto.class);
+
+        HotelReview reviewReview = hotelReviewRepository.save(hotelReview);
+
+        if (hotelReviewDto.getImages() != null) {
+            for (HotelReviewImageDto hotelReviewImageDto : hotelReviewDto.getImages()) {
+                HotelReviewImage hotelReviewImage = HotelReviewImage.builder()
+                        .review(reviewReview)
+                        .image(hotelReviewImageDto.getImage())
+                        .build();
+                hotelReviewImageRepository.save(hotelReviewImage);
+            }
+        }
+        log.info("리뷰 추가 완료: " + reviewReview.toString());
+        return convertToDto(reviewReview);
     }
 
     /**
@@ -137,7 +131,7 @@ public class HotelReviewService {
         List<HotelReview> hotelReviewList = hotelReviewRepository.findByUser_Id(userId);
         ArrayList<HotelReviewDto> hotelReviewDtoList = new ArrayList<>();
         for (HotelReview hotelReview : hotelReviewList) {
-            hotelReviewDtoList.add(modelMapper.map(hotelReview, HotelReviewDto.class));
+            hotelReviewDtoList.add(convertToDto(hotelReview));
         }
         log.info("Review found by user complete");
         return hotelReviewDtoList;
@@ -148,14 +142,27 @@ public class HotelReviewService {
      * 호텔 리뷰 삭제
      *
      * @param hotelReviewIdx 호텔 리뷰 인덱스
-     * @aothor 김남주
+     * @exception IllegalArgumentException 호텔 리뷰 정보가 없을 경우
+     * @author 김남주
      */
-    public void deleteHotelReview(Long hotelReviewIdx) {
+    public void deleteHotelReview(Long hotelReviewIdx) throws IllegalArgumentException {
+        log.info("deleteHotelReview: " + hotelReviewIdx);
         Optional<HotelReview> hotelReview = hotelReviewRepository.findById(hotelReviewIdx);
         if (hotelReview.isEmpty()) {
-            throw new RuntimeException("Hotel Review not found");
+            throw new IllegalArgumentException("Hotel Review not found");
         }
         hotelReviewRepository.delete(hotelReview.get());
+        log.info("Hotel Review deleted");
+    }
+
+    public HotelReviewDto convertToDto(HotelReview hotelReview) {
+        HotelReviewDto hotelReviewDto = modelMapper.map(hotelReview, HotelReviewDto.class);
+        ArrayList<HotelReviewImageDto> hotelReviewImageDtoList = new ArrayList<>();
+        for (HotelReviewImage hotelReviewImage : hotelReviewImageRepository.findByReview_Idx(hotelReview.getIdx())) {
+            hotelReviewImageDtoList.add(modelMapper.map(hotelReviewImage, HotelReviewImageDto.class));
+        }
+        hotelReviewDto.setImages(hotelReviewImageDtoList);
+        return hotelReviewDto;
     }
 
 }

@@ -29,9 +29,7 @@ public class HotelRoomTypeService {
 
 
     @Autowired
-    public HotelRoomTypeService(HotelRoomTypeRepository hotelRoomTypeRepository, UserRepository userRepository,
-                                HotelRepository hotelRepository,
-                                HotelRoomTypeImageRepository hotelRoomTypeImageRepository) {
+    public HotelRoomTypeService(HotelRoomTypeRepository hotelRoomTypeRepository, UserRepository userRepository, HotelRepository hotelRepository, HotelRoomTypeImageRepository hotelRoomTypeImageRepository) {
         this.hotelRoomTypeRepository = hotelRoomTypeRepository;
         this.userRepository = userRepository;
         this.hotelRepository = hotelRepository;
@@ -47,9 +45,9 @@ public class HotelRoomTypeService {
      * @throws Exception 예외 처리
      * @author 김남주
      */
-    public HotelRoomTypeDto addHotelRoom(HotelRoomTypeDto hotelRoomTypeDto) throws Exception {
+    public HotelRoomTypeDto addHotelRoomType(HotelRoomTypeDto hotelRoomTypeDto) throws Exception {
 
-        if (hotelRoomTypeDto.getName() == null) {
+        if (hotelRoomTypeDto.getName() == null || hotelRoomTypeDto.getName().equals("")) {
             throw new Exception("호텔 객실 이름이 없습니다");
         } else if (hotelRoomTypeDto.getRoomCount() == 0) {
             throw new Exception("호텔 객실 개수가 없습니다");
@@ -59,8 +57,9 @@ public class HotelRoomTypeService {
             throw new Exception("호텔 객실 인원수가 없습니다");
         }
 
-        HotelRoomType hotelRoomType = modelMapper.map(hotelRoomTypeDto, HotelRoomType.class);
-        return modelMapper.map(hotelRoomTypeRepository.save(hotelRoomType), HotelRoomTypeDto.class);
+        HotelRoomType hotelRoomType = hotelRoomTypeRepository.save(modelMapper.map(hotelRoomTypeDto, HotelRoomType.class));
+
+        return convertToDto(hotelRoomType);
     }
 
     /**
@@ -70,7 +69,7 @@ public class HotelRoomTypeService {
      * @throws Exception 예외 처리
      * @author 김남주
      */
-    public HotelRoomTypeDto modifyHotelRoom(HotelRoomTypeDto hotelRoomTypeDto) throws Exception {
+    public HotelRoomTypeDto modifyHotelRoomType(HotelRoomTypeDto hotelRoomTypeDto) throws Exception {
         Optional<HotelRoomType> oldHotelRoom = hotelRoomTypeRepository.findById(hotelRoomTypeDto.getIdx());
         if (oldHotelRoom.isEmpty()) {
             throw new Exception("존재하지 않는 호텔 객실 정보입니다");
@@ -93,8 +92,9 @@ public class HotelRoomTypeService {
         if (hotelRoomTypeDto.getBedSize() != null) {
             oldHotelRoom.get().setBedSize(hotelRoomTypeDto.getBedSize());
         }
+        HotelRoomType hotelRoomType = hotelRoomTypeRepository.save(oldHotelRoom.get());
 
-        return modelMapper.map(hotelRoomTypeRepository.save(oldHotelRoom.get()), HotelRoomTypeDto.class);
+        return convertToDto(hotelRoomType);
     }
 
     /**
@@ -104,7 +104,7 @@ public class HotelRoomTypeService {
      * @throws Exception 예외 처리
      * @author 김남주
      */
-    public void removeHotelRoom(HotelRoomTypeDto hotelRoomTypeDto) throws Exception {
+    public void removeHotelRoomType(HotelRoomTypeDto hotelRoomTypeDto) throws Exception {
         log.info("remove HotelRoom Service");
         Optional<HotelRoomType> oldHotelRoom = hotelRoomTypeRepository.findById(hotelRoomTypeDto.getIdx());
         if (oldHotelRoom.isEmpty()) {
@@ -129,28 +129,8 @@ public class HotelRoomTypeService {
             log.info("호텔 객실 정보가 없습니다");
             return Optional.empty();
         }
-        // 이미지 불러오기
-        log.info("호텔 객실 이미지를 불러옵니다");
-        List<HotelRoomTypeImage> hotelRoomTypeImageList = hotelRoomTypeImageRepository.findByRoomType_Idx(hotelRoomIdx);
-        ArrayList<HotelRoomTypeImageDto> hotelRoomTypeImageDtoList = new ArrayList<>();
 
-        // 이미지 Entity -> Dto
-        for (HotelRoomTypeImage hotelRoomTypeImage : hotelRoomTypeImageList) {
-            HotelRoomTypeImageDto hotelRoomTypeImageDto = modelMapper.map(hotelRoomTypeImage, HotelRoomTypeImageDto.class);
-            hotelRoomTypeImageDtoList.add(hotelRoomTypeImageDto);
-        }
-
-        // 이미지가 없을 경우 기본 이미지 추가
-        if (hotelRoomTypeImageDtoList.isEmpty()) {
-            log.info("호텔 객실 이미지가 존재하지 않습니다");
-            hotelRoomTypeImageDtoList.add(new HotelRoomTypeImageDto(1L, "https://lh6.googleusercontent.com/Bu-pRqU_tWZV7O3rJ5nV1P6NjqFnnAs8kVLC5VGz_Kf7ws0nDUXoGTc7pP87tyUCfu8VyXi0YviIm7CxAISDr2lJSwWwXQxxz98qxVfMcKTJfLPqbcfhn-QEeOowjrlwX1LYDFJN"));
-        }
-
-        // 호텔 객실 Entity -> Dto
-        HotelRoomTypeDto hotelTypeDto = modelMapper.map(hotelRoomType.get(), HotelRoomTypeDto.class);
-        hotelTypeDto.setImages(hotelRoomTypeImageDtoList);
-        log.info("호텔 객실 정보를 불러왔습니다,{}", hotelTypeDto.getName());
-        return Optional.of(hotelTypeDto);
+        return Optional.of(convertToDto(hotelRoomType.get()));
     }
 
     /**
@@ -164,13 +144,42 @@ public class HotelRoomTypeService {
         List<HotelRoomType> hotelRoomTypes = hotelRoomTypeRepository.findByHotel_Idx(hotelIdx);
         ArrayList<HotelRoomTypeDto> hotelRoomTypeDtos = new ArrayList<>();
         for (HotelRoomType hotelRoomType : hotelRoomTypes) {
-            hotelRoomTypeDtos.add(modelMapper.map(hotelRoomType, HotelRoomTypeDto.class));
+            hotelRoomTypeDtos.add(convertToDto(hotelRoomType));
         }
         return hotelRoomTypeDtos;
     }
 
-    public HotelRoomType getEntityFindById(Long idx) {
-        return hotelRoomTypeRepository.findById(idx).get();
+    /**
+     * 호텔 객실 사진 등록
+     *
+     * @param imageDtos        호텔 객실 사진 정보 DTO (새 사진일 경우 idx is null, 기존 사진일 수정인 경우 idx 존재)
+     * @param hotelRoomTypeIdx 호텔 객실 타입 index 번호
+     */
+    public void modifyHotelRoomTypePhoto(ArrayList<HotelRoomTypeImageDto> imageDtos, Long hotelRoomTypeIdx) {
+        HotelRoomType hotelRoomType = hotelRoomTypeRepository.findById(hotelRoomTypeIdx).orElseThrow();
+
+        for (HotelRoomTypeImageDto imageDto : imageDtos) {
+            HotelRoomTypeImage hotelRoomTypeImage = modelMapper.map(imageDto, HotelRoomTypeImage.class);
+            hotelRoomTypeImage.setRoomType(hotelRoomType);
+            hotelRoomTypeImageRepository.save(hotelRoomTypeImage);
+        }
+        log.info("호텔 객실 사진이 등록되었습니다");
+    }
+
+    private HotelRoomTypeDto convertToDto(HotelRoomType hotelRoomType) {
+        HotelRoomTypeDto hotelRoomTypeDto = modelMapper.map(hotelRoomType, HotelRoomTypeDto.class);
+
+        ArrayList<HotelRoomTypeImageDto> hotelRoomTypeImageDtos = new ArrayList<>();
+        for (HotelRoomTypeImage hotelRoomTypeImage : hotelRoomTypeImageRepository.findByRoomType_Idx(hotelRoomType.getIdx())) {
+            hotelRoomTypeImageDtos.add(modelMapper.map(hotelRoomTypeImage, HotelRoomTypeImageDto.class));
+        }
+        // 이미지가 없을 경우 기본 이미지 추가
+        if (hotelRoomTypeImageDtos.isEmpty()) {
+            log.info("호텔 객실 이미지가 존재하지 않습니다");
+            hotelRoomTypeImageDtos.add(new HotelRoomTypeImageDto(1L, "https://lh6.googleusercontent.com/Bu-pRqU_tWZV7O3rJ5nV1P6NjqFnnAs8kVLC5VGz_Kf7ws0nDUXoGTc7pP87tyUCfu8VyXi0YviIm7CxAISDr2lJSwWwXQxxz98qxVfMcKTJfLPqbcfhn-QEeOowjrlwX1LYDFJN"));
+        }
+        hotelRoomTypeDto.setImages(hotelRoomTypeImageDtos);
+        return hotelRoomTypeDto;
     }
 
 }

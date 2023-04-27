@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HotelReviewImage {
+public class HotelReviewImageDto {
     private Long idx;
     private String image;
 }

@@ -165,7 +165,7 @@ public class HotelReservationService {
 
 
     public void reservationPay(Long reservationIdx, int payment) {
-        HotelReservation hotelReservation = hotelReservationRepository.findById(reservationIdx).get();
+        HotelReservation hotelReservation = hotelReservationRepository.findById(reservationIdx).orElseThrow();
 
         hotelReservation.setPayedMoney(hotelReservation.getPayedMoney() + payment);
 

@@ -34,7 +34,7 @@ public class AdminHotelDetailPage extends JFrame implements ActionListener { // 
             JPanel roomTypePanel = new JPanel(new GridLayout(2, 1));
             JPanel roomButtonPanel = new JPanel(new GridLayout(1, -1, 1, 5));
             roomTypePanel.add(new JLabel(hotelRoomTypeDto.getName()));
-            hotelRoomService.findByHotelTypeIdx(hotelRoomTypeDto.getIdx()).forEach(hotelRoom -> {
+            hotelRoomService.findByHotelRoomTypeIdx(hotelRoomTypeDto.getIdx()).forEach(hotelRoom -> {
                 JButton button = new JButton(hotelRoom.getRoomNumber().toString() + "호");
                 button.addActionListener(this);
                 button.setActionCommand(hotelRoom.getIdx().toString());
