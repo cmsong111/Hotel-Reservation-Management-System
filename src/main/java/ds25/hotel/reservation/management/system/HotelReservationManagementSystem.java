@@ -4,7 +4,6 @@
 
 package ds25.hotel.reservation.management.system;
 
-import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,11 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 public class HotelReservationManagementSystem {
 
     public static void main(String[] args) {
-        log.info("인스턴스 초기화");
-        Singleton.getInstance().init();
-
-
-
         new LoginPage();
     }
 }
