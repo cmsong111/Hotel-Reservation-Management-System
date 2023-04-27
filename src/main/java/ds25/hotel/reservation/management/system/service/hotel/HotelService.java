@@ -37,24 +37,30 @@ public class HotelService {
 
 
     /**
-     * 호텔 추가
+     * 호텔 생성 메소드
      *
-     * @param hotel 호텔 정보
+     * @param hotelDto 호텔 정보
      * @return 호텔 정보
-     * @throws IOException 파일 입출력 예외
+     * @throws IllegalArgumentException 비어있음
      * @author 김남주
      */
-    public HotelDto addHotel(HotelDto hotelDto) throws Exception {
-
+    public HotelDto addHotel(HotelDto hotelDto) throws IllegalArgumentException {
+        log.info("호텔 생성 메소드 실행");
         if (hotelDto.getName() == null) {
-            throw new Exception("호텔 이름이 없습니다");
+            throw new IllegalArgumentException("호텔 이름이 없습니다");
         } else if (hotelDto.getPhone() == null) {
-            throw new Exception("호텔 전화번호가 없습니다");
+            throw new IllegalArgumentException("호텔 전화번호가 없습니다");
         } else if (hotelDto.getAddress() == null) {
-            throw new Exception("호텔 주소가 없습니다");
+            throw new IllegalArgumentException("호텔 주소가 없습니다");
         }
-        Hotel hotel = modelMapper.map(hotelDto, Hotel.class);
-        return modelMapper.map(hotelRepository.save(hotel), HotelDto.class);
+        Hotel hotel = hotelRepository.save(modelMapper.map(hotelDto, Hotel.class));
+
+        for (HotelImageDto hotelImageDto : hotelDto.getImages()) {
+            HotelImage hotelImage = modelMapper.map(hotelImageDto, HotelImage.class);
+            hotelImage.setHotel(hotel);
+            hotelImageRepository.save(hotelImage);
+        }
+        return modelMapper.map(hotel, HotelDto.class);
     }
 
     /**
@@ -64,15 +70,14 @@ public class HotelService {
      * @throws Exception 예외처리
      * @author 김남주
      */
-    public void removeHotel(HotelDto hotelDto) throws Exception {
+    public void removeHotel(HotelDto hotelDto) throws IllegalArgumentException {
         Optional<Hotel> hotel = hotelRepository.findById(hotelDto.getIdx());
 
         if (hotel.isPresent()) {
-
             hotelRepository.deleteById(hotelDto.getIdx());
             log.info("호텔 정보가 삭제되었습니다");
         } else {
-            throw new Exception("삭제할 호텔 정보가 없습니다");
+            throw new IllegalArgumentException("삭제할 호텔 정보가 없습니다");
         }
     }
 
@@ -103,8 +108,9 @@ public class HotelService {
         if (hotelDto.getDescription() != null) {
             oldHotel.get().setDescription(hotelDto.getDescription());
         }
+        Hotel saveHotel = hotelRepository.save(oldHotel.get());
 
-        return modelMapper.map(hotelRepository.save(oldHotel.get()), HotelDto.class);
+        return convertToDto(saveHotel);
     }
 
     /**
@@ -141,15 +147,14 @@ public class HotelService {
     }
 
     /**
-     * 호텔 이름으로 정보 조회
+     * 호텔 이름으로 검색
      *
      * @param name 호텔 이름
-     * @throws IOException 파일 입출력 예외
      * @author 김남주
      */
-    public List<HotelDto> getHotelByName(String name) {
+    public List<HotelDto> findHotelByName(String name) {
         log.info("getHotelByName method called, keyword is " + name);
-        List<Hotel> hotels = hotelRepository.findByName(name);
+        List<Hotel> hotels = hotelRepository.findByNameLike(name);
         List<HotelDto> hotelDto = new ArrayList<>();
         for (Hotel hotel : hotels) {
             hotelDto.add(convertToDto(hotel));
@@ -167,5 +172,7 @@ public class HotelService {
         hotelDto.setImages(hotelImageDtos);
         return hotelDto;
     }
+
+
 
 }

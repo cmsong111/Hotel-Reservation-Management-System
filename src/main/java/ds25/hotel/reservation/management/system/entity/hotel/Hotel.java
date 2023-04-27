@@ -22,7 +22,7 @@ public class Hotel {
     private String phone;
     private String email;
     private String description;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<HotelImage> images;
     private List<HotelServiceEnum> service;
 }
