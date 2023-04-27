@@ -1,6 +1,6 @@
 package ds25.hotel.reservation.management.system.service.user;
 
-import com.google.gson.Gson;
+
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.entity.user.User;
@@ -18,10 +18,8 @@ import java.util.Optional;
 @Slf4j
 public class UserService {
 
-
     UserRepository userRepository;
     ModelMapper modelMapper = new ModelMapper();
-    Gson gson = new Gson();
     Singleton instance = Singleton.getInstance();
 
     @Autowired

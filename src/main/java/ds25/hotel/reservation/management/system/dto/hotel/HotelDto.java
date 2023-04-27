@@ -1,6 +1,5 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
-import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelServiceEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

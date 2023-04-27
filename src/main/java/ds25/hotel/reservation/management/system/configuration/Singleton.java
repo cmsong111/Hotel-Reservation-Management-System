@@ -21,9 +21,4 @@ public class Singleton {
 
     public UserDto admin;
     public UserDto user;
-
-
-    public void init() {
-        log.info("싱글톤 초기화");
-    }
 }

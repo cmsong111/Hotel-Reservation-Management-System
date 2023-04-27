@@ -1,6 +1,5 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
@@ -20,7 +19,6 @@ public class HotelRoomService {
     private final HotelRoomTypeRepository hotelRoomTypeRepository;
 
     HotelRoomRepository hotelRoomRepository;
-    Gson gson = new Gson();
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
@@ -33,7 +31,7 @@ public class HotelRoomService {
 
     public HotelRoomDto addHotelRoom(HotelRoomDto hotelRoomDto) {
         HotelRoom hotelRoom = hotelRoomRepository.save(modelMapper.map(hotelRoomDto, HotelRoom.class));
-        log.info("addHotelRoom: " + gson.toJson(hotelRoom));
+        log.info("addHotelRoom: " + hotelRoom.toString());
         return modelMapper.map(hotelRoom, HotelRoomDto.class);
     }
 
@@ -102,7 +100,7 @@ public class HotelRoomService {
         hotelRoomRepository.saveAll(hotelRooms);
 
         for(HotelRoom hotelRoom : hotelRoomRepository.findAll()) {
-            log.info("initHotelRoomData: " + gson.toJson(hotelRoom));
+            log.info("initHotelRoomData: " + hotelRoom.toString());
         }
 
         log.info("initHotelRoomData completed");

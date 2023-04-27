@@ -1,6 +1,5 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelImageDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
