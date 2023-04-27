@@ -20,6 +20,6 @@ public class HotelDto {
     private String phone;
     private String email;
     private String description;
-    private ArrayList<HotelImage> images;
+    private ArrayList<HotelImageDto> images;
     private ArrayList<HotelServiceEnum> service;
 }

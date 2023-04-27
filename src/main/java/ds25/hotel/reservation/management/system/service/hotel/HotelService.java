@@ -2,6 +2,7 @@ package ds25.hotel.reservation.management.system.service.hotel;
 
 import com.google.gson.Gson;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelImageDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelImage;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelImageRepository;
@@ -26,7 +27,6 @@ public class HotelService {
     HotelRoomTypeRepository hotelRoomTypeRepository;
     HotelReservationRepository hotelReservationRepository;
     ModelMapper modelMapper = new ModelMapper();
-    Gson gson = new Gson();
 
     @Autowired
     public HotelService(HotelRepository hotelRepository, HotelImageRepository hotelImageRepository, HotelRoomTypeRepository hotelRoomTypeRepository, HotelReservationRepository hotelReservationRepository) {
@@ -119,7 +119,7 @@ public class HotelService {
         Optional<Hotel> hotel = hotelRepository.findById(idx);
 
         if (hotel.isPresent()) {
-            return Optional.of(modelMapper.map(hotel.get(), HotelDto.class));
+            return Optional.of(convertToDto(hotel.get()));
         } else {
             return Optional.empty();
         }
@@ -136,7 +136,7 @@ public class HotelService {
         List<Hotel> hotels = hotelRepository.findAll();
         List<HotelDto> hotelDto = new ArrayList<>();
         for (Hotel hotel : hotels) {
-            hotelDto.add(modelMapper.map(hotel, HotelDto.class));
+            hotelDto.add(convertToDto(hotel));
         }
         return hotelDto;
     }
@@ -153,7 +153,7 @@ public class HotelService {
         List<Hotel> hotels = hotelRepository.findByName(name);
         List<HotelDto> hotelDto = new ArrayList<>();
         for (Hotel hotel : hotels) {
-            hotelDto.add(modelMapper.map(hotel, HotelDto.class));
+            hotelDto.add(convertToDto(hotel));
         }
         return hotelDto;
     }
@@ -173,6 +173,16 @@ public class HotelService {
             log.info("hotel 입력 완. : {}", hotel.toString());
         }
 
+    }
+
+    private HotelDto convertToDto(Hotel hotel) {
+        HotelDto hotelDto = modelMapper.map(hotel, HotelDto.class);
+        ArrayList<HotelImageDto> hotelImageDtos = new ArrayList<>();
+        for (HotelImage hotelImage : hotelImageRepository.findByHotel_Idx(hotel.getIdx())) {
+            hotelImageDtos.add(modelMapper.map(hotelImage, HotelImageDto.class));
+        }
+        hotelDto.setImages(hotelImageDtos);
+        return hotelDto;
     }
 
 }
