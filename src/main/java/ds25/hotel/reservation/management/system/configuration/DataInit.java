@@ -25,19 +25,17 @@ public class DataInit {
     HotelReviewService hotelReviewService;
     HotelRoomTypeService hotelRoomTypeService;
     HotelReservationService hotelReservationService;
-    HotelImageService hotelImageService;
     HotelRoomService hotelRoomService;
     UserService userService;
 
 
     @Autowired
-    public DataInit(HotelImageService hotelImageService, HotelReservationService hotelReservationService, HotelService hotelService, HotelReviewService hotelReviewService, HotelRoomTypeService hotelRoomTypeService, UserService userService, HotelRoomService hotelRoomService) {
+    public DataInit( HotelReservationService hotelReservationService, HotelService hotelService, HotelReviewService hotelReviewService, HotelRoomTypeService hotelRoomTypeService, UserService userService, HotelRoomService hotelRoomService) {
         this.hotelService = hotelService;
         this.hotelReviewService = hotelReviewService;
         this.hotelRoomTypeService = hotelRoomTypeService;
         this.userService = userService;
         this.hotelReservationService = hotelReservationService;
-        this.hotelImageService = hotelImageService;
         this.hotelRoomService = hotelRoomService;
     }
 
@@ -47,7 +45,7 @@ public class DataInit {
         // 호텔 데이터 초기화
         hotelService.initHotelData(hotels);
         // 호텔 방 데이터 초기화
-        hotelRoomTypeService.initHotelRoomData(hotelRoomTypes);
+        //hotelRoomTypeService.initHotelRoomData(hotelRoomTypes);
     }
 
     List<Hotel> hotels = new ArrayList<>(Arrays.asList(

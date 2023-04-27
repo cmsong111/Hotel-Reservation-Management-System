@@ -148,3 +148,4 @@ nbdist/
 .nb-gradle/
 
 # End of https://www.toptal.com/developers/gitignore/api/netbeans,maven,java,intellij
+/Hotel-Reservation-Management-System.iml
