@@ -2,8 +2,10 @@ package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
+import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
 import ds25.hotel.reservation.management.system.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +22,19 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class HotelReservationService {
+    private final HotelRoomTypeRepository hotelRoomTypeRepository;
     private final HotelRoomRepository hotelRoomRepository;
     private final HotelReservationRepository hotelReservationRepository;
     private final UserRepository userRepository;
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public HotelReservationService(HotelReservationRepository hotelReservationRepository, UserRepository userRepository, HotelRoomRepository hotelRoomRepository) {
+    public HotelReservationService(HotelReservationRepository hotelReservationRepository, UserRepository userRepository, HotelRoomRepository hotelRoomRepository,
+                                   HotelRoomTypeRepository hotelRoomTypeRepository) {
         this.hotelReservationRepository = hotelReservationRepository;
         this.userRepository = userRepository;
         this.hotelRoomRepository = hotelRoomRepository;
+        this.hotelRoomTypeRepository = hotelRoomTypeRepository;
     }
 
     /**
@@ -173,9 +179,17 @@ public class HotelReservationService {
         log.info("Saved hotelReservation = {}", hotelReservation);
     }
 
-    public boolean checkAlreadyReservation(Long roomIdx, Timestamp checkIn, Timestamp checkOut ){
-        return hotelReservationRepository.existsByHotelRoom_IdxAndCheckInDateGreaterThanEqualAndCheckOutDateLessThanEqualAllIgnoreCase(roomIdx, checkIn, checkOut);
 
+    public Long getAvailableRoom(Long HotelRoomTypeIdx, Timestamp newCheckIn, Timestamp newCheckOut) {
+
+        Long hotelRoomCount = hotelRoomRepository.countByRoomType_Idx(HotelRoomTypeIdx);
+
+
+        Long reservationCount = hotelReservationRepository.countByCheckInDateBetweenAndCheckOutDateBetweenAndHotelRoom_RoomType_Idx(newCheckIn, newCheckOut, newCheckIn, newCheckOut, HotelRoomTypeIdx);
+        log.info("hotelRoomCount = {}\treservationCount = {}", hotelRoomCount, reservationCount);
+
+        return hotelRoomCount - reservationCount;
     }
 
 }
+
