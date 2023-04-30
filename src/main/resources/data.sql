@@ -15,6 +15,10 @@ values ('서울특별시 송파구 올림픽로 300', '	롯데월드타워 76층
 세계 최고층에 위치한 웨딩&컨벤션
 Live beyond expectations, SIGNIEL SEOUL', 'rsv.signiel.seoul@lotte.net', '시그니엘 서울', '+82-2-3213-1000', null);
 
+INSERT INTO HOTEL (ADDRESS, DESCRIPTION, EMAIL, NAME, PHONE, SERVICE)
+values ('부산광역시 해운대구 달맞이길 30', ' 국내 럭셔리 호텔을 대표하는 시그니엘 서울에 이은 시그니엘의 두번째 프로퍼티, 
+엘시티(LCT)타워 3~19층에서 즐기는 인피니티 풀, 럭셔리 스파, 투숙객 전용 가든 테라스', 
+'rsv.signiel.busan@lotte.net', '시그니엘 부산', '+82-51-922-1000', null);
 
 insert into HOTELIMAGE (HOTEL_IDX, IMAGE)
 values (1, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/main/230119-01-2000-mai-LTSG.jpg.thumb.1920.1920.jpg');
