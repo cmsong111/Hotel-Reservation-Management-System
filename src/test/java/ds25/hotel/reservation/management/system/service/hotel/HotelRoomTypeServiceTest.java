@@ -8,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest(classes = JpaConfig.class)
 class HotelRoomTypeServiceTest {
 
@@ -22,3 +20,4 @@ class HotelRoomTypeServiceTest {
         System.out.println(hotel.get().getName());
     }
 }
+
