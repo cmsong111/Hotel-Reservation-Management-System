@@ -30,4 +30,5 @@ public class HotelReservation {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private int payedMoney;
+    private String memo;
 }

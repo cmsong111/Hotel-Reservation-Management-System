@@ -1,9 +1,6 @@
 package ds25.hotel.reservation.management.system.dto.hotel;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -13,6 +10,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class HotelReservationDto {
     private long idx;
+    @Setter(AccessLevel.NONE)
     String userId;
     private long hotelIdx;
     private long hotelRoomIdx;
@@ -23,4 +21,5 @@ public class HotelReservationDto {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private int payedMoney;
+    private String memo;
 }
