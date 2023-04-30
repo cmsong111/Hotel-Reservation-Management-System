@@ -23,7 +23,6 @@ values ('부산광역시 해운대구 달맞이길 30', ' 국내 럭셔리 호�
 insert into HOTELIMAGE (HOTEL_IDX, IMAGE)
 values (1, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/main/230119-01-2000-mai-LTSG.jpg.thumb.1920.1920.jpg');
 
-
 -- Hotel Room Type 데이터 입력
 insert into HOTELROOMTYPE (HOTEL_IDX, NAME, DESCRIPTION, PRICE, DISCOUNT, PEOPLECOUNT, BEDSIZE, ROOMSIZE)
 values (1, '그랜드 디럭스 룸',
@@ -134,6 +133,17 @@ values (10, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/ac
        (10, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/accommodation/suite/3291-4-2000-roo-LTSG.jpg.thumb.1920.1920.jpg'),
        (10, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/accommodation/suite/3291-8-2000-roo-LTSG.jpg.thumb.1920.1920.jpg'),
        (10, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/accommodation/suite/3291-6-2000-roo-LTSG.jpg.thumb.1920.1920.jpg');
+
+insert into HOTELROOMTYPE (HOTEL_IDX, NAME, DESCRIPTION, PRICE, DISCOUNT, PEOPLECOUNT, BEDSIZE, ROOMSIZE)
+values (2, '그랜드 디럭스 미포 하버뷰 룸',
+        '우아한 인테리어와 현대적 세련미가 조화롭게 어우러진  시그니엘 부산의 그랜드 디럭스 미포 하버뷰 객실로, 비즈니스 여행객과 레저 여행객 모두에게 편안한 숙박을 제공합니다.'
+           , 300000, 0, 2, 2, 37);
+insert into HotelRoomTypeImage(roomType_IDX, image)
+values (11, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/busan/rooms/grand/2738-02-2000-roo-LTSB.jpg.thumb.1920.1920.jpg'),
+       (11, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/busan/rooms/grand/2738-03-2000-roo-LTSB.jpg.thumb.1920.1920.jpg'),
+       (11, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/busan/rooms/grand/200306-1-2000-roo-LTSB.jpg.thumb.1920.1920.jpg'),
+       (11, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/busan/rooms/grand/200306-2-2000-roo-LTSB.jpg.thumb.1920.1920.jpg'),
+       (11, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/busan/rooms/grand/2745-2000-roo-LTSB.jpg.thumb.1920.1920.jpg');
 
 -- Hotel Room 데이터 입력
 insert into HOTELROOM (ROOMTYPE_IDX, ROOMNUMBER)
