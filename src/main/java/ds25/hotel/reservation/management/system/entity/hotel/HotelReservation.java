@@ -22,6 +22,8 @@ public class HotelReservation {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
+    private HotelRoomType hotelRoomType;
+    @ManyToOne(fetch = FetchType.EAGER)
     private HotelRoom hotelRoom;
     private Timestamp checkInDate;
     private Timestamp checkOutDate;

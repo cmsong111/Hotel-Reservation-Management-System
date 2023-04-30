@@ -1,6 +1,7 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.configuration.JpaConfig;
+import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,19 @@ class HotelReservationServiceTest {
         Long count = hotelReservationService.getAvailableRoom(10L, newCheckin, newCheckout);
 
         assertEquals(1L, count);
+    }
+
+    @Test
+    void createReservationSuccess(){
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        HotelReservationDto hotelReservationDto = HotelReservationDto.builder()
+                .hotelRoomIdx(1L)
+                .hotelIdx(1L)
+                .checkInDate(time)
+                .checkOutDate(time)
+                .peopleCount(2L)
+                .build();
+
+        assertThrows(IllegalArgumentException.class, () -> hotelReservationService.createHotelReservation(hotelReservationDto));
     }
 }

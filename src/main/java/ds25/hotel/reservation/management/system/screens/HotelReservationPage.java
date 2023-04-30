@@ -64,9 +64,8 @@ public class HotelReservationPage extends JFrame implements ActionListener {
 
         user = Singleton.getInstance().getUser();
 
-
-        hotelReservationDto = HotelReservationFactoryMethod.createReservation(hotelRoomIdx);
         hotelRoomDto = hotelRoomTypeService.findHotelRoomByIdx(hotelRoomIdx);
+        hotelReservationDto = HotelReservationFactoryMethod.createReservation(hotelRoomDto.get().getHotelIdx(),hotelRoomDto.get().getIdx());
         hotelRoomTypeDtoArrayList = hotelRoomTypeService.findHotelRoomByHotelIdx(hotelRoomDto.get().getHotelIdx());
 
         int roomTypeIndex = 0;
@@ -168,12 +167,16 @@ public class HotelReservationPage extends JFrame implements ActionListener {
         String command = e.getActionCommand();
 
         if (command.equals("Reserve")) {
-            hotelReservationDto.setCheckInDate(new Timestamp(checkInDatePicker.getDate().getTime()));
-            hotelReservationDto.setCheckOutDate(new Timestamp(checkOutDatePicker.getDate().getTime()));
+            Timestamp checkInDate = new Timestamp(checkInDatePicker.getDate().getTime());
+            checkInDate.setHours(15);
+            hotelReservationDto.setCheckInDate(checkInDate);
+            Timestamp checkOutDate = new Timestamp(checkOutDatePicker.getDate().getTime());
+            checkInDate.setHours(11);
+            hotelReservationDto.setCheckOutDate(checkOutDate);
             hotelReservationDto.setPeopleCount((Integer) numGuestsSpinner.getValue());
 
             this.dispose();
-            new Payment(hotelReservationService.addHotelReservation(hotelReservationDto));
+            new Payment(hotelReservationService.createHotelReservation(hotelReservationDto));
 
         } else if (command.equals("Cancel")) {
             this.dispose();

@@ -179,7 +179,15 @@ public class HotelReservationService {
         log.info("Saved hotelReservation = {}", hotelReservation);
     }
 
-
+    /**
+     * 호텔 예약 가능한 방 개수 조회
+     *
+     * @param HotelRoomTypeIdx 조회 하려는 호텔 방 타입
+     * @param newCheckIn       새로 예약하려는 체크인 날짜
+     * @param newCheckOut      새로 예약하려는 체크아웃 날짜
+     * @return 예약 가능한 방 개수
+     * @author 김남주
+     */
     public Long getAvailableRoom(Long HotelRoomTypeIdx, Timestamp newCheckIn, Timestamp newCheckOut) {
 
         Long hotelRoomCount = hotelRoomRepository.countByRoomType_Idx(HotelRoomTypeIdx);
@@ -189,6 +197,61 @@ public class HotelReservationService {
         log.info("hotelRoomCount = {}\treservationCount = {}", hotelRoomCount, reservationCount);
 
         return hotelRoomCount - reservationCount;
+    }
+
+    /**
+     * 호텔 예약 가능 여부 확인
+     *
+     * @param HotelRoomIdx 호텔 방 index 번호
+     * @param newCheckIn   새로 예약하려는 체크인 날짜
+     * @param newCheckOut  새로 예약하려는 체크아웃 날짜
+     * @return 예약 가능 여부 (true : 가능, false : 불가능)
+     * @author 김남주
+     */
+    public boolean isAvailableRoom(Long HotelRoomIdx, Timestamp newCheckIn, Timestamp newCheckOut) {
+        return !hotelReservationRepository.existsByHotelRoomType_IdxAndCheckInDateBetweenAndCheckOutDateBetween(HotelRoomIdx, newCheckIn, newCheckOut, newCheckIn, newCheckOut);
+    }
+
+    public HotelReservationDto createHotelReservation(HotelReservationDto hotelReservationDto) {
+        if (hotelReservationDto.getCheckInDate().after(hotelReservationDto.getCheckOutDate())) {
+            throw new IllegalArgumentException("체크인 날짜가 체크아웃 날짜보다 늦습니다");
+        }
+        if (hotelReservationDto.getCheckInDate().before(new Timestamp(System.currentTimeMillis()))) {
+            throw new IllegalArgumentException("체크인 날짜가 현재 날짜보다 빠릅니다");
+        }
+        if (hotelReservationDto.getCheckOutDate().before(new Timestamp(System.currentTimeMillis()))) {
+            throw new IllegalArgumentException("체크아웃 날짜가 현재 날짜보다 빠릅니다");
+        }
+        if (hotelReservationDto.getCheckInDate().equals(hotelReservationDto.getCheckOutDate())) {
+            throw new IllegalArgumentException("체크인 날짜와 체크아웃 날짜가 같습니다");
+        }
+        if (hotelReservationDto.getCheckInDate().equals(hotelReservationDto.getCheckOutDate())) {
+            throw new IllegalArgumentException("체크인 날짜와 체크아웃 날짜가 같습니다");
+        }
+        // 예약 가능한 방 개수 조회
+        Long availableRoom = getAvailableRoom(hotelReservationDto.getHotelRoomTypeIdx(), hotelReservationDto.getCheckInDate(), hotelReservationDto.getCheckOutDate());
+        if (availableRoom <= 0) {
+            throw new IllegalArgumentException("예약 가능한 방이 없습니다");
+        }
+
+        // 방 설정
+        List<HotelRoom> hotelRooms = hotelRoomRepository.findByRoomType_Idx(hotelReservationDto.getHotelRoomTypeIdx());
+        for (HotelRoom hotelRoom : hotelRooms) {
+            if (isAvailableRoom(hotelRoom.getIdx(), hotelReservationDto.getCheckInDate(), hotelReservationDto.getCheckOutDate())) {
+                hotelReservationDto.setHotelRoomIdx(hotelRoom.getIdx());
+                break;
+            }
+        }
+        if (hotelReservationDto.getHotelRoomIdx() == 0L) {
+            throw new IllegalArgumentException("예약 가능한 방이 없습니다");
+        }
+
+
+        HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
+        hotelReservation.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        hotelReservation.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).orElseThrow());
+        return modelMapper.map(hotelReservationRepository.save(hotelReservation), HotelReservationDto.class);
     }
 
 }

@@ -5,13 +5,13 @@ import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 
 public class HotelReservationFactoryMethod {
 
-    public static HotelReservationDto createReservation(Long HotelRoomIdx) {
+    public static HotelReservationDto createReservation(Long hotelIdx, Long  hotelRoomTypeIdx) {
 
         return HotelReservationDto.builder()
-                .hotelIdx(HotelRoomIdx)
+                .hotelIdx(hotelIdx)
                 .userId(Singleton.getInstance().getUser().getId())
                 .peopleCount(2)
-                .hotelRoomIdx(HotelRoomIdx)
+                .hotelRoomTypeIdx(hotelRoomTypeIdx)
                 .build();
 
     }

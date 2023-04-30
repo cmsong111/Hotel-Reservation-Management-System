@@ -20,6 +20,8 @@ public interface HotelReservationRepository extends JpaRepository<HotelReservati
 
     long countByCheckInDateBetweenAndCheckOutDateBetweenAndHotelRoom_RoomType_Idx(Timestamp checkInDateStart, Timestamp checkInDateEnd, Timestamp checkOutDateStart, Timestamp checkOutDateEnd, Long idx);
 
+    boolean existsByHotelRoomType_IdxAndCheckInDateBetweenAndCheckOutDateBetween(Long idx, Timestamp checkInDateStart, Timestamp checkInDateEnd, Timestamp checkOutDateStart, Timestamp checkOutDateEnd);
+
 
 
 

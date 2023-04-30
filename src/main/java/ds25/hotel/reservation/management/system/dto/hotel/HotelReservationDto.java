@@ -13,6 +13,7 @@ public class HotelReservationDto {
     @Setter(AccessLevel.NONE)
     String userId;
     private long hotelIdx;
+    private long hotelRoomTypeIdx;
     private long hotelRoomIdx;
     private Timestamp checkInDate;
     private Timestamp checkOutDate;
