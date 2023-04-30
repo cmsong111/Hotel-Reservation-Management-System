@@ -1,6 +1,7 @@
 package ds25.hotel.reservation.management.system.configuration;
 
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.provider.HotelReservationProvider;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,6 +11,8 @@ public class Singleton {
     private static Singleton singleton = new Singleton();
 
     private Singleton() {
+        log.info("Singleton 객체가 생성되었습니다.");
+        hotelReservationProvider = new HotelReservationProvider();
     }
 
     public static Singleton getInstance() {
@@ -19,6 +22,7 @@ public class Singleton {
         return singleton;
     }
 
-    public UserDto admin;
-    public UserDto user;
+    private UserDto admin;
+    private UserDto user;
+    private HotelReservationProvider hotelReservationProvider;
 }
