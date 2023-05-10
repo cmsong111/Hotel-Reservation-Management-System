@@ -10,8 +10,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class HotelReservationDto {
     private long idx;
-    @Setter(AccessLevel.NONE)
-    String userId;
+    private String userId;
     private long hotelIdx;
     private long hotelRoomTypeIdx;
     private long hotelRoomIdx;

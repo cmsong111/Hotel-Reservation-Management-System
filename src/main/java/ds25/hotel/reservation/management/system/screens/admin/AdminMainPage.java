@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 public class AdminMainPage extends JFrame implements ActionListener {
 
-    JButton btn_hotelManage, btn_roomState, btn_reservationManage,btn_back;
+    JButton btn_hotelManage, btn_roomState, btn_reservationManage, btn_back;
     JPanel btn_panel;
     JTextArea textArea;
     HotelDto hotelDto;
@@ -94,13 +94,14 @@ public class AdminMainPage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch (command) {
-            case "hotelManage" -> new EmptyRoomCheck();
+            case "hotelManage" -> new HotelManagePage(hotelDto.getIdx());
             case "roomState" -> new AdminHotelRoomStatusPage(hotelDto.getIdx());
-            case "reservationManage" -> new EmptyRoomCheck();
+            case "reservationManage" -> new HotelReservationListPage(hotelDto.getIdx());
             case "back" -> {
                 new AdminHotelSelectPage();
                 dispose();
             }
+            default -> throw new IllegalStateException("Unexpected value: " + command);
         }
     }
 }

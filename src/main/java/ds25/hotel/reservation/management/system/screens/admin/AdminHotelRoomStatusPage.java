@@ -57,7 +57,6 @@ public class AdminHotelRoomStatusPage extends JFrame implements ActionListener {
 
 
         setSize(1200, 1000);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }

@@ -25,7 +25,8 @@ public class EmptyRoomCheck extends JFrame {
         HotelRoomDto hotelRoomDto1 = new HotelRoomDto();
         hotelRoomService = SpringBridge.getInstance().getBean(HotelRoomService.class);
         hotelRoomTypeService = SpringBridge.getInstance().getBean(HotelRoomTypeService.class);
-        hotelRoomDto = SpringBridge.getInstance().getBean(HotelRoomDto.class);
+
+        //hotelRoomDto = SpringBridge.getInstance().getBean(HotelRoomDto.class);
 
         //hotelRoomDto = hotelRoomDto.getRoomNumber();// DB에서 객실 정보를 가져오는거 해야됨
         int numberOfRooms = Math.toIntExact(hotelRoomDto.getRoomNumber()); // 객실 개수 가져와야됨
