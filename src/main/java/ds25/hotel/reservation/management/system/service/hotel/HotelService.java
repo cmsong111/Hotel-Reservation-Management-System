@@ -162,6 +162,16 @@ public class HotelService {
         return hotelDto;
     }
 
+    public String deleteHotel(Long idx){
+        Optional<Hotel> hotel = hotelRepository.findById(idx);
+        if(hotel.isPresent()){
+            hotelRepository.deleteById(idx);
+            return "success";
+        }else{
+            return "fail";
+        }
+    }
+
 
     private HotelDto convertToDto(Hotel hotel) {
         HotelDto hotelDto = modelMapper.map(hotel, HotelDto.class);
@@ -172,7 +182,5 @@ public class HotelService {
         hotelDto.setImages(hotelImageDtos);
         return hotelDto;
     }
-
-
 
 }

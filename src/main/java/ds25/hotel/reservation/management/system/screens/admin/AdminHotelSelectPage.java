@@ -83,7 +83,7 @@ public class AdminHotelSelectPage extends JFrame implements ActionListener, List
         if (e.getSource() == hotelList && hotelList.getSelectedIndex() != -1) {
             this.dispose();
             HotelDto hotelDto = (HotelDto) hotelList.getSelectedValue();
-            new AdminHotelDetailPage(hotelDto.getIdx());
+            new AdminMainPage(hotelDto.getIdx());
         }
     }
 }

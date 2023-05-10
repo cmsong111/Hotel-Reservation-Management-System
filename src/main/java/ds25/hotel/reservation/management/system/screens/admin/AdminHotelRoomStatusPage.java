@@ -15,13 +15,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @Slf4j
-public class AdminHotelDetailPage extends JFrame implements ActionListener { // 방 10개 띄워놓고 객실현황 확인하는 틀(?)
+public class AdminHotelRoomStatusPage extends JFrame implements ActionListener { // 방 10개 띄워놓고 객실현황 확인하는 틀(?)
 
     private HotelRoomService hotelRoomService;
     private HotelRoomTypeService hotelRoomTypeService;
     private JPanel roomListPanel;
 
-    public AdminHotelDetailPage(long hotelIdx) {
+    public AdminHotelRoomStatusPage(long hotelIdx) {
         super("호텔 예약 현황");
         roomListPanel = new JPanel(new GridLayout(-1, 1, 5, 1));
 
