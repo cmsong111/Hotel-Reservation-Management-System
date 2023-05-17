@@ -55,7 +55,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
         textArea.setWrapStyleWord(true);
         textArea.setText(roomService.findHotelRoomByIdx(idx).get().getDescription());
 
-        imageIcon = new ProxyImage(room.get().getImages().get(0).getImage());
+        imageIcon = new ProxyImage(room.get().getImages().get(0).getImage(),500,282);
 
         imageLabel = new JLabel();
         imageLabel.setIcon(imageIcon);
@@ -126,32 +126,44 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
 
-        if (command.equals("nextImage")) {
-            ++imageIndex;
-            if (imageIndex >= room.get().getImages().size()) {
-                imageIndex = 0;
+        switch (command) {
+            case "nextImage" -> {
+                ++imageIndex;
+                if (imageIndex >= room.get().getImages().size()) {
+                    imageIndex = 0;
+                }
+                log.info("nextImage index {}", imageIndex);
+                imageLabel.setIcon(new ProxyImage(room.get().getImages().get(imageIndex).getImage(),500,282));
             }
-            log.info("nextImage index {}", imageIndex);
-            imageLabel.setIcon(new ProxyImage(room.get().getImages().get(imageIndex).getImage()));
-        } else if (command.equals("prevImage")) {
-            --imageIndex;
-            if (imageIndex < 0) {
-                imageIndex = room.get().getImages().size() - 1;
+            case "prevImage" -> {
+                --imageIndex;
+                if (imageIndex < 0) {
+                    imageIndex = room.get().getImages().size() - 1;
+                }
+                log.info("prevImage index {}", imageIndex);
+                imageLabel.setIcon(new ProxyImage(room.get().getImages().get(imageIndex).getImage(),500,282));
             }
-            log.info("prevImage index {}", imageIndex);
-            imageLabel.setIcon(new ProxyImage(room.get().getImages().get(imageIndex).getImage()));
-        } else if (command.equals("reserve")) {
-            log.info("reserve");
-            new HotelReservationPage(room.get().getIdx());
-        } else if (command.equals("cancel")) {
-            log.info("cancel");
-            dispose();
-        } else if (command.equals("back")) {
-            log.info("back");
-            dispose();
-        } else if (command.equals("myPage")) {
-            log.info("my page");
-            new MyPage();
+            case "reserve" -> {
+                log.info("reserve");
+                new HotelReservationPage(room.get().getIdx());
+            }
+            case "cancel" -> {
+                log.info("cancel");
+                new HotelDetailPage(room.get().getHotelIdx());
+                dispose();
+            }
+            case "back" -> {
+                log.info("back");
+                new HotelDetailPage(room.get().getHotelIdx());
+                dispose();
+            }
+            case "myPage" -> {
+                log.info("my page");
+                new MyPage();
+            }
+            default -> {
+                log.info("default");
+            }
         }
 
     }

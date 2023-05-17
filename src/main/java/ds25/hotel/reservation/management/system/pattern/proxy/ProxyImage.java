@@ -5,35 +5,50 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
-
 @Slf4j
 public class ProxyImage implements Icon {
     private final String imageUrl;
+    private final int width;
+    private final int height;
     private ImageIcon realImage;
+    private ImageIcon loadingImage;
 
-    public ProxyImage(String imageUrl) {
+    public ProxyImage(String imageUrl, int width, int height) {
         this.imageUrl = imageUrl;
+        this.width = width;
+        this.height = height;
+        this.loadingImage = new ImageIcon("loading.gif");
+        loadImageIcon();
     }
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        getImageIcon().paintIcon(c, g, x, y);
+        if (realImage != null) {
+            realImage.paintIcon(c, g, x, y);
+        } else {
+            loadingImage.paintIcon(c, g, x, y);
+        }
     }
 
     @Override
     public int getIconWidth() {
-        return getImageIcon().getIconWidth();
+        return realImage != null ? realImage.getIconWidth() : loadingImage.getIconWidth();
     }
 
     @Override
     public int getIconHeight() {
-        return getImageIcon().getIconHeight();
+        return realImage != null ? realImage.getIconHeight() : loadingImage.getIconHeight();
     }
 
-    private ImageIcon getImageIcon() {
+    private void loadImageIcon() {
         if (realImage == null) {
-            realImage = new ImageIcon(ImageLoader.getImage(imageUrl).getImage());
+            realImage = ImageLoader.getImage(imageUrl);
+            if (realImage != null) {
+                Image originalImage = realImage.getImage();
+                Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                realImage = new ImageIcon(scaledImage);
+            }
         }
-        return realImage;
     }
 }
+

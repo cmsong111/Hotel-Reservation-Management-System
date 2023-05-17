@@ -3,6 +3,7 @@ package ds25.hotel.reservation.management.system.screens;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelImageDto;
+import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
 import ds25.hotel.reservation.management.system.screens.auth.MyPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
@@ -105,7 +106,7 @@ class HotelListRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         HotelDto hotel = (HotelDto) value;
         HotelImageDto firstImage = hotel.getImages().get(0);
-        ImageIcon icon = ImageLoader.getSizedImage(firstImage.getImage(), 130, 130);
+        ProxyImage icon = new ProxyImage(firstImage.getImage(), 130, 130);
 
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         label.setText("<html><h2>" + hotel.getName() + "</h2><br>" + hotel.getDescription() + "</html>");

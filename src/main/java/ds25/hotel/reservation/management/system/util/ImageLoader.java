@@ -18,32 +18,11 @@ public class ImageLoader {
         try {
             URL url = new URL(internetPath);
             Image image = ImageIO.read(url);
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-            int newWidth = 500;
-            int newHeight = (int) (((double) newWidth / (double) width) * height);
-            Image newImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 
-            return new ImageIcon(newImage);
+            return new ImageIcon(image);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-
-    public static ImageIcon getSizedImage(String internetPath, int newWidth, int newHeight){
-        try {
-            URL url = new URL(internetPath);
-            Image image = ImageIO.read(url);
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-
-            Image newImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-
-            return new ImageIcon(newImage);
-        } catch (Exception e) {
-            e.printStackTrace();
-}
-        return null;
-                }
 }
