@@ -605,4 +605,8 @@ values ('user', 1, '2023-04-07 15:00:00', '2023-04-08 11:00:00', 2, 700000, CURR
         700000);
 
 -- Hotel 리뷰 데이터 입력
-
+insert into HOTELREVIEW (USER_ID, HOTEL_IDX, CONTENT, rating, CREATEDAT, UPDATEDAT, RESERVATION_IDX)
+values ('user', 1, '재미있어요', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
+       ('user', 1, '재미있어요', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2),
+       ('user1', 1, '재미있어요', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3),
+       ('user1', 1, '재미있어요', 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4);

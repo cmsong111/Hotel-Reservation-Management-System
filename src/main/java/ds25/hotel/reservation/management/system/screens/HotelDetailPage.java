@@ -38,7 +38,7 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
     LoginPanel loginPanel;
     JLabel userLabel, hotelImageLabel;
     JTextArea hotelDetailTextArea, hotelRoomTextArea;
-    JButton btn_RoomDetail;
+    JButton btn_RoomDetail, btn_reply;
 
 
     public HotelDetailPage(long hotelIdx) {
@@ -95,10 +95,14 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
         centerPanel.add(hotelRoomListScrollPane, BorderLayout.CENTER);
 
 
+        btn_reply= new JButton("댓글");
+        btn_reply.addActionListener(this);
+        btn_reply.setActionCommand("reply");
+
         add(centerPanel, BorderLayout.CENTER);
         add(new NorthPanel(hotelDto.get().getName()), BorderLayout.NORTH);
         add(new WestPanel(), BorderLayout.WEST);
-        add(new EastPanel(), BorderLayout.EAST);
+        add(btn_reply, BorderLayout.EAST);
         loginPanel = new LoginPanel();
         loginPanel.btn_logout.addActionListener(this);
         loginPanel.btn_myPage.addActionListener(this);
@@ -120,6 +124,9 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
         } else if (command.equals("myPage")) {
             log.info("마이페이지 버튼 클릭");
             new MyPage();
+        } else if (command.equals("reply")){
+            log.info("댓글 버튼 클릭");
+            new HotelReviewPage(hotelDto.get().getIdx());
         }
     }
 
