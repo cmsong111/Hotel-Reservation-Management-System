@@ -18,6 +18,7 @@ public class HotelRoomTypeDto {
     private Long hotelIdx;
     private String name;
     private String description;
+    private String image;
     private int price;
     private int discount;
     private int roomCount;
@@ -26,4 +27,5 @@ public class HotelRoomTypeDto {
     private int roomSize;
     private ArrayList<HotelRoomTypeImageDto> images;
     private ArrayList<HotelServiceEnum> service;
+
 }

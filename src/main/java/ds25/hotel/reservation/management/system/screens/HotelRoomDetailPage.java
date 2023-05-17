@@ -20,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
-    JTextArea textArea;
+    JTextArea textArea, information;
     JScrollPane scrollPane;
     HotelRoomTypeService roomService;
 
@@ -28,7 +28,7 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
     JLabel imageLabel;
     int imageIndex = 0;
     JButton nextButton, prevButton, reserveButton, cancelButton;
-    JPanel centerPanel, imageControlPanel, mainPanel, buttonPanel, textPanel;
+    JPanel centerPanel, imageControlPanel, mainPanel, textPanel;
     Optional<HotelRoomTypeDto> room;
 
     public HotelRoomDetailPage(Long idx) {
@@ -93,7 +93,6 @@ public class HotelRoomDetailPage extends JFrame implements ActionListener {
 
         buttonPanel.add(reserveButton);
         buttonPanel.add(cancelButton);
-
 
         centerPanel.add(imageControlPanel);
         centerPanel.add(buttonPanel, BorderLayout.CENTER);
