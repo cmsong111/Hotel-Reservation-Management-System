@@ -2,10 +2,7 @@ package ds25.hotel.reservation.management.system.screens.admin;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
-import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
-import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
-import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
 
 import javax.swing.*;

@@ -2,7 +2,6 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelImageDto;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
 import ds25.hotel.reservation.management.system.screens.auth.MyPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
@@ -18,12 +17,10 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 public class HotelSelectionPage extends JFrame implements ActionListener, ListSelectionListener {

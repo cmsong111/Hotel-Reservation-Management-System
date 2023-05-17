@@ -1,4 +1,4 @@
-package ds25.hotel.reservation.management.system.screens;
+/*package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
@@ -91,7 +91,7 @@ public class HotelImageListEx extends JFrame implements ActionListener, ListSele
             // 항목 이름이 name인 선택된 경우
         }*/
 
-        if (hotelList.getSelectedValue()!=null) {
+   /*     if (hotelList.getSelectedValue()!=null) {
             //하나라도 선택된 경우
         }
     }
@@ -107,4 +107,4 @@ public class HotelImageListEx extends JFrame implements ActionListener, ListSele
             return label;
         }
     } */
-}
+

@@ -8,7 +8,6 @@ import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelService;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
