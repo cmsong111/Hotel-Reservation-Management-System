@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.repository.hotel;
 
+import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,18 @@ public interface HotelReservationRepository extends JpaRepository<HotelReservati
     List<HotelReservation> findAll();
 
     List<HotelReservation> findByHotelRoom_Idx(Long idx);
+
+    List<HotelReservation> findByHotelRoomType_Hotel_Idx(Long idx);
+
+    List<HotelReservation> findByHotelRoom_RoomType_Hotel_Idx(Long idx);
+
+
+
+
+
+
+
+
 
     List<HotelReservation> findByUser_Id(String id);
 

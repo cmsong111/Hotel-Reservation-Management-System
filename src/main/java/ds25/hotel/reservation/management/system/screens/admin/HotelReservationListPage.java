@@ -1,7 +1,11 @@
 package ds25.hotel.reservation.management.system.screens.admin;
 
+import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
+import ds25.hotel.reservation.management.system.pattern.observer.Observable;
+import ds25.hotel.reservation.management.system.pattern.observer.Observer;
+import ds25.hotel.reservation.management.system.provider.HotelReservationProvider;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
 
@@ -13,7 +17,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
-public class HotelReservationListPage  extends JFrame implements ActionListener {
+public class HotelReservationListPage  extends JFrame implements ActionListener , Observer {
+
+
+
+    HotelReservationProvider hotelReservationProvider = Singleton.getInstance().getHotelReservationProvider();
+
+
+
 
     HotelReservationService hotelReservationService;
     java.util.List<HotelReservationDto> hotelReservationDtoArrayList = new ArrayList<>();
@@ -23,7 +34,9 @@ public class HotelReservationListPage  extends JFrame implements ActionListener 
     JButton btn_reload, btn_back;
     JPanel southPanel;
     public HotelReservationListPage(Long id){
+        hotelReservationProvider.registerObserver(this);
         hotelReservationService = SpringBridge.getInstance().getBean(HotelReservationService.class);
+
         hotelReservationDtoArrayList = hotelReservationService.getHotelReservationByHotelId(id);
         hotelIdx = id;
         setTitle("예약 관리");
@@ -91,6 +104,7 @@ public class HotelReservationListPage  extends JFrame implements ActionListener 
         String command = e.getActionCommand();
         switch (command){
             case "reload":{
+                hotelReservationProvider.removeObserver(this);
                 dispose();
                 new HotelReservationListPage(hotelIdx);
             }
@@ -98,7 +112,11 @@ public class HotelReservationListPage  extends JFrame implements ActionListener 
 
     }
 
-    public static void main(String[] args) {
-        new HotelReservationListPage(1L);
+
+    @Override
+    public void update(Observable o, Object arg) {
+        hotelReservationProvider.removeObserver(this);
+        dispose();
+        new HotelReservationListPage(hotelIdx);
     }
 }

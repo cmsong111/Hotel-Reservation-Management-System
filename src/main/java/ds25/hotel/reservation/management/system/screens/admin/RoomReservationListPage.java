@@ -1,6 +1,10 @@
 package ds25.hotel.reservation.management.system.screens.admin;
 
+import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.pattern.observer.Observable;
+import ds25.hotel.reservation.management.system.pattern.observer.Observer;
+import ds25.hotel.reservation.management.system.provider.HotelReservationProvider;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
@@ -14,9 +18,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RoomReservationListPage extends JFrame implements ActionListener, ListSelectionListener { // ReservationPage 버튼 누르면 나오는 페이지로 생각중
+public class RoomReservationListPage extends JFrame implements ActionListener, ListSelectionListener, Observer { // ReservationPage 버튼 누르면 나오는 페이지로 생각중
+
+    HotelReservationProvider hotelReservationProvider = Singleton.getInstance().getHotelReservationProvider();
 
 
+    Long hotelRoomIdx;
     private JList hotelList;
     private JScrollPane reservationListScrollPane;
     private JPanel reservationListPanel;
@@ -24,6 +31,8 @@ public class RoomReservationListPage extends JFrame implements ActionListener, L
     private HotelReservationService hotelReservationService;
 
     public RoomReservationListPage(Long hotelRoomIdx) {
+        this.hotelRoomIdx = hotelRoomIdx;
+        hotelReservationProvider.registerObserver(this);
         hotelReservationService = SpringBridge.getInstance().getBean(HotelReservationService.class);
 
         reservationListModel = new DefaultListModel();
@@ -63,5 +72,12 @@ public class RoomReservationListPage extends JFrame implements ActionListener, L
     @Override
     public void valueChanged(ListSelectionEvent e) {
 
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        hotelReservationProvider.removeObserver(this);
+        dispose();
+        new RoomReservationListPage(hotelRoomIdx);
     }
 }

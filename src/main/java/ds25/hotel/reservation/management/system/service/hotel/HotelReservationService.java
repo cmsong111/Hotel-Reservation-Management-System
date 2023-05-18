@@ -1,8 +1,10 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
+import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
+import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
@@ -25,15 +27,17 @@ public class HotelReservationService {
     private final HotelRoomRepository hotelRoomRepository;
     private final HotelReservationRepository hotelReservationRepository;
     private final UserRepository userRepository;
+    private final HotelRepository hotelRepository;
     ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public HotelReservationService(HotelReservationRepository hotelReservationRepository, UserRepository userRepository, HotelRoomRepository hotelRoomRepository,
-                                   HotelRoomTypeRepository hotelRoomTypeRepository) {
+                                   HotelRoomTypeRepository hotelRoomTypeRepository,HotelRepository hotelRepository) {
         this.hotelReservationRepository = hotelReservationRepository;
         this.userRepository = userRepository;
         this.hotelRoomRepository = hotelRoomRepository;
         this.hotelRoomTypeRepository = hotelRoomTypeRepository;
+        this.hotelRepository = hotelRepository;
     }
 
     /**
@@ -166,9 +170,15 @@ public class HotelReservationService {
     public List<HotelReservationDto> getHotelReservationByHotelId(long hotelId) {
         log.info("호텔 별 호텔 예약 내역을 조회합니다");
         List<HotelReservationDto> hotelReservationDtos = new ArrayList<>();
-        hotelReservationRepository.findByHotelRoom_Idx(hotelId).forEach(
+
+        hotelReservationRepository.findByHotelRoom_RoomType_Hotel_Idx(hotelId).forEach(
                 hotelReservation -> hotelReservationDtos.add(modelMapper.map(hotelReservation, HotelReservationDto.class))
         );
+
+//        hotelReservationRepository.findByHotelRoom_RoomType_Hotel_Idx(hotelId).forEach(
+//                hotelReservation -> log.info("hotelReservation = {}", hotelReservation)
+//        );
+
         return hotelReservationDtos;
     }
 

@@ -1,5 +1,6 @@
 package ds25.hotel.reservation.management.system.screens.pay;
 
+import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
@@ -88,6 +89,8 @@ public class Payment extends JFrame implements ActionListener {
             JOptionPane.showConfirmDialog(null, "결제가 완료되었습니다.", "결제완료", JOptionPane.DEFAULT_OPTION);
             log.info("결제 완료");
             hotelReservationService.reservationPay(hotelReservationDto.getIdx(), Integer.parseInt(tx_totalAmount.getText()));
+
+            Singleton.getInstance().getHotelReservationProvider().notifyObservers();
 
             dispose();
         } else if (command.equals("cancel")) {
