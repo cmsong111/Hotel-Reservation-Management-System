@@ -4,11 +4,11 @@ import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelImageDto;
 import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
+import ds25.hotel.reservation.management.system.pattern.strategy.*;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
 import ds25.hotel.reservation.management.system.screens.auth.MyPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
-import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +27,34 @@ public class HotelSelectionPage extends JFrame implements ActionListener, ListSe
     private JList<HotelDto> hotelJList;
     private JScrollPane hotelListScrollPane;
     private ArrayList<HotelDto> hotelDtoList;
+    private SortStrategy sortStrategy;
+    private JComboBox<String> sortingComboBox;
+
+
+    // Sorting method
+    private void sortHotelList() {
+        sortStrategy.sorting(hotelDtoList);
+        hotelJList.setListData(hotelDtoList.toArray(new HotelDto[0]));
+        hotelJList.updateUI();
+    }
 
     public HotelSelectionPage() {
         // 스프링 빈에서 HotelService 객체 주입
         hotelService = SpringBridge.getInstance().getBean(HotelService.class);
+
+        // 전략패턴 생성
+        sortStrategy = new BuildDescSort();
+
+        sortingComboBox = new JComboBox<>();
+        sortingComboBox.addItem("Sort by Name Asc");
+        sortingComboBox.addItem("Sort by Name Desc");
+        sortingComboBox.addItem("Sort by Build Asc");
+        sortingComboBox.addItem("Sort by Build Desc");
+
+        sortingComboBox.addActionListener(this);
+
+        // Add the combo box to the UI
+
 
         // JList 에 표시할 호텔 목록 가져오기
         hotelDtoList = (ArrayList<HotelDto>) hotelService.findAllHotel();
@@ -53,7 +77,7 @@ public class HotelSelectionPage extends JFrame implements ActionListener, ListSe
         pack();
 
         // 좌우 여백 설정
-        add(new NorthPanel(), BorderLayout.NORTH);
+        add(sortingComboBox, BorderLayout.NORTH);
         add(new WestPanel(), BorderLayout.WEST);
         add(new EastPanel(), BorderLayout.EAST);
         add(hotelListScrollPane, BorderLayout.CENTER);
@@ -78,6 +102,19 @@ public class HotelSelectionPage extends JFrame implements ActionListener, ListSe
         } else if (command.equals("myPage")) {
             log.info("마이페이지 버튼 클릭");
             new MyPage();
+        } else if (e.getSource() == sortingComboBox) {
+            log.info("정렬 버튼 클릭");
+            int selectedIndex = sortingComboBox.getSelectedIndex();
+            if (selectedIndex == 0) {
+                sortStrategy = new NameAscSort();
+            } else if (selectedIndex == 1) {
+                sortStrategy = new NameDescSort();
+            } else if (selectedIndex == 2) {
+                sortStrategy = new BuildAscSort();
+            } else if (selectedIndex == 3) {
+                sortStrategy = new BuildDescSort();
+            }
+            sortHotelList();
         }
     }
 
