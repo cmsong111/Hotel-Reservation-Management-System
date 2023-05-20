@@ -21,6 +21,7 @@ public class Hotel {
     private String address;
     private String phone;
     private String email;
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<HotelImage> images;

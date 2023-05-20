@@ -15,6 +15,7 @@ public class HotelImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+    @Column(columnDefinition = "LONGTEXT")
     private String image;
     @ManyToOne
     private Hotel hotel;

@@ -20,6 +20,7 @@ public class HotelRoomType {
     @ManyToOne(fetch = FetchType.EAGER)
     private Hotel hotel;
     private String name;
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     private int price;
     private int discount;
