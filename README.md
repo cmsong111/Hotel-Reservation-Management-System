@@ -31,9 +31,10 @@
 
 ## Used Design Patterns
 
-- Singleton
 - Builder
+- Factory
 - Observer
 - ~~Strategy~~
 - Iterator
-- ~~Decorator~~
+- Command
+- Proxy
