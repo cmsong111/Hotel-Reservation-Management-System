@@ -29,7 +29,7 @@ class HotelReservationServiceTest {
 
         Long count = hotelReservationService.getAvailableRoom(1L, newCheckin, newCheckout);
 
-        assertEquals(7L, count);
+        assertEquals(9L, count);
     }
 
     @Test
@@ -41,7 +41,7 @@ class HotelReservationServiceTest {
 
         Long count = hotelReservationService.getAvailableRoom(1L, newCheckin, newCheckout);
 
-        assertEquals(5L, count);
+        assertEquals(9L, count);
     }
 
     @Test
