@@ -13,17 +13,25 @@ public class IteratorImpl implements Iterator {
 
     @Override
     public boolean hasNext() {
-        if (index < aggregate.getLength()) {
-            return true;
-        } else {
-            return false;
-        }
+        return index < aggregate.getLength();
     }
 
     @Override
     public Object next() {
         Object object = aggregate.getObjectAt(index);
         index++;
+        return object;
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        return index > 0;
+    }
+
+    @Override
+    public Object previous() {
+        index--;
+        Object object = aggregate.getObjectAt(index);
         return object;
     }
 }
