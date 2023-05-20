@@ -9,16 +9,15 @@ public class HotelReservationFactoryMethod {
 
     private static final HotelReservationService hotelReservationService = SpringBridge.getInstance().getBean(HotelReservationService.class);
 
-    public static HotelReservationDto createReservation(Long hotelIdx, Long  hotelRoomTypeIdx) {
+    public static HotelReservationDto createReservation(Long hotelIdx, Long hotelRoomTypeIdx) {
 
-
-
-        return HotelReservationDto.builder()
+        HotelReservationDto reservation = HotelReservationDto.builder()
                 .hotelIdx(hotelIdx)
                 .userId(Singleton.getInstance().getUser().getId())
-                .peopleCount(2)
                 .hotelRoomTypeIdx(hotelRoomTypeIdx)
+                .hotelRoomIdx(1L)
                 .build();
 
+        return hotelReservationService.createReservationID(reservation);
     }
 }

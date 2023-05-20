@@ -65,7 +65,9 @@ public class HotelReservationPage extends JFrame implements ActionListener {
         user = Singleton.getInstance().getUser();
 
         hotelRoomDto = hotelRoomTypeService.findHotelRoomByIdx(hotelRoomIdx);
+        // 팩토리 메소드로 객체 생성
         hotelReservationDto = HotelReservationFactoryMethod.createReservation(hotelRoomDto.get().getHotelIdx(),hotelRoomDto.get().getIdx());
+
         hotelRoomTypeDtoArrayList = hotelRoomTypeService.findHotelRoomByHotelIdx(hotelRoomDto.get().getHotelIdx());
 
         int roomTypeIndex = 0;

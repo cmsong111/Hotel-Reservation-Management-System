@@ -40,38 +40,6 @@ public class HotelReservationService {
         this.hotelRepository = hotelRepository;
     }
 
-    /**
-     * 호텔 예약 추가
-     *
-     * @param hotelReservationDto 호텔 예약 정보
-     * @return 호텔 예약 정보
-     * @throws IllegalArgumentException 잘못된 인자 값 전달
-     * @author 김남주
-     */
-    public HotelReservationDto addHotelReservation(HotelReservationDto hotelReservationDto) throws IllegalArgumentException {
-        if (hotelReservationDto.getHotelIdx() == 0) {
-            throw new IllegalArgumentException("호텔 정보가 없습니다");
-        } else if (hotelReservationDto.getHotelRoomIdx() == 0) {
-            throw new IllegalArgumentException("호텔 방 정보가 없습니다");
-        } else if (hotelReservationDto.getCheckInDate() == null) {
-            throw new IllegalArgumentException("체크인 날짜가 없습니다");
-        } else if (hotelReservationDto.getCheckOutDate() == null) {
-            throw new IllegalArgumentException("체크아웃 날짜가 없습니다");
-        } else if (hotelReservationDto.getPeopleCount() == 0) {
-            throw new IllegalArgumentException("인원 수가 없습니다");
-        } else if (hotelReservationDto.getUserId() == null) {
-            throw new IllegalArgumentException("유저 정보가 없습니다");
-        }
-        HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
-        hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).get());
-        hotelReservation.setHotelRoom(hotelRoomRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
-        hotelReservation.setCheckInDate(hotelReservationDto.getCheckInDate());
-        hotelReservation.setCheckOutDate(hotelReservationDto.getCheckOutDate());
-        hotelReservation.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        hotelReservation.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-
-        return modelMapper.map(hotelReservationRepository.save(hotelReservation), HotelReservationDto.class);
-    }
 
     /**
      * 호텔 예약 정보 수정
@@ -90,23 +58,6 @@ public class HotelReservationService {
         oldHotelReservation.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         return modelMapper.map(hotelReservationRepository.save(oldHotelReservation.get()), HotelReservationDto.class);
-    }
-
-    /**
-     * 호텔 예약 삭제
-     *
-     * @param hotelReservationIdx 호텔 예약 index 번호
-     * @throws IOException 파일 입출력 예외
-     * @author 김남주
-     */
-    public void removeHotelReservation(Long hotelReservationIdx) {
-        Optional<HotelReservation> oldHotelReservation = hotelReservationRepository.findById(hotelReservationIdx);
-        if (oldHotelReservation.isPresent()) {
-            log.info("호텔 예약이 삭제되었습니다");
-            hotelReservationRepository.delete(oldHotelReservation.get());
-        } else {
-            log.error("존재하지 않는 호텔 예약 정보입니다");
-        }
     }
 
     /**
@@ -223,6 +174,23 @@ public class HotelReservationService {
      */
     public boolean isAvailableRoom(Long HotelRoomIdx, Timestamp newCheckIn, Timestamp newCheckOut) {
         return !hotelReservationRepository.existsByHotelRoomType_IdxAndCheckInDateBetweenAndCheckOutDateBetween(HotelRoomIdx, newCheckIn, newCheckOut, newCheckIn, newCheckOut);
+    }
+
+    public HotelReservationDto createReservationID(HotelReservationDto hotelReservationDto){
+        HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
+        // 방 설정
+        List<HotelRoom> hotelRooms = hotelRoomRepository.findByRoomType_Idx(hotelReservationDto.getHotelRoomTypeIdx());
+        for (HotelRoom hotelRoom : hotelRooms) {
+            if (isAvailableRoom(hotelRoom.getIdx(), hotelReservationDto.getCheckInDate(), hotelReservationDto.getCheckOutDate())) {
+                hotelReservationDto.setHotelRoomIdx(hotelRoom.getIdx());
+                break;
+            }
+        }
+        if (hotelReservationDto.getHotelRoomIdx() == 0L) {
+            throw new IllegalArgumentException("예약 가능한 방이 없습니다");
+        }
+
+        return modelMapper.map(hotelReservationRepository.save(hotelReservation), HotelReservationDto.class);
     }
 
     public HotelReservationDto createHotelReservation(HotelReservationDto hotelReservationDto) {

@@ -3,6 +3,7 @@ package ds25.hotel.reservation.management.system.screens.pay;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
+import ds25.hotel.reservation.management.system.pattern.command.HotelReservationCommand;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
@@ -24,6 +25,12 @@ public class Payment extends JFrame implements ActionListener {
     public Payment(HotelReservationDto hotelReservationDto) {
         hotelReservationService = SpringBridge.getInstance().getBean(HotelReservationService.class);
         this.hotelReservationDto = hotelReservationDto;
+
+        if (hotelReservationDto.getIdx() == 0 || hotelReservationDto.getPayedMoney() != 0) {
+            JOptionPane.showMessageDialog(null, "주문이 올바르지 않습니다.");
+            return;
+        }
+
 
         setLayout(new BorderLayout());
 
@@ -88,7 +95,8 @@ public class Payment extends JFrame implements ActionListener {
             //결제하기
             JOptionPane.showConfirmDialog(null, "결제가 완료되었습니다.", "결제완료", JOptionPane.DEFAULT_OPTION);
             log.info("결제 완료");
-            hotelReservationService.reservationPay(hotelReservationDto.getIdx(), Integer.parseInt(tx_totalAmount.getText()));
+            HotelReservationCommand hotelReservationCommand = new HotelReservationCommand(hotelReservationDto);
+            hotelReservationCommand.pay(Integer.parseInt(tx_totalAmount.getText()));
 
             Singleton.getInstance().getHotelReservationProvider().notifyObservers();
 
