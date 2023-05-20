@@ -3,7 +3,7 @@ package ds25.hotel.reservation.management.system.dto.user;
 import ds25.hotel.reservation.management.system.entity.user.UserRole;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserDtoTest {
     @Test

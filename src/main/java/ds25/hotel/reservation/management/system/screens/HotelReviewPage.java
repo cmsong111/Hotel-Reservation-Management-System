@@ -2,10 +2,8 @@ package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReviewDto;
-import ds25.hotel.reservation.management.system.entity.hotel.HotelReview;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
-import ds25.hotel.reservation.management.system.screens.widget.SouthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReviewService;
 import ds25.hotel.reservation.management.system.util.AggregateImpl;

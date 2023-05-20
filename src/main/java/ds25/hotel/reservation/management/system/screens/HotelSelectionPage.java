@@ -11,7 +11,6 @@ import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelService;
-import ds25.hotel.reservation.management.system.util.ImageLoader;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -21,8 +20,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 public class HotelSelectionPage extends JFrame implements ActionListener, ListSelectionListener {

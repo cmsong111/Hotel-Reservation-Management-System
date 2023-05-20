@@ -1,7 +1,6 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
-import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelRoom;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;

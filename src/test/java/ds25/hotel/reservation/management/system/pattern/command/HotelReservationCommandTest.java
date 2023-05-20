@@ -2,7 +2,6 @@ package ds25.hotel.reservation.management.system.pattern.command;
 
 import ds25.hotel.reservation.management.system.configuration.JpaConfig;
 import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.dto.user.UserDto;
 import ds25.hotel.reservation.management.system.pattern.facoryMethod.HotelReservationFactoryMethod;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,7 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest(classes = JpaConfig.class)
 class HotelReservationCommandTest {

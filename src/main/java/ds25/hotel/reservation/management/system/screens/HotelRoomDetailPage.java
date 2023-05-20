@@ -9,7 +9,6 @@ import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
-import ds25.hotel.reservation.management.system.screens.HotelReservationPage;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
