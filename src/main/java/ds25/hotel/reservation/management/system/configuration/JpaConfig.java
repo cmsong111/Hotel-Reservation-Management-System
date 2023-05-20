@@ -25,8 +25,8 @@ import java.util.Properties;
 @ComponentScan(basePackages = {"ds25.hotel.reservation.management.system.service", "ds25.hotel.reservation.management.system.configuration"})
 public class JpaConfig {
     @Bean
-    public LocalContainerEntityManagerFactoryBean  entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean  em = new LocalContainerEntityManagerFactoryBean();
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
         em.setPackagesToScan("ds25.hotel.reservation.management.system.entity");
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
@@ -34,12 +34,14 @@ public class JpaConfig {
 
         return em;
     }
+
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
+
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
@@ -50,7 +52,7 @@ public class JpaConfig {
 
         return new HikariDataSource(config);
     }
-    
+
     private Properties JpaProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");

@@ -2,13 +2,14 @@ package ds25.hotel.reservation.management.system.provider;
 
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 
 @Slf4j
 public class HotelReservationProvider implements Observable {
-
+    @Getter
     private ArrayList<Observer> obervers = new ArrayList<Observer>();
 
     @Override
