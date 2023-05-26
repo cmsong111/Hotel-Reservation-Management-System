@@ -20,7 +20,7 @@ public class HotelReviewPage extends JFrame implements ActionListener {
 
     HotelReviewService hotelReviewService = SpringBridge.getInstance().getBean(HotelReviewService.class);
 
-    TextArea textArea = new TextArea();
+    private Label reviewText;
 
     private IteratorImpl iterator;
     private JButton prevButton;
@@ -37,11 +37,16 @@ public class HotelReviewPage extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
         pack();
 
-        // textArea.setText(((HotelReview) replyList.getObjectAt(0)).toString());
-
         log.info("replyList size : {}", replyList.getLength());
 
-        textArea.setText(((HotelReviewDto) replyList.getObjectAt(0)).toString());
+        Panel centerPanel = new Panel(new BorderLayout());
+
+        reviewText = new Label(makeHtmlText((HotelReviewDto) replyList.getObjectAt(0)));
+
+
+        centerPanel.add(new Label("리뷰"), BorderLayout.NORTH);
+
+        centerPanel.add(reviewText, BorderLayout.CENTER);
 
 
         // 바텀 컨트룰 패널
@@ -60,7 +65,8 @@ public class HotelReviewPage extends JFrame implements ActionListener {
 
         if (iterator.hasNext()) {
             HotelReviewDto nextReview = (HotelReviewDto) iterator.next();
-            textArea.setText(nextReview.toString());
+            reviewText.setText(makeHtmlText(nextReview));
+
         } else {
             JOptionPane.showMessageDialog(null, "더 이상 리뷰가 없습니다.");
             nextButton.setEnabled(false);
@@ -72,9 +78,9 @@ public class HotelReviewPage extends JFrame implements ActionListener {
         add(bottomPanel, BorderLayout.SOUTH);
         add(new WestPanel(), BorderLayout.WEST);
         add(new EastPanel(), BorderLayout.EAST);
-        add(textArea, BorderLayout.CENTER);
+        add(centerPanel, BorderLayout.CENTER);
 
-        setSize(900, 700);
+        setSize(500, 400);
         setLocationRelativeTo(null);
         setVisible(true);
 
@@ -88,7 +94,7 @@ public class HotelReviewPage extends JFrame implements ActionListener {
             log.info("prev button clicked");
             if (iterator.hasPrevious()) {
                 HotelReviewDto prevReview = (HotelReviewDto) iterator.previous();
-                textArea.setText(prevReview.toString());
+                reviewText.setText(makeHtmlText(prevReview));
                 nextButton.setEnabled(true);  // 이전 버튼을 누르면 다음 버튼 활성화
             } else {
                 prevButton.setEnabled(false);  // 이전 버튼을 누르면 비활성화
@@ -99,7 +105,7 @@ public class HotelReviewPage extends JFrame implements ActionListener {
             log.info("next button clicked");
             if (iterator.hasNext()) {
                 HotelReviewDto nextReview = (HotelReviewDto) iterator.next();
-                textArea.setText(nextReview.toString());
+                reviewText.setText(makeHtmlText(nextReview));
                 prevButton.setEnabled(true);  // 다음 버튼을 누르면 이전 버튼 활성화
             } else {
                 nextButton.setEnabled(false);  // 다음 버튼을 누르면 비활성화
@@ -107,4 +113,31 @@ public class HotelReviewPage extends JFrame implements ActionListener {
             }
         }
     }
+
+    private String makeHtmlText(HotelReviewDto review) {
+        String htmlContent = "<html>" +
+                "<head>" +
+                "<style>" +
+                "body { font-family: Arial, sans-serif; line-height: 1.5; }" +
+                // ... HTML 스타일 코드 추가 ...
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "<h1>"+  hotelReviewService.getHotelName(review.getHotelIdx()) +"</h1>" +
+                "<div class=\"review-container\">" +
+                "<div class=\"review-header\">" +
+                "<span class=\"user-id\"> 작성자:" + review.getUserId() + "</span><br>" +
+                "<span class=\"rating\">Rating: " + review.getRating() + "</span>" +
+                "</div>" +
+                "<div class=\"review-content\">" +
+                "<h3>" + review.getContent() + "</h3ㄴ>" +
+                "</div>" +
+                // ... 필요한 필드들을 추가로 채워넣음 ...
+                "</div>" +
+                "</body>" +
+                "</html>";
+
+        return htmlContent;
+    }
+
 }

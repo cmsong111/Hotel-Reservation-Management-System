@@ -168,4 +168,9 @@ public class HotelReviewService {
         return hotelReviewDto;
     }
 
+    public String getHotelName(Long idx){
+        hotelRepository.findById(idx).orElseThrow(() -> new IllegalArgumentException("Hotel not found"));
+        return hotelRepository.findById(idx).get().getName();
+    }
+
 }
