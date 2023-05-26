@@ -125,10 +125,6 @@ public class HotelReservationService {
                 hotelReservation -> hotelReservationDtos.add(modelMapper.map(hotelReservation, HotelReservationDto.class))
         );
 
-//        hotelReservationRepository.findByHotelRoom_RoomType_Hotel_Idx(hotelId).forEach(
-//                hotelReservation -> log.info("hotelReservation = {}", hotelReservation)
-//        );
-
         return hotelReservationDtos;
     }
 

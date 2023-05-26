@@ -51,7 +51,7 @@ public class AdminHotelSelectPage extends JFrame implements ActionListener, List
 
 
         setTitle("관리자 페이지");
-
+        setLocationRelativeTo(null);
         setSize(500, 500);
         setVisible(true);
         setLayout(new BorderLayout());

@@ -25,6 +25,14 @@ values ('제주특별자치도 서귀포시 중문관광로72번길 35', '푸른
 천국 같은 휴식과 여행의 즐거움을 동시에 누릴 수 있는 대한민국 대표 호텔',
         'rsv.hotel.jeju@lotte.net', '롯데호텔 제주', '+82-64-731-1000', null);
 
+INSERT INTO HOTEL (ADDRESS, DESCRIPTION, EMAIL, NAME, PHONE, SERVICE)
+values ('부산광역시 해운대구 마린시티1로 51, 부산, 대한민국, 48120', '멋진 바다와 광안대교 전경을 자랑하는 부산의 랜드마크. 파크 하얏트 브랜드만의 럭셔리한 품격과 세련된 스타일로 소중한 순간을 더욱 특별하게 만들어 드립니다. 부산의 MICE와 레저 중심지에 위치한 파크 하얏트 부산에서 감각적이고 전문적인 고객 맞춤서비스를 경험해 보세요.'
+        ,null, '파크 하얏트 부산', '+82 51 990 1234', null);
+
+INSERT INTO HOTEL (ADDRESS, DESCRIPTION, EMAIL, NAME, PHONE, SERVICE)
+values ('부산 어딘가', '힐튼 호텔과 함께 편안한 국내 여행을 떠나보세요.'
+       ,null, '힐튼 호텔', '+82 51 990 1234', null);
+
 insert into HOTELIMAGE (HOTEL_IDX, IMAGE)
 values (1, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/seoul/main/230119-01-2000-mai-LTSG.jpg.thumb.1920.1920.jpg');
 
@@ -33,6 +41,12 @@ values (2, 'https://www.lottehotel.com/content/dam/lotte-hotel/signiel/busan/pro
 
 insert into HOTELIMAGE (HOTEL_IDX, IMAGE)
 values (3, 'https://www.lottehotel.com/content/dam/lotte-hotel/lotte/jeju/main/4427-01-560-mai-LTJE.jpg');
+
+insert into HOTELIMAGE (HOTEL_IDX, IMAGE)
+values (4, 'https://pix10.agoda.net/hotelImages/411/411082/411082_17100407500057080288.jpg?ca=6&ce=1&s=1024x768');
+
+insert into HOTELIMAGE (HOTEL_IDX, IMAGE)
+values (5, 'https://hiltongj.cdn2.cafe24.com/renew/opengraph/hilton-social-img.jpg');
 
 -- Hotel Room Type 데이터 입력
 insert into HOTELROOMTYPE (HOTEL_IDX, NAME, DESCRIPTION, PRICE, DISCOUNT, PEOPLECOUNT, BEDSIZE, ROOMSIZE)

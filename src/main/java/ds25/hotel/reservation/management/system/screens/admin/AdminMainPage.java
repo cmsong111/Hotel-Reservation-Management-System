@@ -78,7 +78,7 @@ public class AdminMainPage extends JFrame implements ActionListener {
         add(new EastPanel(), BorderLayout.EAST);
         add(new SouthPanel(), BorderLayout.SOUTH);
 
-
+        setLocationRelativeTo(null);
         setVisible(true);
 
     }

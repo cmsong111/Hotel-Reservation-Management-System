@@ -177,6 +177,11 @@ public class HotelReservationPage extends JFrame implements ActionListener {
             hotelReservationDto.setCheckOutDate(checkOutDate);
             hotelReservationDto.setPeopleCount((Integer) numGuestsSpinner.getValue());
 
+            if (checkInDatePicker.getDate().getTime() > checkOutDatePicker.getDate().getTime()) {
+                JOptionPane.showMessageDialog(null, "체크인 날짜가 체크아웃 날짜보다 늦습니다.");
+                return;
+            }
+
             this.dispose();
             new Payment(hotelReservationService.createHotelReservation(hotelReservationDto));
 

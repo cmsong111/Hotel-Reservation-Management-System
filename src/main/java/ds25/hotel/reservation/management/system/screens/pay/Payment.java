@@ -98,6 +98,7 @@ public class Payment extends JFrame implements ActionListener {
             HotelReservationCommand hotelReservationCommand = new HotelReservationCommand(hotelReservationDto);
             hotelReservationCommand.pay(Integer.parseInt(tx_totalAmount.getText()));
 
+
             Singleton.getInstance().getHotelReservationProvider().notifyObservers();
 
             dispose();
