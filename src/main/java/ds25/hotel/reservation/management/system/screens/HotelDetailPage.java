@@ -8,6 +8,7 @@ import ds25.hotel.reservation.management.system.screens.auth.MyPage;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
+import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelService;
 import lombok.extern.slf4j.Slf4j;
@@ -100,11 +101,12 @@ public class HotelDetailPage extends JFrame implements ActionListener, ListSelec
         add(centerPanel, BorderLayout.CENTER);
         add(new NorthPanel(hotelDto.get().getName()), BorderLayout.NORTH);
         add(new WestPanel(), BorderLayout.WEST);
-        add(btn_reply, BorderLayout.EAST);
+        add(new EastPanel(), BorderLayout.EAST);
         loginPanel = new LoginPanel();
         loginPanel.btn_logout.addActionListener(this);
         loginPanel.btn_myPage.addActionListener(this);
         loginPanel.btn_myPage.setActionCommand("myPage");
+        loginPanel.add(btn_reply, BorderLayout.CENTER);
         add(loginPanel, BorderLayout.SOUTH);
 
         setSize(800, 1000);

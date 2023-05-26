@@ -20,7 +20,7 @@ public class HotelReviewPage extends JFrame implements ActionListener {
 
     HotelReviewService hotelReviewService = SpringBridge.getInstance().getBean(HotelReviewService.class);
 
-    private Label reviewText;
+    private JLabel reviewText;
 
     private IteratorImpl iterator;
     private JButton prevButton;
@@ -41,10 +41,10 @@ public class HotelReviewPage extends JFrame implements ActionListener {
 
         Panel centerPanel = new Panel(new BorderLayout());
 
-        reviewText = new Label(makeHtmlText((HotelReviewDto) replyList.getObjectAt(0)));
+        reviewText = new JLabel(makeHtmlText((HotelReviewDto) replyList.getObjectAt(0)));
 
 
-        centerPanel.add(new Label("리뷰"), BorderLayout.NORTH);
+        centerPanel.add(new JLabel("리뷰"), BorderLayout.NORTH);
 
         centerPanel.add(reviewText, BorderLayout.CENTER);
 
