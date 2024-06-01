@@ -1,7 +1,8 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import ds25.hotel.reservation.management.system.configuration.JpaConfig;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
+import ds25.hotel.reservation.management.system.config.JpaConfig;
+import ds25.hotel.reservation.management.system.domain.reservation.application.HotelReservationService;
+import ds25.hotel.reservation.management.system.ui.dto.hotel.HotelReservationDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class HotelReservationServiceTest {
 
     @Autowired
-    HotelReservationService hotelReservationService;
+	HotelReservationService hotelReservationService;
 
 
     @Test

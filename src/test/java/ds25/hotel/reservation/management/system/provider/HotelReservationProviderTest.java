@@ -1,8 +1,9 @@
 package ds25.hotel.reservation.management.system.provider;
 
 
-import ds25.hotel.reservation.management.system.pattern.observer.Observable;
-import ds25.hotel.reservation.management.system.pattern.observer.Observer;
+import ds25.hotel.reservation.management.system.util.observer.Observable;
+import ds25.hotel.reservation.management.system.util.observer.Observer;
+import ds25.hotel.reservation.management.system.util.provider.HotelReservationProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

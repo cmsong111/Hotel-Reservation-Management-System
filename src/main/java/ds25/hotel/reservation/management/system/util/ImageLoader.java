@@ -1,9 +1,9 @@
 package ds25.hotel.reservation.management.system.util;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class ImageLoader {
     /**

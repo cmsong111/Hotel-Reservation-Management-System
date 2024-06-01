@@ -1,9 +1,10 @@
 package ds25.hotel.reservation.management.system.pattern.command;
 
-import ds25.hotel.reservation.management.system.configuration.JpaConfig;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
-import ds25.hotel.reservation.management.system.pattern.facoryMethod.HotelReservationFactoryMethod;
+import ds25.hotel.reservation.management.system.config.JpaConfig;
+import ds25.hotel.reservation.management.system.config.AppConfig;
+import ds25.hotel.reservation.management.system.ui.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.util.command.HotelReservationCommand;
+import ds25.hotel.reservation.management.system.util.factoryMethod.HotelReservationFactoryMethod;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,8 @@ class HotelReservationCommandTest {
                 .name("user")
                 .email("user@example.com")
                 .build();
-        Singleton singleton = Singleton.getInstance();
-        singleton.setUser(user);
+        AppConfig appConfig = AppConfig.getInstance();
+        appConfig.setUser(user);
     }
 
     @BeforeEach

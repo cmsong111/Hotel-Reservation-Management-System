@@ -1,7 +1,8 @@
 package ds25.hotel.reservation.management.system.service.hotel;
 
-import ds25.hotel.reservation.management.system.configuration.JpaConfig;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
+import ds25.hotel.reservation.management.system.config.JpaConfig;
+import ds25.hotel.reservation.management.system.domain.hotel.application.HotelRoomTypeService;
+import ds25.hotel.reservation.management.system.ui.dto.hotel.HotelRoomTypeDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +13,7 @@ import java.util.Optional;
 class HotelRoomTypeServiceTest {
 
     @Autowired
-    HotelRoomTypeService hotelRoomTypeService;
+	HotelRoomTypeService hotelRoomTypeService;
 
     @Test
     void addHotelRoomType() {

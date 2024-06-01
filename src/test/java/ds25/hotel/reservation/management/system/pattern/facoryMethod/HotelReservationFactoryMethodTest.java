@@ -1,9 +1,10 @@
 package ds25.hotel.reservation.management.system.pattern.facoryMethod;
 
-import ds25.hotel.reservation.management.system.configuration.JpaConfig;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.config.JpaConfig;
+import ds25.hotel.reservation.management.system.config.AppConfig;
+import ds25.hotel.reservation.management.system.ui.dto.hotel.HotelReservationDto;
+import ds25.hotel.reservation.management.system.ui.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.util.factoryMethod.HotelReservationFactoryMethod;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,8 +22,8 @@ class HotelReservationFactoryMethodTest {
                 .name("user")
                 .email("user@example.com")
                 .build();
-        Singleton singleton = Singleton.getInstance();
-        singleton.setUser(user);
+        AppConfig appConfig = AppConfig.getInstance();
+        appConfig.setUser(user);
     }
 
     @Test

@@ -1,6 +1,11 @@
 package ds25.hotel.reservation.management.system.pattern.strategy;
 
-import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
+import ds25.hotel.reservation.management.system.ui.dto.hotel.HotelDto;
+import ds25.hotel.reservation.management.system.util.strategy.BuildAscSort;
+import ds25.hotel.reservation.management.system.util.strategy.BuildDescSort;
+import ds25.hotel.reservation.management.system.util.strategy.NameAscSort;
+import ds25.hotel.reservation.management.system.util.strategy.NameDescSort;
+import ds25.hotel.reservation.management.system.util.strategy.SortStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
