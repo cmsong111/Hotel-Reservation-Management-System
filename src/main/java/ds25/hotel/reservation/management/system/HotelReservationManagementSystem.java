@@ -6,14 +6,15 @@ package ds25.hotel.reservation.management.system;
 
 import ds25.hotel.reservation.management.system.configuration.Singleton;
 import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 /**
  * 메인 클래스
  *
  * @author 김남주
  */
-@Slf4j
+@SpringBootApplication
 public class HotelReservationManagementSystem {
 
     public static void main(String[] args) {
