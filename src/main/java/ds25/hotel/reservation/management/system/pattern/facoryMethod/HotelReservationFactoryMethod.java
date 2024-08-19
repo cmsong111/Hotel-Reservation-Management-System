@@ -1,7 +1,7 @@
 package ds25.hotel.reservation.management.system.pattern.facoryMethod;
 
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.global.configuration.Singleton;
+import ds25.hotel.reservation.management.system.global.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
 

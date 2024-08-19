@@ -5,12 +5,12 @@ import ds25.hotel.reservation.management.system.dto.hotel.HotelReviewImageDto;
 import ds25.hotel.reservation.management.system.entity.hotel.Hotel;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReview;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReviewImage;
-import ds25.hotel.reservation.management.system.entity.user.User;
+import ds25.hotel.reservation.management.system.domain.user.domain.User;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReviewImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReviewRepository;
-import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import ds25.hotel.reservation.management.system.domain.user.dao.UserRepository;
 import ds25.hotel.reservation.management.system.util.AggregateImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -70,17 +70,17 @@ public class HotelReviewService {
     public HotelReviewDto addHotelReview(HotelReviewDto hotelReviewDto) throws IllegalArgumentException {
         log.info("리뷰 추가: " + hotelReviewDto.toString());
         Optional<Hotel> hotel = hotelRepository.findById(hotelReviewDto.getHotelIdx());
-        Optional<User> user = userRepository.findById(hotelReviewDto.getUserId());
+        User user = userRepository.findByEmail(hotelReviewDto.getUserId());
 
         if (hotel.isEmpty()) {
             throw new IllegalArgumentException("Hotel not found");
-        } else if (user.isEmpty()) {
+        } else if (user==null) {
             throw new IllegalArgumentException("User not found");
         }
 
         HotelReview hotelReview = HotelReview.builder()
                 .hotel(hotel.get())
-                .user(user.get())
+                .user(user)
                 .content(hotelReviewDto.getContent())
                 .rating(hotelReviewDto.getRating())
                 .reply(null)
@@ -131,7 +131,7 @@ public class HotelReviewService {
      */
     public ArrayList<HotelReviewDto> findReviewByUser(String userId) {
         log.info("findReviewByUser: " + userId);
-        List<HotelReview> hotelReviewList = hotelReviewRepository.findByUser_Id(userId);
+        List<HotelReview> hotelReviewList = hotelReviewRepository.findByUserEmail(userId);
         ArrayList<HotelReviewDto> hotelReviewDtoList = new ArrayList<>();
         for (HotelReview hotelReview : hotelReviewList) {
             hotelReviewDtoList.add(convertToDto(hotelReview));

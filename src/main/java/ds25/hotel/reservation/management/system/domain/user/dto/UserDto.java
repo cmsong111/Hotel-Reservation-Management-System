@@ -1,7 +1,7 @@
-package ds25.hotel.reservation.management.system.dto.user;
+package ds25.hotel.reservation.management.system.domain.user.dto;
 
-import ds25.hotel.reservation.management.system.entity.user.UserGrade;
-import ds25.hotel.reservation.management.system.entity.user.UserRole;
+import ds25.hotel.reservation.management.system.domain.user.domain.UserGrade;
+import ds25.hotel.reservation.management.system.domain.user.domain.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

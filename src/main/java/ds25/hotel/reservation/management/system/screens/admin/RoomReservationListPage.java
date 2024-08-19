@@ -1,7 +1,7 @@
 package ds25.hotel.reservation.management.system.screens.admin;
 
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.global.configuration.Singleton;
+import ds25.hotel.reservation.management.system.global.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
 import ds25.hotel.reservation.management.system.provider.HotelReservationProvider;

@@ -1,11 +1,11 @@
 package ds25.hotel.reservation.management.system.pattern.command;
 
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.global.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.entity.hotel.HotelReservation;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
-import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import ds25.hotel.reservation.management.system.domain.user.dao.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class HotelReservationCommand {
             throw new IllegalArgumentException("유저 정보가 없습니다");
         }
         HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
-        hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).get());
+        hotelReservation.setUser(userRepository.findByEmail(hotelReservationDto.getUserId()));
         hotelReservation.setHotelRoom(hotelRoomRepository.findById(hotelReservationDto.getHotelRoomIdx()).get());
         hotelReservation.setCheckInDate(hotelReservationDto.getCheckInDate());
         hotelReservation.setCheckOutDate(hotelReservationDto.getCheckOutDate());

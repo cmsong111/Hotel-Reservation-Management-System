@@ -1,8 +1,8 @@
 package ds25.hotel.reservation.management.system.pattern.command;
 
 import ds25.hotel.reservation.management.system.configuration.JpaConfig;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.global.configuration.Singleton;
+import ds25.hotel.reservation.management.system.domain.user.dto.UserDto;
 import ds25.hotel.reservation.management.system.pattern.facoryMethod.HotelReservationFactoryMethod;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

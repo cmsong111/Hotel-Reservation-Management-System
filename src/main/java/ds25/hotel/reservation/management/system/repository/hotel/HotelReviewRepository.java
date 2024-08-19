@@ -10,6 +10,6 @@ import java.util.List;
 public interface HotelReviewRepository extends JpaRepository<HotelReview, Long> {
     List<HotelReview> findByHotel_Idx(Long idx);
 
-    List<HotelReview> findByUser_Id(String id);
+    List<HotelReview> findByUserEmail(String id);
 }
 

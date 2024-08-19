@@ -1,7 +1,7 @@
 package ds25.hotel.reservation.management.system.screens.admin;
 
 
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.global.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomDto;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;

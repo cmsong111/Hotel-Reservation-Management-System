@@ -7,7 +7,7 @@ import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository
 import ds25.hotel.reservation.management.system.repository.hotel.HotelReservationRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
-import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import ds25.hotel.reservation.management.system.domain.user.dao.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +99,7 @@ public class HotelReservationService {
      */
     public List<HotelReservationDto> findHotelReservationByUserId(String id) {
         log.info("유저 별 호텔 예약 내역을 조회합니다");
-        List<HotelReservation> hotelReservations = hotelReservationRepository.findByUser_Id(id);
+        List<HotelReservation> hotelReservations = hotelReservationRepository.findByUserEmail(id);
         List<HotelReservationDto> hotelReservationDtos = new ArrayList<>();
         for (HotelReservation hotelReservation : hotelReservations) {
             HotelReservationDto hotelReservationDto = modelMapper.map(hotelReservation, HotelReservationDto.class);
@@ -226,7 +226,7 @@ public class HotelReservationService {
         HotelReservation hotelReservation = modelMapper.map(hotelReservationDto, HotelReservation.class);
         hotelReservation.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         hotelReservation.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        hotelReservation.setUser(userRepository.findById(hotelReservationDto.getUserId()).orElseThrow());
+        hotelReservation.setUser(userRepository.findByEmail(hotelReservationDto.getUserId()));
         return modelMapper.map(hotelReservationRepository.save(hotelReservation), HotelReservationDto.class);
     }
 

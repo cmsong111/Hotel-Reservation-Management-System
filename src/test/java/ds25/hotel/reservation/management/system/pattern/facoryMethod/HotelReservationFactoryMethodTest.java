@@ -1,9 +1,9 @@
 package ds25.hotel.reservation.management.system.pattern.facoryMethod;
 
 import ds25.hotel.reservation.management.system.configuration.JpaConfig;
-import ds25.hotel.reservation.management.system.configuration.Singleton;
+import ds25.hotel.reservation.management.system.global.configuration.Singleton;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.domain.user.dto.UserDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -20,7 +20,7 @@ public interface HotelReservationRepository extends JpaRepository<HotelReservati
 
 
 
-    List<HotelReservation> findByUser_Id(String id);
+    List<HotelReservation> findByUserEmail(String email);
 
 
 

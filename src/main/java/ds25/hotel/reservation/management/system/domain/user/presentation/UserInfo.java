@@ -1,13 +1,13 @@
-package ds25.hotel.reservation.management.system.screens.auth;
+package ds25.hotel.reservation.management.system.domain.user.presentation;
 
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.global.config.ApplicationContextProvider;
+import ds25.hotel.reservation.management.system.global.configuration.Singleton;
+import ds25.hotel.reservation.management.system.domain.user.dto.UserDto;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
-import ds25.hotel.reservation.management.system.service.user.UserService;
+import ds25.hotel.reservation.management.system.domain.user.application.UserService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +25,7 @@ public class UserInfo extends JFrame implements ActionListener {
 
 
     public UserInfo() {
-        userService = SpringBridge.getInstance().getBean(UserService.class);
+        userService = ApplicationContextProvider.INSTANCE.getBean(UserService.class);
 
 
         setLayout(new BorderLayout());
@@ -126,7 +126,7 @@ public class UserInfo extends JFrame implements ActionListener {
             user.setEmail(tx_Email.getText());
 
             try {
-                userService.updateUser(user);
+                userService.updateUser(tx_Name.getText(), tx_Phone.getText());
                 JOptionPane.showMessageDialog(null, "수정되었습니다.");
 
             } catch (Exception ex) {

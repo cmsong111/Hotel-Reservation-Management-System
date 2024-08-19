@@ -1,6 +1,6 @@
-package ds25.hotel.reservation.management.system.configuration;
+package ds25.hotel.reservation.management.system.global.configuration;
 
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.domain.user.dto.UserDto;
 import ds25.hotel.reservation.management.system.provider.HotelReservationProvider;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

@@ -1,12 +1,13 @@
 package ds25.hotel.reservation.management.system.screens;
 
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.global.config.ApplicationContextProvider;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelImageDto;
+import ds25.hotel.reservation.management.system.global.common.fragment.MyJMenuBar;
 import ds25.hotel.reservation.management.system.pattern.proxy.ProxyImage;
 import ds25.hotel.reservation.management.system.pattern.strategy.*;
-import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
-import ds25.hotel.reservation.management.system.screens.auth.MyPage;
+import ds25.hotel.reservation.management.system.domain.user.presentation.LoginPage;
+import ds25.hotel.reservation.management.system.domain.user.presentation.MyPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
@@ -40,7 +41,7 @@ public class HotelSelectionPage extends JFrame implements ActionListener, ListSe
 
     public HotelSelectionPage() {
         // 스프링 빈에서 HotelService 객체 주입
-        hotelService = SpringBridge.getInstance().getBean(HotelService.class);
+        hotelService = ApplicationContextProvider.INSTANCE.getBean(HotelService.class);
 
         // 전략패턴 생성
         sortStrategy = new BuildDescSort();
@@ -81,6 +82,9 @@ public class HotelSelectionPage extends JFrame implements ActionListener, ListSe
         add(new WestPanel(), BorderLayout.WEST);
         add(new EastPanel(), BorderLayout.EAST);
         add(hotelListScrollPane, BorderLayout.CENTER);
+
+        this.setJMenuBar(new MyJMenuBar());
+        this.setIconImage(new ImageIcon("src/main/resources/image/favicon-32x32.png").getImage());
 
         LoginPanel loginPanel = new LoginPanel();
         loginPanel.btn_myPage.addActionListener(this);

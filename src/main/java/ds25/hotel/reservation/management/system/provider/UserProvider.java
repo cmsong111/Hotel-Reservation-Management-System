@@ -1,6 +1,6 @@
 package ds25.hotel.reservation.management.system.provider;
 
-import ds25.hotel.reservation.management.system.entity.user.User;
+import ds25.hotel.reservation.management.system.domain.user.domain.User;
 import ds25.hotel.reservation.management.system.pattern.observer.Observable;
 import ds25.hotel.reservation.management.system.pattern.observer.Observer;
 import lombok.extern.slf4j.Slf4j;

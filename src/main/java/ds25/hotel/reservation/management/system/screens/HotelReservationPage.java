@@ -1,11 +1,11 @@
 package ds25.hotel.reservation.management.system.screens;
 
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
+import ds25.hotel.reservation.management.system.global.configuration.Singleton;
+import ds25.hotel.reservation.management.system.global.configuration.SpringBridge;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelReservationDto;
 import ds25.hotel.reservation.management.system.dto.hotel.HotelRoomTypeDto;
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.domain.user.dto.UserDto;
 import ds25.hotel.reservation.management.system.pattern.facoryMethod.HotelReservationFactoryMethod;
 import ds25.hotel.reservation.management.system.screens.pay.Payment;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
@@ -15,7 +15,7 @@ import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
 import ds25.hotel.reservation.management.system.service.hotel.HotelReservationService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomService;
 import ds25.hotel.reservation.management.system.service.hotel.HotelRoomTypeService;
-import ds25.hotel.reservation.management.system.service.user.UserService;
+import ds25.hotel.reservation.management.system.domain.user.application.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.jdesktop.swingx.JXDatePicker;
 

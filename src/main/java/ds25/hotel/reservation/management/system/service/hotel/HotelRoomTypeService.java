@@ -8,7 +8,7 @@ import ds25.hotel.reservation.management.system.entity.hotel.HotelRoomTypeImage;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeImageRepository;
 import ds25.hotel.reservation.management.system.repository.hotel.HotelRoomTypeRepository;
-import ds25.hotel.reservation.management.system.repository.user.UserRepository;
+import ds25.hotel.reservation.management.system.domain.user.dao.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

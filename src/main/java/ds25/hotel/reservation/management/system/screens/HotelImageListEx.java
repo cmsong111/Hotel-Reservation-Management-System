@@ -1,8 +1,8 @@
 /*package ds25.hotel.reservation.management.system.screens;
 
 import ds25.hotel.reservation.management.system.configuration.SpringBridge;
-import ds25.hotel.reservation.management.system.screens.auth.LoginPage;
-import ds25.hotel.reservation.management.system.screens.auth.MyPage;
+import ds25.hotel.reservation.management.system.domain.user.presentation.LoginPage;
+import ds25.hotel.reservation.management.system.domain.user.presentation.MyPage;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.LoginPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;

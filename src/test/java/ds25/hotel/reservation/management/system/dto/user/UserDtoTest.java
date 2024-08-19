@@ -1,6 +1,7 @@
 package ds25.hotel.reservation.management.system.dto.user;
 
-import ds25.hotel.reservation.management.system.entity.user.UserRole;
+import ds25.hotel.reservation.management.system.domain.user.domain.UserRole;
+import ds25.hotel.reservation.management.system.domain.user.dto.UserDto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

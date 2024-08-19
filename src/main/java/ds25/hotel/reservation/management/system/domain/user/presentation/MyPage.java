@@ -1,8 +1,8 @@
-package ds25.hotel.reservation.management.system.screens.auth;
+package ds25.hotel.reservation.management.system.domain.user.presentation;
 
-import ds25.hotel.reservation.management.system.configuration.Singleton;
-import ds25.hotel.reservation.management.system.configuration.SpringBridge;
-import ds25.hotel.reservation.management.system.dto.user.UserDto;
+import ds25.hotel.reservation.management.system.global.config.ApplicationContextProvider;
+import ds25.hotel.reservation.management.system.global.config.AuthContext;
+import ds25.hotel.reservation.management.system.global.configuration.Singleton;
 import ds25.hotel.reservation.management.system.screens.widget.EastPanel;
 import ds25.hotel.reservation.management.system.screens.widget.NorthPanel;
 import ds25.hotel.reservation.management.system.screens.widget.WestPanel;
@@ -17,12 +17,11 @@ import java.awt.event.ActionListener;
 @Slf4j
 public class MyPage extends JFrame implements ActionListener {
 
-    JPanel centerPanel,SouthPanel;
-    UserDto user = Singleton.getInstance().getUser();
-    HotelReservationService hotelReservationService = SpringBridge.getInstance().getBean(HotelReservationService.class);
+    JPanel centerPanel, SouthPanel;
+    HotelReservationService hotelReservationService = ApplicationContextProvider.INSTANCE.getBean(HotelReservationService.class);
     JList hotelReservationList;
     JScrollPane hotelReservationListScroll;
-    JButton btn_UserInfo,btn_logout;
+    JButton btn_UserInfo, btn_logout;
     private DefaultListModel hotelReservationListModel;
 
 
@@ -37,7 +36,7 @@ public class MyPage extends JFrame implements ActionListener {
         hotelReservationListScroll.setPreferredSize(new Dimension(300, 300));
 
 
-        hotelReservationService.findHotelReservationByUserId(user.getId()).forEach(hotelReservation -> {
+        hotelReservationService.findHotelReservationByUserId(AuthContext.INSTANCE.getUserEmail()).forEach(hotelReservation -> {
             hotelReservationListModel.addElement(hotelReservation);
             log.info("hotelReservation: {}", hotelReservation);
         });
@@ -45,12 +44,11 @@ public class MyPage extends JFrame implements ActionListener {
 
         centerPanel = new JPanel(new GridLayout(-1, 1, 30, 30));
 
-        centerPanel.add(new JLabel(user.getName() + "님의 마이페이지 입니다."));
+        centerPanel.add(new JLabel(AuthContext.INSTANCE.getUserEmail() + "님의 마이페이지 입니다."));
 
         centerPanel.add(new JLabel("예약내역"));
 
         hotelReservationList = new JList();
-
 
 
         btn_UserInfo = new JButton("회원정보 수정");
@@ -66,8 +64,6 @@ public class MyPage extends JFrame implements ActionListener {
 
         SouthPanel.add(btn_UserInfo, BorderLayout.EAST);
         SouthPanel.add(btn_logout, BorderLayout.WEST);
-
-      //  centerPanel.add(hotelReservationListScroll);
 
 
         add(new NorthPanel(), BorderLayout.NORTH);

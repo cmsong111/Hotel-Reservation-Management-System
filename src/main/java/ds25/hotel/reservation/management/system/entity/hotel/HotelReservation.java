@@ -1,6 +1,6 @@
 package ds25.hotel.reservation.management.system.entity.hotel;
 
-import ds25.hotel.reservation.management.system.entity.user.User;
+import ds25.hotel.reservation.management.system.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
